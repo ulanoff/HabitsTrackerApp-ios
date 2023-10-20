@@ -31,7 +31,7 @@ final class TabBarController: UITabBarController {
         tabBar.layer.borderWidth = 1
         tabBar.layer.masksToBounds = false
         
-        let trackersViewController = UIViewController()
+        let trackersViewController = TrackersViewController()
         let statsViewController = UIViewController()
         
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
