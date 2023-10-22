@@ -19,7 +19,7 @@ final class TrackersViewController: UIViewController {
     private var completedTrackers: [TrackerRecord] = FakeTrackersService.getTrackerRecords()
     private var currentDate = Date()
     private var currentWeekDay: WeekDay {
-        WeekDay(number: currentDate.weekday)!
+        WeekDay(numberFromSunday: currentDate.weekday)!
     }
     private var isTrackersArrayEmpty: Bool {
         get {
@@ -46,6 +46,7 @@ final class TrackersViewController: UIViewController {
         collectionView.delegate = self
         collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
         collectionView.register(TrackersHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackersHeaderView.reuseIdentifier)
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
@@ -84,7 +85,9 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapAddButton(_ sender: UIButton) {
-        
+        let controller = SelectTypeViewController()
+        controller.newTrackerDelegate = self
+        present(controller.wrappedInNavigationController(), animated: true)
     }
     
     @objc private func didTapFiltersButton(_ sender: UIButton) {
@@ -105,6 +108,40 @@ final class TrackersViewController: UIViewController {
 
 private extension TrackersViewController {
     // MARK: - Private Methods
+    func createTracker(settings: TrackerSettings) {
+        guard
+            let id = settings.id,
+            let name = settings.name,
+            let color = settings.color,
+            let emoji = settings.emoji,
+            let schedule = settings.schedule,
+            let settingsCategory = settings.category
+        else {
+            assertionFailure("Failed to create Tracker")
+            return
+        }
+                
+        let tracker = Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule)
+        if categories.contains(settingsCategory) {
+            categories = categories.map {
+                if $0 == settingsCategory {
+                    var trackers = $0.trackers
+                    trackers.append(tracker)
+                    let category = TrackerCategory(name: $0.name, trackers: trackers)
+                    return category
+                } else {
+                    let category = TrackerCategory(name: $0.name, trackers: $0.trackers)
+                    return category
+                }
+            }
+        } else {
+            let category = TrackerCategory(name: settingsCategory.name, trackers: [tracker])
+            categories.append(category)
+        }
+        
+        updateVisibleCategoriesByDate()
+    }
+    
     func showNeededViews() {
         if isTrackersArrayEmpty {
             noTrackersView.show()
@@ -336,5 +373,12 @@ extension TrackersViewController: TrackerCellDelegate {
         UIView.performWithoutAnimation {
             collectionView.reloadItems(at: [indexPath])
         }
+    }
+}
+
+// MARK: - NewTrackerViewControllerDelegate
+extension TrackersViewController: NewTrackerViewControllerDelegate {
+    func newTrackerViewController(_ newTrackerViewController: NewTrackerViewController, didBuildTrackerWith settings: TrackerSettings) {
+        createTracker(settings: settings)
     }
 }

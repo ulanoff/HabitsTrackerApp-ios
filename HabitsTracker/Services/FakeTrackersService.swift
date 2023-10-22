@@ -75,10 +75,10 @@ final class FakeTrackersService {
         let todayDate = Date()
         let yesterday = todayDate.yesterday
         return [
-//            TrackerRecord(trackerId: FakeUUIDs.uuid1, date: todayDate),
-//            TrackerRecord(trackerId: FakeUUIDs.uuid2, date: todayDate),
-//            TrackerRecord(trackerId: FakeUUIDs.uuid3, date: yesterday),
-//            TrackerRecord(trackerId: FakeUUIDs.uuid4, date: yesterday)
+            TrackerRecord(trackerId: FakeUUIDs.uuid1, date: todayDate),
+            TrackerRecord(trackerId: FakeUUIDs.uuid2, date: todayDate),
+            TrackerRecord(trackerId: FakeUUIDs.uuid3, date: yesterday),
+            TrackerRecord(trackerId: FakeUUIDs.uuid4, date: yesterday)
         ]
     }
 }
