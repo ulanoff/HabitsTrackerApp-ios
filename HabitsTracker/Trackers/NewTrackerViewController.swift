@@ -42,6 +42,11 @@ final class NewTrackerViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(tapGesture)
+        
         return scrollView
     }()
     
@@ -54,6 +59,7 @@ final class NewTrackerViewController: UIViewController {
         let textField = TextField()
         textField.delegate = self
         textField.placeholder = "Введите название трекера"
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     
@@ -73,6 +79,7 @@ final class NewTrackerViewController: UIViewController {
         tableView.layer.masksToBounds = true
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return tableView
     }()
     
@@ -134,6 +141,10 @@ final class NewTrackerViewController: UIViewController {
     
     @objc private func didTapCancelButton(_ button: UIButton) {
         dismiss(animated: true)
+    }
+    
+    @objc func hideKeyboard() {
+        self.view.endEditing(true)
     }
     
     // MARK: - Public Methods
@@ -271,8 +282,6 @@ extension NewTrackerViewController: UITableViewDataSource {
         
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: settingsTableView.frame.size.width)
-        } else {
-            cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         }
         return cell
     }
@@ -317,6 +326,13 @@ extension NewTrackerViewController: UITextFieldDelegate {
             hideTextFieldMessage()
             isValidationPassed = true
         }
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        isValidationPassed = false
+        updateCreateButtonState()
+        hideTextFieldMessage()
         return true
     }
 }

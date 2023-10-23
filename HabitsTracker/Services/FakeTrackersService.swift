@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FakeUUIDs {
+fileprivate struct FakeUUIDs {
     static let uuid1 = UUID(uuidString: "e7b833a7-f1fd-4493-995b-215610d309ed")!
     static let uuid2 = UUID(uuidString: "5f4926ae-c977-4a22-8d45-486da677cc91")!
     static let uuid3 = UUID(uuidString: "08b2c611-ffcc-4be8-94d1-241bd642ee95")!
@@ -31,14 +31,21 @@ final class FakeTrackersService {
                 ]
             ),
             TrackerCategory(
-                name: "Саморазвитие",
+                name: "Спорт",
                 trackers: [
                     Tracker(
                         id: FakeUUIDs.uuid5,
-                        name: "Воркаут",
+                        name: "Тренировка с весами",
                         color: .ypSelection14,
                         emoji: "💪🏼",
-                        schedule: [.tuesday, .saturday, .sunday]
+                        schedule: [.monday, .tuesday, .wednesday, .friday, .saturday]
+                    ),
+                    Tracker(
+                        id: FakeUUIDs.uuid5,
+                        name: "Кардио",
+                        color: .ypSelection16,
+                        emoji: "🫀",
+                        schedule: WeekDay.everyday
                     ),
                 ]
             ),
@@ -68,17 +75,6 @@ final class FakeTrackersService {
                     ),
                 ]
             ),
-        ]
-    }
-    
-    static func getTrackerRecords() -> [TrackerRecord] {
-        let todayDate = Date()
-        let yesterday = todayDate.yesterday
-        return [
-            TrackerRecord(trackerId: FakeUUIDs.uuid1, date: todayDate),
-            TrackerRecord(trackerId: FakeUUIDs.uuid2, date: todayDate),
-            TrackerRecord(trackerId: FakeUUIDs.uuid3, date: yesterday),
-            TrackerRecord(trackerId: FakeUUIDs.uuid4, date: yesterday)
         ]
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		552C70122AE6A2A900BB68A9 /* UITextField+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */; };
 		554BBBF22AD9838B00BF1DD4 /* NoTrakersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF12AD9838B00BF1DD4 /* NoTrakersView.swift */; };
 		554BBBF62AD9900100BF1DD4 /* UIView+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */; };
 		554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF82AD990C900BF1DD4 /* Tracker.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+ext.swift"; sourceTree = "<group>"; };
 		554BBBF12AD9838B00BF1DD4 /* NoTrakersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTrakersView.swift; sourceTree = "<group>"; };
 		554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ext.swift"; sourceTree = "<group>"; };
 		554BBBF82AD990C900BF1DD4 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				55549E5D2AE415A000E198BF /* UITableViewCell+ext.swift */,
 				55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */,
 				5571F3172AE51C4A00E514C2 /* UIViewController+ext.swift */,
+				552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				55D2711E2AE40B7D00D4418A /* TextField.swift in Sources */,
 				554BBBFB2AD99FD600BF1DD4 /* TrackersHeaderView.swift in Sources */,
 				55C465D22AD8766000D75E2E /* TrackersViewController.swift in Sources */,
+				552C70122AE6A2A900BB68A9 /* UITextField+ext.swift in Sources */,
 				554BBBF62AD9900100BF1DD4 /* UIView+ext.swift in Sources */,
 				554BBBFD2AD9A03200BF1DD4 /* UICollectionReusableView+ext.swift in Sources */,
 				5571F31A2AE51F6000E514C2 /* ScheduleViewController.swift in Sources */,

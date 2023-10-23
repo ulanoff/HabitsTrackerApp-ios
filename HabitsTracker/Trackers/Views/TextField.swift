@@ -8,7 +8,7 @@
 import UIKit
 
 final class TextField: UITextField {
-    private let padding = UIEdgeInsets(top: 26, left: 16, bottom: 26, right: 16)
+    private let padding = UIEdgeInsets(top: 26, left: 16, bottom: 26, right: 41)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,15 +28,20 @@ final class TextField: UITextField {
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+        return bounds.inset(by: padding)
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+        return bounds.inset(by: padding)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+        return bounds.inset(by: padding)
+    }
+    
+    override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
+        let bounds = super.clearButtonRect(forBounds: bounds)
+        return bounds.offsetBy(dx: -8, dy: 0)
     }
 }
 

@@ -39,6 +39,7 @@ final class ScheduleViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return tableView
     }()
     
@@ -142,8 +143,6 @@ extension ScheduleViewController: UITableViewDataSource {
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: scheduleTableView.frame.size.width)
-        } else {
-            cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         }
         return cell
     }

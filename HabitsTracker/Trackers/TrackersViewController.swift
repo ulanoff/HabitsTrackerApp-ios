@@ -16,7 +16,7 @@ final class TrackersViewController: UIViewController {
             collectionView.reloadData()
         }
     }
-    private var completedTrackers: [TrackerRecord] = FakeTrackersService.getTrackerRecords()
+    private var completedTrackers: [TrackerRecord] = []
     private var currentDate = Date()
     private var currentWeekDay: WeekDay {
         WeekDay(numberFromSunday: currentDate.weekday)!
@@ -36,6 +36,7 @@ final class TrackersViewController: UIViewController {
         let textField = UISearchTextField()
         textField.placeholder = "Поиск"
         textField.borderStyle = .line
+        textField.setCustomClearButtonWithText("Отменить")
         textField.delegate = self
         return textField
     }()
@@ -99,7 +100,7 @@ final class TrackersViewController: UIViewController {
         updateVisibleCategoriesByDate()
     }
     
-    @objc private func dismissKeyboard() {
+    @objc private func hideKeyboard() {
         view.endEditing(true)
     }
     
@@ -140,6 +141,12 @@ private extension TrackersViewController {
         }
         
         updateVisibleCategoriesByDate()
+    }
+    
+    func showCancelButton() {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
     }
     
     func showNeededViews() {
@@ -209,7 +216,7 @@ private extension TrackersViewController {
         
         // MARK: - Views Configuring
         view.backgroundColor = .ypWhite
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
     
@@ -347,6 +354,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
         updateVisibleCategoriesByDate()
         return true
     }
