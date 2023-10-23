@@ -13,6 +13,7 @@ fileprivate struct FakeUUIDs {
     static let uuid3 = UUID(uuidString: "08b2c611-ffcc-4be8-94d1-241bd642ee95")!
     static let uuid4 = UUID(uuidString: "3076d8bf-da13-4b91-a0a0-ba197cfc53e3")!
     static let uuid5 = UUID(uuidString: "fdb9aaac-2800-4858-91b9-e660965fb4a8")!
+    static let uuid6 = UUID(uuidString: "53b8cb56-ad97-4e37-9624-f6259c9326de")!
 }
 
 final class FakeTrackersService {
@@ -41,7 +42,7 @@ final class FakeTrackersService {
                         schedule: [.monday, .tuesday, .wednesday, .friday, .saturday]
                     ),
                     Tracker(
-                        id: FakeUUIDs.uuid5,
+                        id: FakeUUIDs.uuid6,
                         name: "Кардио",
                         color: .ypSelection16,
                         emoji: "🫀",
