@@ -7,8 +7,12 @@
 
 import UIKit
 
+fileprivate enum FilterOperation {
+    case search
+    case byWeekday
+}
+
 final class TrackersViewController: UIViewController {
-    
     private var categories: [TrackerCategory] = FakeTrackersService.getTrackers()
     private var visibleCategories: [TrackerCategory] = [] {
         didSet {
@@ -17,6 +21,7 @@ final class TrackersViewController: UIViewController {
         }
     }
     private var completedTrackers: [TrackerRecord] = []
+    private var lastFilterOperation: FilterOperation = .byWeekday
     private var currentDate = Date()
     private var currentWeekDay: WeekDay {
         WeekDay(numberFromSunday: currentDate.weekday)!
@@ -64,8 +69,16 @@ final class TrackersViewController: UIViewController {
         return button
     }()
     
-    private lazy var noTrackersView: NoTrakersView = {
-        let view = NoTrakersView()
+    private lazy var noTrackersView: EmptyView = {
+        let view = EmptyView()
+        view.setup(image: .noTrackers, text: "Что будем отслеживать?")
+        view.hide()
+        return view
+    }()
+    
+    private lazy var notFoundTrackersView: EmptyView = {
+        let view = EmptyView()
+        view.setup(image: .notFound, text: "Ничего не найдено")
         view.hide()
         return view
     }()
@@ -151,15 +164,24 @@ private extension TrackersViewController {
     
     func showNeededViews() {
         if isTrackersArrayEmpty {
-            noTrackersView.show()
+            switch lastFilterOperation {
+            case .byWeekday:
+                noTrackersView.show()
+                notFoundTrackersView.hide()
+            case .search:
+                noTrackersView.hide()
+                notFoundTrackersView.show()
+            }
             filtersButton.hide()
         } else {
             noTrackersView.hide()
+            notFoundTrackersView.hide()
             filtersButton.show()
         }
     }
     
     func updateVisibleCategoriesByDate() {
+        lastFilterOperation = .byWeekday
         visibleCategories = categories.filter { category in
             for tracker in category.trackers {
                 if tracker.schedule.contains(currentWeekDay) { return true }
@@ -173,6 +195,7 @@ private extension TrackersViewController {
     }
     
     func updateVisibleCategoriesBySearch(text: String) {
+        lastFilterOperation = .search
         visibleCategories = visibleCategories.map { category in
             let foundTrackers = category.trackers.filter { $0.name.lowercased().contains(text.lowercased()) }
             return TrackerCategory(name: category.name, trackers: foundTrackers)
@@ -186,12 +209,14 @@ private extension TrackersViewController {
         view.addSubview(collectionView)
         view.addSubview(filtersButton)
         view.addSubview(noTrackersView)
+        view.addSubview(notFoundTrackersView)
         
         // MARK: - Constraints
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         filtersButton.translatesAutoresizingMaskIntoConstraints = false
         noTrackersView.translatesAutoresizingMaskIntoConstraints = false
+        notFoundTrackersView.translatesAutoresizingMaskIntoConstraints = false
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -212,6 +237,9 @@ private extension TrackersViewController {
             
             noTrackersView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
             noTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+            
+            notFoundTrackersView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            notFoundTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
         ])
         
         // MARK: - Views Configuring

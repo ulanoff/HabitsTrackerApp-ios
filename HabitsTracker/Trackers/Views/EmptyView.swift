@@ -7,16 +7,15 @@
 
 import UIKit
 
-final class NoTrakersView: UIStackView {
+final class EmptyView: UIStackView {
     private let imageView = {
-        let imageView = UIImageView(image: .noTrackers)
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private let label: UILabel = {
         let label = UILabel()
-        label.text = "Что будем отслеживать?"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12, weight: .medium)
         return label
@@ -30,9 +29,14 @@ final class NoTrakersView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setup(image: UIImage, text: String) {
+        imageView.image = image
+        label.text = text
+    }
 }
 
-private extension NoTrakersView {
+private extension EmptyView {
     func configure() {
         addArrangedSubview(imageView)
         addArrangedSubview(label)
