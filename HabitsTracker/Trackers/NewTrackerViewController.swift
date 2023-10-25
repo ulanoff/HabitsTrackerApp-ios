@@ -317,7 +317,15 @@ extension NewTrackerViewController: UITextFieldDelegate {
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        trackerSettings.name = updatedText
+        if updatedText.isEmpty || updatedText.isBlank {
+            isValidationPassed = false
+            updateCreateButtonState()
+            return true
+        } else {
+            isValidationPassed = true
+        }
+        
+        trackerSettings.name = updatedText.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if updatedText.count > maxLength {
             showTextFieldMessage(text: "Ограничение 38 символов")

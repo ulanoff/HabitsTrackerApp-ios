@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		552C70122AE6A2A900BB68A9 /* UITextField+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */; };
+		552CE9C82AE96304005E3602 /* String+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552CE9C72AE96304005E3602 /* String+ext.swift */; };
 		554BBBF22AD9838B00BF1DD4 /* NoTrakersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF12AD9838B00BF1DD4 /* NoTrakersView.swift */; };
 		554BBBF62AD9900100BF1DD4 /* UIView+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */; };
 		554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF82AD990C900BF1DD4 /* Tracker.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+ext.swift"; sourceTree = "<group>"; };
+		552CE9C72AE96304005E3602 /* String+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ext.swift"; sourceTree = "<group>"; };
 		554BBBF12AD9838B00BF1DD4 /* NoTrakersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTrakersView.swift; sourceTree = "<group>"; };
 		554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ext.swift"; sourceTree = "<group>"; };
 		554BBBF82AD990C900BF1DD4 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */,
 				5571F3172AE51C4A00E514C2 /* UIViewController+ext.swift */,
 				552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */,
+				552CE9C72AE96304005E3602 /* String+ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				55C465BA2AD86B8900D75E2E /* SceneDelegate.swift in Sources */,
 				554BBC022AD9C68100BF1DD4 /* UIDate+ext.swift in Sources */,
 				55D2711C2AE409A500D4418A /* NewTrackerViewController.swift in Sources */,
+				552CE9C82AE96304005E3602 /* String+ext.swift in Sources */,
 				5571F3142AE50E5A00E514C2 /* TrackerSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
