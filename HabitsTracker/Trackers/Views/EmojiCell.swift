@@ -34,7 +34,7 @@ final class EmojiCell: UICollectionViewCell {
     }
     
     func selected() {
-        emojiLabel.backgroundColor = .ypEmojiBackground
+        emojiLabel.backgroundColor = .ypSelectedEmojiBackground
     }
     
     func deselected() {
