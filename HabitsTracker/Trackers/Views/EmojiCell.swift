@@ -8,6 +8,7 @@
 import UIKit
 
 final class EmojiCell: UICollectionViewCell {
+    // MARK: - UI Elements
     private lazy var emojiLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
@@ -17,16 +18,18 @@ final class EmojiCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(emoji: String) {
+    // MARK: - Public Methods
+    func configure(emoji: String) {
         emojiLabel.text = emoji
     }
     
@@ -39,9 +42,13 @@ final class EmojiCell: UICollectionViewCell {
     }
 }
 
+// MARK: - Private Methods
 private extension EmojiCell {
-    func configure() {
+    // MARK: - Setup UI
+    func setupUI() {
+        // MARK: - Subviews
         addSubview(emojiLabel)
+        // MARK: - Constraints
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             emojiLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -49,5 +56,6 @@ private extension EmojiCell {
             emojiLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             emojiLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
+        // MARK: - Views Configuring
     }
 }

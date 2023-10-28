@@ -7,7 +7,13 @@
 
 import UIKit
 
-fileprivate struct Constants {
+// MARK: - Constants
+fileprivate struct TableSettings {
+    static let settingsTableRowHeight: CGFloat = 75
+    static let settingsTableRowLabels = ["Категория", "Расписание"]
+}
+
+fileprivate struct CollectionSettings {
     static let settingsCollectionViewInteritemSpacing: CGFloat = 5
     static let settingsCollectionViewLineSpacing: CGFloat = 0
     static let settingsCollectionViewItemsPerLineEmojiSection = 6
@@ -19,44 +25,30 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 }
 
 final class NewTrackerViewController: UIViewController {
+    // MARK: - Properties
     weak var delegate: NewTrackerViewControllerDelegate?
-    private var trackerSettings: TrackerSettings {
-        didSet {
-            updateCreateButtonState()
-        }
-    }
-    private let settingsEmojis = [
-        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
-    ]
-    private let settingsColors: [UIColor] = [
-        .ypSelection1, .ypSelection2, .ypSelection3,
-        .ypSelection4, .ypSelection5, .ypSelection6,
-        .ypSelection7, .ypSelection8, .ypSelection9,
-        .ypSelection10, .ypSelection11, .ypSelection12,
-        .ypSelection13, .ypSelection14, .ypSelection15,
-        .ypSelection16, .ypSelection17, .ypSelection18,
-    ]
+    private let settingsEmojis = AppConstants.trackerEmojis
+    private let settingsColors: [UIColor] = AppConstants.trackerColors
     private var selectedEmojiIndexPath: IndexPath?
     private var selectedColorIndexPath: IndexPath?
-    private let settingsTableRowLabels = ["Категория", "Расписание"]
-    private let settingsTableRowHeight: CGFloat = 75
-    private var settingsTableHeight: CGFloat {
-        get {
-            trackerSettings.trackerType == .habit ?
-            settingsTableRowHeight * 2 :
-            settingsTableRowHeight
-        }
+    private var textFieldMessageHeightConstraint: NSLayoutConstraint!
+    
+    private var trackerSettings: TrackerSettings {
+        didSet { updateCreateButtonState() }
     }
+    
+    private var isValidationPassed = true {
+        didSet { updateCreateButtonState() }
+    }
+    
     private var settingsTableNumberOfRows: Int {
         trackerSettings.trackerType == .habit ? 2 : 1
     }
-    private var textFieldMessageHeightConstraint: NSLayoutConstraint!
-    private var isValidationPassed = true {
-        didSet {
-            updateCreateButtonState()
-        }
+    
+    private var settingsTableHeight: CGFloat {
+        trackerSettings.trackerType == .habit ?
+        TableSettings.settingsTableRowHeight * 2 :
+        TableSettings.settingsTableRowHeight
     }
     
     // MARK: - UI Elements
@@ -97,7 +89,7 @@ final class NewTrackerViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = settingsTableRowHeight
+        tableView.rowHeight = TableSettings.settingsTableRowHeight
         tableView.layer.masksToBounds = true
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
@@ -106,15 +98,16 @@ final class NewTrackerViewController: UIViewController {
     }()
     
     private lazy var settingsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: UICollectionViewFlowLayout())
+                                              collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.reuseIdentifier)
         collectionView.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.reuseIdentifier)
-        collectionView.register(SettingsSectionHeaderView.self,
+        collectionView.register(SettingsCollectionHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: SettingsSectionHeaderView.reuseIdentifier)
+                                withReuseIdentifier: SettingsCollectionHeaderView.reuseIdentifier)
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = true
         return collectionView
@@ -181,8 +174,6 @@ final class NewTrackerViewController: UIViewController {
     @objc func hideKeyboard() {
         self.view.endEditing(true)
     }
-    
-    // MARK: - Public Methods
 }
 
 // MARK: - Private Methods
@@ -205,7 +196,7 @@ private extension NewTrackerViewController {
             assertionFailure("Failed to cast reusable cell to EmojiCell")
             return EmojiCell()
         }
-        cell.setup(emoji: settingsEmojis[indexPath.item])
+        cell.configure(emoji: settingsEmojis[indexPath.item])
         return cell
     }
     
@@ -281,7 +272,7 @@ private extension NewTrackerViewController {
     
     // MARK: - Setup UI
     func setupUI() {
-        // MARK: - Add Subviews
+        // MARK: - Subviews
         scrollView.addSubview(scrollContentView)
         scrollContentView.addSubview(trackerNameTextField)
         scrollContentView.addSubview(textFieldMessageLabel)
@@ -362,7 +353,7 @@ extension NewTrackerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = settingsTableRowLabels[indexPath.row]
+        cell.textLabel?.text = TableSettings.settingsTableRowLabels[indexPath.row]
         cell.detailTextLabel?.textColor = .gray
         cell.detailTextLabel?.font = .systemFont(ofSize: 17)
         cell.accessoryType = .disclosureIndicator
@@ -473,11 +464,11 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemsInLine = if indexPath.section == 0 {
-            Constants.settingsCollectionViewItemsPerLineEmojiSection
+            CollectionSettings.settingsCollectionViewItemsPerLineEmojiSection
         } else {
-            Constants.settingsCollectionViewItemsPerLineColorSection
+            CollectionSettings.settingsCollectionViewItemsPerLineColorSection
         }
-        let interitemSpacing = Constants.settingsCollectionViewInteritemSpacing
+        let interitemSpacing = CollectionSettings.settingsCollectionViewInteritemSpacing
         let spacing = CGFloat(itemsInLine) * interitemSpacing
         let availableSpace = collectionView.frame.width - spacing
         let width = availableSpace / CGFloat(itemsInLine)
@@ -486,11 +477,11 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        Constants.settingsCollectionViewInteritemSpacing
+        CollectionSettings.settingsCollectionViewInteritemSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        Constants.settingsCollectionViewLineSpacing
+        CollectionSettings.settingsCollectionViewLineSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -498,9 +489,9 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
             kind == UICollectionView.elementKindSectionHeader,
             let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: UICollectionView.elementKindSectionHeader,
-                withReuseIdentifier: SettingsSectionHeaderView.reuseIdentifier,
+                withReuseIdentifier: SettingsCollectionHeaderView.reuseIdentifier,
                 for: indexPath
-            ) as? SettingsSectionHeaderView
+            ) as? SettingsCollectionHeaderView
         else {
             return UICollectionReusableView()
         }
@@ -510,7 +501,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         } else {
             "Цвет"
         }
-        headerView.setup(text: headerText)
+        headerView.configure(withText: headerText)
         return headerView
     }
     

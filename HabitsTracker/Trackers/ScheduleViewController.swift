@@ -7,11 +7,16 @@
 
 import UIKit
 
+fileprivate struct TableSettings {
+    static let scheduleTableRowHeight: CGFloat = 75
+}
+
 protocol ScheduleViewControllerDelegate: AnyObject {
     func scheduleViewController(_ scheduleViewController: ScheduleViewController, didSelectWeekDays weekDays: [WeekDay])
 }
 
 final class ScheduleViewController: UIViewController {
+    // MARK: - Properties
     weak var delegate: ScheduleViewControllerDelegate?
     private let weekDaysStrings: [String] = [
         "Понедельник",
@@ -23,9 +28,8 @@ final class ScheduleViewController: UIViewController {
         "Воскресенье",
     ]
     private var selectedWeekDays: Set<WeekDay> = []
-    private let scheduleTableRowHeight: CGFloat = 75
     private var scheduleTableHeight: CGFloat {
-        scheduleTableRowHeight * CGFloat(weekDaysStrings.count)
+        TableSettings.scheduleTableRowHeight * CGFloat(weekDaysStrings.count)
     }
     
     
@@ -34,7 +38,7 @@ final class ScheduleViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = scheduleTableRowHeight
+        tableView.rowHeight = TableSettings.scheduleTableRowHeight
         tableView.layer.masksToBounds = true
         tableView.layer.cornerRadius = 16
         tableView.showsVerticalScrollIndicator = false
@@ -82,15 +86,13 @@ final class ScheduleViewController: UIViewController {
         navigationController?.popViewController(animated: true)
         delegate?.scheduleViewController(self, didSelectWeekDays: Array(selectedWeekDays))
     }
-    
-    // MARK: - Public Methods
 }
 
 // MARK: - Private Methods
 private extension ScheduleViewController {
     // MARK: - Setup UI
     func setupUI() {
-        // MARK: - Add Subviews
+        // MARK: - Subviews
         view.addSubview(scheduleTableView)
         view.addSubview(continueButton)
         

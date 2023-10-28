@@ -8,6 +8,7 @@
 import UIKit
 
 final class TrackersHeaderView: UICollectionReusableView {
+    // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 19, weight: .bold)
@@ -15,24 +16,27 @@ final class TrackersHeaderView: UICollectionReusableView {
         return label
     }()
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setTitle(_ title: String) {
-        titleLabel.text = title
+    // MARK: - Public Methods
+    func configure(withTitle title: String) {
     }
 }
 
+// MARK: - Private Methods
 private extension TrackersHeaderView {
-    func configure() {
+    func setupUI() {
+        // MARK: - Subviews
         addSubview(titleLabel)
-        
+        // MARK: - Constraints
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
@@ -40,5 +44,6 @@ private extension TrackersHeaderView {
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
         ])
+        // MARK: - Views Configuring
     }
 }

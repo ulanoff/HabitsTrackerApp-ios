@@ -8,6 +8,7 @@
 import UIKit
 
 final class EmptyView: UIStackView {
+    // MARK: - UI Elements
     private let imageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -21,25 +22,31 @@ final class EmptyView: UIStackView {
         return label
     }()
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupUI()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(image: UIImage, text: String) {
+    // MARK: - Public Methods
+    func configure(image: UIImage, text: String) {
         imageView.image = image
         label.text = text
     }
 }
 
+// MARK: - Private Methods
 private extension EmptyView {
-    func configure() {
+    func setupUI() {
+        // MARK: - Subviews
         addArrangedSubview(imageView)
         addArrangedSubview(label)
+        
+        // MARK: - Views Configuring
         axis = .vertical
         distribution = .equalSpacing
         alignment = .center

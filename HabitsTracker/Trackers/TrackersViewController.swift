@@ -13,6 +13,7 @@ fileprivate enum FilterOperation {
 }
 
 final class TrackersViewController: UIViewController {
+    // MARK: - Properties
     private var categories: [TrackerCategory] = FakeTrackersService.getTrackers()
     private var visibleCategories: [TrackerCategory] = [] {
         didSet {
@@ -71,14 +72,14 @@ final class TrackersViewController: UIViewController {
     
     private lazy var noTrackersView: EmptyView = {
         let view = EmptyView()
-        view.setup(image: .noTrackers, text: "Что будем отслеживать?")
+        view.configure(image: .noTrackers, text: "Что будем отслеживать?")
         view.hide()
         return view
     }()
     
     private lazy var notFoundTrackersView: EmptyView = {
         let view = EmptyView()
-        view.setup(image: .notFound, text: "Ничего не найдено")
+        view.configure(image: .notFound, text: "Ничего не найдено")
         view.hide()
         return view
     }()
@@ -117,11 +118,10 @@ final class TrackersViewController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: - Methods
 }
 
+// MARK: - Private Methods
 private extension TrackersViewController {
-    // MARK: - Private Methods
     func createTracker(settings: TrackerSettings) {
         guard
             let id = settings.id,
@@ -202,7 +202,7 @@ private extension TrackersViewController {
         }.filter { !$0.trackers.isEmpty }
     }
     
-    // MARK: - UI Configuring
+    // MARK: - Setup UI
     func setupUI() {
         // MARK: - Subviews
         view.addSubview(searchTextField)
@@ -334,7 +334,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             trackerRecord.date == currentDate &&
             trackerRecord.trackerId == tracker.id
         }
-        cell.configure(with: tracker,
+        cell.configure(withTracker: tracker,
                        isDoneToday: isDoneToday,
                        daysStreak: daysStreak,
                        isDoneButtonAvailable: isDoneButtonAvailable,
@@ -349,7 +349,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             return UICollectionReusableView()
         }
-        view.setTitle(visibleCategories[indexPath.section].name)
+        view.configure(withTitle: visibleCategories[indexPath.section].name)
         return view
     }
 }

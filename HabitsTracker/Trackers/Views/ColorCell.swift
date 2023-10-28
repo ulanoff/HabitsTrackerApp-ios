@@ -8,10 +8,12 @@
 import UIKit
 
 final class ColorCell: UICollectionViewCell {
+    // MARK: - Properties
     private var color: UIColor = .clear
     private var outlineColor: UIColor = .clear
     private let outlineWidth: CGFloat = 3
     
+    // MARK: - UI Elements
     private lazy var colorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -26,15 +28,17 @@ final class ColorCell: UICollectionViewCell {
         return view
     }()
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
     func setup(color: UIColor) {
         self.color = color
         self.outlineColor = color.withAlphaComponent(0.25)
@@ -50,11 +54,15 @@ final class ColorCell: UICollectionViewCell {
     }
 }
 
+// MARK: - Private Methods
 private extension ColorCell {
-    func configure() {
+    // MARK: - Setup UI
+    func setupUI() {
+        // MARK: - Subviews
         addSubview(outlineView)
         outlineView.addSubview(colorView)
         
+        // MARK: - Constraints
         colorView.translatesAutoresizingMaskIntoConstraints = false
         outlineView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -70,5 +78,6 @@ private extension ColorCell {
             colorView.bottomAnchor.constraint(equalTo: outlineView.bottomAnchor, constant: -padding),
             colorView.trailingAnchor.constraint(equalTo: outlineView.trailingAnchor, constant: -padding),
         ])
+        // MARK: - Views Configuring
     }
 }
