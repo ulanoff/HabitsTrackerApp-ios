@@ -23,7 +23,7 @@ final class TrackersViewController: UIViewController {
     }
     private var completedTrackers: [TrackerRecord] = []
     private var lastFilterOperation: FilterOperation = .byWeekday
-    private var currentDate = Date()
+    private var currentDate = Date().onlyDate
     private var currentWeekDay: WeekDay {
         WeekDay(numberFromSunday: currentDate.weekday)!
     }
@@ -280,7 +280,7 @@ private extension TrackersViewController {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.date = Date()
+        datePicker.date = Date().onlyDate
         datePicker.addTarget(self, action: #selector(didChangeDateInDatePicker(_:)), for: .valueChanged)
         let rightBarButton = UIBarButtonItem(customView: datePicker)
         return rightBarButton
