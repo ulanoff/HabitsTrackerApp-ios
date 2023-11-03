@@ -220,11 +220,11 @@ private extension NewTrackerViewController {
         
         if isSelect {
             emojiCell.selected()
+            trackerSettings.emoji = settingsEmojis[indexPath.item]
         } else {
             emojiCell.deselected()
+            trackerSettings.emoji = nil
         }
-        
-        trackerSettings.emoji = settingsEmojis[indexPath.item]
     }
     
     func selectOrDeselectColorCell(cell: UICollectionViewCell, indexPath: IndexPath, isSelect: Bool) {
@@ -236,11 +236,11 @@ private extension NewTrackerViewController {
         
         if isSelect {
             colorCell.selected()
+            trackerSettings.color = settingsColors[indexPath.item]
         } else {
             colorCell.deselected()
+            trackerSettings.color = nil
         }
-        
-        trackerSettings.color = settingsColors[indexPath.item]
     }
     
     func updateCreateButtonState() {
@@ -419,7 +419,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard 
+        guard
             let cell = collectionView.cellForItem(at: indexPath)
         else {
             return
@@ -428,6 +428,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         switch indexPath.section {
         case 0:
             if let selectedEmojiIndexPath {
+                collectionView.deselectItem(at: selectedEmojiIndexPath, animated: false)
                 collectionView.delegate?.collectionView?(collectionView, didDeselectItemAt: selectedEmojiIndexPath)
                 self.selectedEmojiIndexPath = indexPath
             }
@@ -435,6 +436,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
             selectOrDeselectEmojiCell(cell: cell, indexPath: indexPath, isSelect: true)
         case 1:
             if let selectedColorIndexPath {
+                collectionView.deselectItem(at: selectedColorIndexPath, animated: false)
                 collectionView.delegate?.collectionView?(collectionView, didDeselectItemAt: selectedColorIndexPath)
                 self.selectedColorIndexPath = indexPath
             }
