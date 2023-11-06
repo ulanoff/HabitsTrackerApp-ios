@@ -98,6 +98,13 @@ final class TrackerCategoryStore: NSObject {
         return categoryCD
     }
     
+    func updateCategoryInfo(_ category: TrackerCategory, to newCategory: TrackerCategory) {
+        if let category = findCategory(category) {
+            category.name = newCategory.name
+            saveContext()
+        }
+    }
+    
     func deleteCategory(_ category: TrackerCategory) {
         if let categoryCD = findCategory(category) {
             context.delete(categoryCD)

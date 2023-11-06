@@ -83,7 +83,7 @@ final class CategoriesViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapCreateButton() {
-        let controller = NewCategoryViewController()
+        let controller = CategoryNameViewController(type: .creating, categoryName: nil)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -188,12 +188,48 @@ extension CategoriesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.reloadRows(at: [indexPath], with: .none)
     }
+    
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint) -> UIContextMenuConfiguration? {
+            let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
+                guard let self else { return UIMenu() }
+                return UIMenu(children: [
+                    UIAction(title: "Редактировать") { [weak self] action in
+                        guard let self else { return }
+                        let categoryName = self.categories[indexPath.row]
+                        let controller = CategoryNameViewController(type: .editing, categoryName: categoryName)
+                        controller.delegate = self
+                        navigationController?.pushViewController(controller, animated: true)
+                    },
+                    UIAction(title: "Удалить", attributes: .destructive) { action in
+                        let categoryName = self.categories[indexPath.row]
+                        let category = TrackerCategory(name: categoryName, trackers: [])
+                        self.trackerCategoryStore.deleteCategory(category)
+                        self.getAllCategories()
+                        self.tableView.reloadData()
+                    },
+                ])
+            })
+            return configuration
+    }
 }
 
-// MARK: - NewTrackerViewControllerDelegate
-extension CategoriesViewController: NewCategoryViewControllerDelegate {
+// MARK: - NewCategoryViewControllerDelegate
+extension CategoriesViewController: CategoryNameViewControllerDelegate {
     func newCategoryViewController(
-        _ viewController: NewCategoryViewController,
+        _ viewController: CategoryNameViewController, 
+        didEditedCategory trackerCategory: TrackerCategory,
+        to newTrackerCategory: TrackerCategory
+    ) {
+        trackerCategoryStore.updateCategoryInfo(trackerCategory, to: newTrackerCategory)
+        getAllCategories()
+        tableView.reloadData()
+    }
+    
+    func newCategoryViewController(
+        _ viewController: CategoryNameViewController,
         didSetupNewCategory trackerCategory: TrackerCategory
     ) {
         _ = trackerCategoryStore.createCategory(trackerCategory)
