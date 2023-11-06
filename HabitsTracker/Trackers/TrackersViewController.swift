@@ -95,8 +95,8 @@ final class TrackersViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        try! getAllCategories()
-        try! getAllRecords()
+        try? getAllCategories()
+        try? getAllRecords()
         updateVisibleCategoriesByDate()
         setupUI()
         setupNavigationBar()
