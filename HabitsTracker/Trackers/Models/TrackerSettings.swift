@@ -24,7 +24,7 @@ struct TrackerSettings {
     init(trackerType: TrackerType) {
         self.trackerType = trackerType
         if trackerType == .irregularEvent {
-            schedule = WeekDay.everyday
+            schedule = WeekDay.allCases
         }
     }
     
