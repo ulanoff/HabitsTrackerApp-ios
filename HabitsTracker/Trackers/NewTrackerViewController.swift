@@ -16,8 +16,7 @@ fileprivate struct TableSettings {
 fileprivate struct CollectionSettings {
     static let settingsCollectionViewInteritemSpacing: CGFloat = 5
     static let settingsCollectionViewLineSpacing: CGFloat = 0
-    static let settingsCollectionViewItemsPerLineEmojiSection = 6
-    static let settingsCollectionViewItemsPerLineColorSection = 6
+    static let settingsCollectionViewItemsPerLine = 6
 }
 
 protocol NewTrackerViewControllerDelegate: AnyObject {
@@ -32,6 +31,7 @@ final class NewTrackerViewController: UIViewController {
     private var selectedEmojiIndexPath: IndexPath?
     private var selectedColorIndexPath: IndexPath?
     private var textFieldMessageHeightConstraint: NSLayoutConstraint!
+    private var settingsCollectionViewHeightConstraint: NSLayoutConstraint!
     
     private var trackerSettings: TrackerSettings {
         didSet { updateCreateButtonState() }
@@ -49,6 +49,30 @@ final class NewTrackerViewController: UIViewController {
         trackerSettings.trackerType == .habit ?
         TableSettings.settingsTableRowHeight * 2 :
         TableSettings.settingsTableRowHeight
+    }
+    
+    private var settingsCollectionViewItemSize: CGSize {
+        let itemsInLine = CollectionSettings.settingsCollectionViewItemsPerLine
+        let interitemSpacing = CollectionSettings.settingsCollectionViewInteritemSpacing
+        let spacing = CGFloat(itemsInLine) * interitemSpacing
+        let availableSpace = settingsCollectionView.frame.width - spacing
+        let width = availableSpace / CGFloat(itemsInLine)
+        let size = CGSize(width: width, height: width)
+        return size
+    }
+    
+    private var settingsCollectionViewHeight: CGFloat {
+        let itemsInLine = CollectionSettings.settingsCollectionViewItemsPerLine
+        let linesCount = (AppConstants.trackerEmojis.count + AppConstants.trackerColors.count) / itemsInLine
+        let lineSpacing = CollectionSettings.settingsCollectionViewLineSpacing
+        let spacing = lineSpacing * CGFloat(linesCount)
+        var height = CGFloat(linesCount) * settingsCollectionViewItemSize.height + spacing
+        height += 130
+        return height
+    }
+    
+    private var isValidCollectionHeight: Bool {
+        settingsCollectionViewHeight > 150
     }
     
     // MARK: - UI Elements
@@ -155,6 +179,15 @@ final class NewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(settingsCollectionViewHeight)
+        if isValidCollectionHeight {
+            settingsCollectionViewHeightConstraint.constant = settingsCollectionViewHeight
+            view.layoutIfNeeded()
+        }
     }
     
     // MARK: - Event Handlers
@@ -292,6 +325,7 @@ private extension NewTrackerViewController {
         
         let safeArea = view.safeAreaLayoutGuide
         textFieldMessageHeightConstraint = textFieldMessageLabel.heightAnchor.constraint(equalToConstant: 0)
+        settingsCollectionViewHeightConstraint = settingsCollectionView.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
@@ -325,12 +359,11 @@ private extension NewTrackerViewController {
             settingsTableView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor),
             settingsTableView.heightAnchor.constraint(equalToConstant: settingsTableHeight),
             
-            // TODO: - Add dynamic height calculating
             settingsCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 32),
             settingsCollectionView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor),
             settingsCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor),
             settingsCollectionView.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor),
-            settingsCollectionView.heightAnchor.constraint(equalToConstant: 465)
+            settingsCollectionViewHeightConstraint
         ])
         
         // MARK: - Views Configuring
@@ -475,17 +508,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemsInLine = if indexPath.section == 0 {
-            CollectionSettings.settingsCollectionViewItemsPerLineEmojiSection
-        } else {
-            CollectionSettings.settingsCollectionViewItemsPerLineColorSection
-        }
-        let interitemSpacing = CollectionSettings.settingsCollectionViewInteritemSpacing
-        let spacing = CGFloat(itemsInLine) * interitemSpacing
-        let availableSpace = collectionView.frame.width - spacing
-        let width = availableSpace / CGFloat(itemsInLine)
-        let size = CGSize(width: width, height: width)
-        return size
+        settingsCollectionViewItemSize
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
