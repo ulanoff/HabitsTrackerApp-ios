@@ -26,6 +26,8 @@
 		5571F31A2AE51F6000E514C2 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */; };
 		557DA2012AD9275F00D7CD04 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557DA2002AD9275F00D7CD04 /* TrackerCell.swift */; };
 		557EEAA32AF8FFB4008CEFCD /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EEAA22AF8FFB4008CEFCD /* TrackerRecordStore.swift */; };
+		557EEAA52AF92106008CEFCD /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */; };
+		557EEAA72AF9318D008CEFCD /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EEAA62AF9318D008CEFCD /* NewCategoryViewController.swift */; };
 		5581633F2AEABD9D00A025F3 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581633E2AEABD9D00A025F3 /* EmojiCell.swift */; };
 		55B00FA02AF76C3900213065 /* HabitsTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55B00F9E2AF76C3900213065 /* HabitsTracker.xcdatamodeld */; };
 		55B00FA72AF7765800213065 /* TrackerCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B00FA62AF7765800213065 /* TrackerCD.swift */; };
@@ -68,6 +70,8 @@
 		5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		557DA2002AD9275F00D7CD04 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		557EEAA22AF8FFB4008CEFCD /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		557EEAA62AF9318D008CEFCD /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		5581633E2AEABD9D00A025F3 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		55B00F9F2AF76C3900213065 /* HabitsTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitsTracker.xcdatamodel; sourceTree = "<group>"; };
 		55B00FA62AF7765800213065 /* TrackerCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCD.swift; sourceTree = "<group>"; };
@@ -180,8 +184,10 @@
 				55F20BA42AE2FAA000262572 /* SelectTypeViewController.swift */,
 				55C465D12AD8766000D75E2E /* TrackersViewController.swift */,
 				5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */,
+				557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */,
 				554BBBF72AD990B400BF1DD4 /* Models */,
 				554BBBF02AD9836A00BF1DD4 /* Views */,
+				557EEAA62AF9318D008CEFCD /* NewCategoryViewController.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -362,11 +368,13 @@
 				55F20BA82AE2FE0D00262572 /* Button.swift in Sources */,
 				55B00FBB2AF77AAF00213065 /* TrackerStore.swift in Sources */,
 				554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */,
+				557EEAA52AF92106008CEFCD /* CategoriesViewController.swift in Sources */,
 				55B00FAF2AF7784C00213065 /* TrackerCategoryCD.swift in Sources */,
 				55C465B82AD86B8900D75E2E /* AppDelegate.swift in Sources */,
 				554BBBF22AD9838B00BF1DD4 /* EmptyView.swift in Sources */,
 				55C912A92AED346100955B10 /* SettingsCollectionHeaderView.swift in Sources */,
 				55549E5E2AE415A000E198BF /* UITableViewCell+ext.swift in Sources */,
+				557EEAA72AF9318D008CEFCD /* NewCategoryViewController.swift in Sources */,
 				55549E602AE4385D00E198BF /* NSLayoutConstraint.swift in Sources */,
 				55F20BA52AE2FAA000262572 /* SelectTypeViewController.swift in Sources */,
 				55C465BA2AD86B8900D75E2E /* SceneDelegate.swift in Sources */,

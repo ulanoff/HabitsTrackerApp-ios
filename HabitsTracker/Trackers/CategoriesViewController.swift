@@ -1,0 +1,203 @@
+//
+//  CategoryViewController.swift
+//  HabitsTracker
+//
+//  Created by Andrey Ulanov on 06.11.2023.
+//
+
+import UIKit
+
+protocol CategoriesViewControllerDelegate: AnyObject {
+    func categoriesViewController(
+        _ viewController: CategoriesViewController,
+        didSelectCategory name: String
+    )
+}
+
+fileprivate struct TableSettings {
+    static let tableRowHeight: CGFloat = 75
+}
+
+final class CategoriesViewController: UIViewController {
+    // MARK: - Properties
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private var categories: [String] = [] {
+        didSet {
+            showEmptyViewIfNeeded()
+        }
+    }
+    private var selectedIndexPath: IndexPath?
+    
+    weak var delegate: CategoriesViewControllerDelegate?
+    
+    // MARK: - UI Elements
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = TableSettings.tableRowHeight
+        tableView.showsVerticalScrollIndicator = false
+        tableView.allowsSelection = true
+        tableView.allowsMultipleSelection = false
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.tableHeaderView = UIView()
+        return tableView
+    }()
+    
+    private lazy var createButton: Button = {
+        let button = Button()
+        button.setTitle("Добавить категорию", for: .normal)
+        button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var noCategoriesView: EmptyView = {
+        let view = EmptyView()
+        view.configure(image: .noTrackers, text: "Привычки и события можно \nобъединить по смыслу")
+        view.hide()
+        return view
+    }()
+    
+    // MARK: - Lifecycle
+    init(selectedCategory: String?) {
+        super.init(nibName: nil, bundle: nil)
+        getAllCategories()
+        if 
+            let selectedCategory,
+            let row = categories.firstIndex(of: selectedCategory)
+        {
+            let indexPath = IndexPath(row: row, section: 0)
+            selectedIndexPath = indexPath
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        showEmptyViewIfNeeded()
+    }
+    
+    // MARK: - Event Handlers
+    @objc private func didTapCreateButton() {
+        let controller = NewCategoryViewController()
+        controller.delegate = self
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    // MARK: - Public Methods
+}
+
+// MARK: - Private Methods
+private extension CategoriesViewController {
+    func getAllCategories() {
+        categories = trackerCategoryStore.getAllCategoriesNames()
+    }
+    
+    func showEmptyViewIfNeeded() {
+        if categories.isEmpty {
+            noCategoriesView.show()
+        } else {
+            noCategoriesView.hide()
+        }
+    }
+    
+    // MARK: - Setup UI
+    func setupUI() {
+        // MARK: - Subviews
+        view.addSubview(tableView)
+        view.addSubview(createButton)
+        view.addSubview(noCategoriesView)
+        
+        // MARK: - Constraints
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        createButton.translatesAutoresizingMaskIntoConstraints = false
+        noCategoriesView.translatesAutoresizingMaskIntoConstraints = false
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            
+            createButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24),
+            createButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
+            createButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
+            createButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
+            createButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            noCategoriesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noCategoriesView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
+        // MARK: - Views Configuring
+        navigationItem.setHidesBackButton(true, animated: false)
+        view.backgroundColor = .ypWhite
+        title = "Категория"
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension CategoriesViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        categories.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        cell.textLabel?.text = categories[indexPath.row]
+        cell.accessoryType = indexPath == selectedIndexPath ? .checkmark : .none
+        cell.backgroundColor = .ypBackground
+        cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
+        if indexPath.row == 0 && tableView.numberOfRows(inSection: 0) == 1 {
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 16
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.frame.size.width)
+        } else if indexPath.row == 0 {
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.frame.size.width)
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        }
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension CategoriesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let oldSelectedIndexPath = selectedIndexPath {
+            self.selectedIndexPath = indexPath
+            tableView.delegate?.tableView?(tableView, didDeselectRowAt: oldSelectedIndexPath)
+        }
+        self.selectedIndexPath = indexPath
+        tableView.reloadRows(at: [indexPath], with: .none)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self else { return }
+            self.navigationController?.popViewController(animated: true)
+            delegate?.categoriesViewController(self, didSelectCategory: categories[selectedIndexPath?.row ?? 0])
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
+}
+
+// MARK: - NewTrackerViewControllerDelegate
+extension CategoriesViewController: NewCategoryViewControllerDelegate {
+    func newCategoryViewController(
+        _ viewController: NewCategoryViewController,
+        didSetupNewCategory trackerCategory: TrackerCategory
+    ) {
+        _ = trackerCategoryStore.createCategory(trackerCategory)
+        categories.append(trackerCategory.name)
+        tableView.reloadData()
+    }
+}

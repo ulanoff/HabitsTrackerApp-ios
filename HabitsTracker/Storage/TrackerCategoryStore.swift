@@ -59,6 +59,15 @@ final class TrackerCategoryStore: NSObject {
         }
     }
     
+    func getAllCategoriesNames() -> [String] {
+        let request = TrackerCategoryCD.fetchRequest()
+        if let result = try? context.fetch(request) {
+            return result.map { $0.name ?? "" }
+        } else {
+            return []
+        }
+    }
+    
     func saveContext() {
         CoreDataManager.shared.saveContext()
     }

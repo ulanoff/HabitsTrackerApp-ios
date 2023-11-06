@@ -150,19 +150,19 @@ private extension TrackersViewController {
     
     func createTracker(settings: TrackerSettings) {
         guard
-            let id = settings.id,
             let name = settings.name,
             let color = settings.color,
             let emoji = settings.emoji,
             let schedule = settings.schedule,
-            let settingsCategory = settings.category
+            let settingsCategoryName = settings.categoryName
         else {
             assertionFailure("Failed to create Tracker")
             return
         }
                 
-        let tracker = Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule)
-        _ = trackerStore.createTracker(tracker, category: settingsCategory)
+        let tracker = Tracker(id: settings.id, name: name, color: color, emoji: emoji, schedule: schedule)
+        let category = TrackerCategory(name: settingsCategoryName, trackers: [])
+        _ = trackerStore.createTracker(tracker, category: category)
     }
     
     func showCancelButton() {

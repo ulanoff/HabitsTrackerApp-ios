@@ -155,11 +155,6 @@ final class NewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
-//        let category = TrackerCategory(name: "Важное", trackers: [])
-        let category = TrackerCategory(name: "Категория", trackers: [])
-        trackerSettings.category = category
-        trackerSettings.id = UUID()
     }
     
     // MARK: - Event Handlers
@@ -362,6 +357,12 @@ extension NewTrackerViewController: UITableViewDataSource {
         cell.backgroundColor = .ypBackground
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         
+        if indexPath.row == 0,
+           let categoryName = trackerSettings.categoryName
+        {
+            cell.detailTextLabel?.text = categoryName
+        }
+        
         if indexPath.row == 1,
            let _ = trackerSettings.schedule,
            let scheduleDescription = makeScheduleDescription()
@@ -382,7 +383,9 @@ extension NewTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            break
+            let controller = CategoriesViewController(selectedCategory: trackerSettings.categoryName)
+            controller.delegate = self
+            navigationController?.pushViewController(controller, animated: true)
         case 1:
             let controller = ScheduleViewController(currentSchedule: trackerSettings.schedule ?? [])
             controller.delegate = self
@@ -533,6 +536,14 @@ extension NewTrackerViewController: ScheduleViewControllerDelegate {
         trackerSettings.schedule = weekDays
         let scheduleIndexPath = IndexPath(row: 1, section: 0)
         settingsTableView.reloadRows(at: [scheduleIndexPath], with: .automatic)
+    }
+}
+
+extension NewTrackerViewController: CategoriesViewControllerDelegate {
+    func categoriesViewController(_ viewController: CategoriesViewController, didSelectCategory name: String) {
+        trackerSettings.categoryName = name
+        let categoryIndexPath = IndexPath(row: 0, section: 0)
+        settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
     }
 }
 

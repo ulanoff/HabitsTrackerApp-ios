@@ -19,6 +19,7 @@ final class EmptyView: UIStackView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.numberOfLines = 0
         return label
     }()
     

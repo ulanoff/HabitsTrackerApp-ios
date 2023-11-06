@@ -14,12 +14,12 @@ enum TrackerType {
 
 struct TrackerSettings {
     var trackerType: TrackerType
-    var id: UUID?
+    var id = UUID()
     var name: String?
     var color: UIColor?
     var emoji: String?
     var schedule: [WeekDay]?
-    var category: TrackerCategory?
+    var categoryName: String?
     
     init(trackerType: TrackerType) {
         self.trackerType = trackerType
@@ -29,13 +29,12 @@ struct TrackerSettings {
     }
     
     var isReady: Bool {
-        if id != nil &&
-            name != nil &&
+        if name != nil &&
             color != nil &&
             emoji != nil &&
             schedule != nil &&
             schedule != [] &&
-            category != nil
+            categoryName != nil
         {
             return true
         } else {
