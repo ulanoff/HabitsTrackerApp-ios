@@ -14,7 +14,15 @@ fileprivate enum FilterOperation {
 
 final class TrackersViewController: UIViewController {
     // MARK: - Properties
-    private var categories: [TrackerCategory] = FakeTrackersService.getTrackers()
+    private lazy var trackerStore: TrackerStore = {
+        let store = TrackerStore()
+        store.delegate = self
+        return store
+    }()
+    private lazy var trackerCategoryStore = TrackerCategoryStore()
+    private lazy var trackerRecordStore = TrackerRecordStore()
+    
+    private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = [] {
         didSet {
             showNeededViews()
@@ -87,6 +95,8 @@ final class TrackersViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        try! getAllCategories()
+        try! getAllRecords()
         updateVisibleCategoriesByDate()
         setupUI()
         setupNavigationBar()
@@ -122,6 +132,22 @@ final class TrackersViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension TrackersViewController {
+    func getAllCategories() throws {
+        do {
+            categories = try trackerCategoryStore.getAllCategories()
+        } catch {
+            throw error
+        }
+    }
+    
+    func getAllRecords() throws {
+        do {
+            completedTrackers = try trackerRecordStore.allRecords()
+        } catch {
+            throw error
+        }
+    }
+    
     func createTracker(settings: TrackerSettings) {
         guard
             let id = settings.id,
@@ -136,24 +162,7 @@ private extension TrackersViewController {
         }
                 
         let tracker = Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule)
-        if categories.contains(settingsCategory) {
-            categories = categories.map {
-                if $0 == settingsCategory {
-                    var trackers = $0.trackers
-                    trackers.append(tracker)
-                    let category = TrackerCategory(name: $0.name, trackers: trackers)
-                    return category
-                } else {
-                    let category = TrackerCategory(name: $0.name, trackers: $0.trackers)
-                    return category
-                }
-            }
-        } else {
-            let category = TrackerCategory(name: settingsCategory.name, trackers: [tracker])
-            categories.append(category)
-        }
-        
-        updateVisibleCategoriesByDate()
+        _ = trackerStore.createTracker(tracker, category: settingsCategory)
     }
     
     func showCancelButton() {
@@ -395,15 +404,17 @@ extension TrackersViewController: UISearchTextFieldDelegate {
 // MARK: - TrackerCellDelegate
 extension TrackersViewController: TrackerCellDelegate {
     func trackerCell(_ trackerCell: TrackerCell, didTapDoneButton button: UIButton, trackerState: TrackerState, trackerId: UUID, indexPath: IndexPath) {
+        let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
         switch trackerState {
         case .done:
             completedTrackers.removeAll { trackerRecord in
                 trackerRecord.trackerId == trackerId &&
                 trackerRecord.date == currentDate
             }
+            trackerRecordStore.deleteRecord(trackerRecord)
         case .notDone:
-            let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
             completedTrackers.append(trackerRecord)
+            _ = trackerRecordStore.createRecord(trackerRecord)
         }
         
         UIView.performWithoutAnimation {
@@ -416,5 +427,13 @@ extension TrackersViewController: TrackerCellDelegate {
 extension TrackersViewController: NewTrackerViewControllerDelegate {
     func newTrackerViewController(_ newTrackerViewController: NewTrackerViewController, didBuildTrackerWith settings: TrackerSettings) {
         createTracker(settings: settings)
+    }
+}
+
+// MARK: - TrackerStoreDelegate
+extension TrackersViewController: TrackerStoreDelegate {
+    func storeDidUpdate(_ store: TrackerStore) {
+        try? getAllCategories()
+        updateVisibleCategoriesByDate()
     }
 }

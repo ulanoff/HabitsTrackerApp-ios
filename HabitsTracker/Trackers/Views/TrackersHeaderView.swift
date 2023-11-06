@@ -28,6 +28,7 @@ final class TrackersHeaderView: UICollectionReusableView {
     
     // MARK: - Public Methods
     func configure(withTitle title: String) {
+        titleLabel.text = title
     }
 }
 

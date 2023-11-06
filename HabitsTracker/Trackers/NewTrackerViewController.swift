@@ -156,7 +156,8 @@ final class NewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         
-        let category = TrackerCategory(name: "Важное", trackers: [])
+//        let category = TrackerCategory(name: "Важное", trackers: [])
+        let category = TrackerCategory(name: "Категория", trackers: [])
         trackerSettings.category = category
         trackerSettings.id = UUID()
     }
@@ -329,6 +330,7 @@ private extension NewTrackerViewController {
             settingsTableView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor),
             settingsTableView.heightAnchor.constraint(equalToConstant: settingsTableHeight),
             
+            // TODO: - Add dynamic height calculating
             settingsCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 32),
             settingsCollectionView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor),
             settingsCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor),
@@ -378,11 +380,16 @@ extension NewTrackerViewController: UITableViewDataSource {
 extension NewTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        if indexPath.row == 1 {
+        switch indexPath.row {
+        case 0:
+            break
+        case 1:
             let controller = ScheduleViewController(currentSchedule: trackerSettings.schedule ?? [])
             controller.delegate = self
             navigationController?.pushViewController(controller, animated: true)
+        default:
+            assertionFailure("Not expected indexPath")
+            break
         }
     }
 }
