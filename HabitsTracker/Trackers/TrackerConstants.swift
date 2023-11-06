@@ -1,5 +1,5 @@
 //
-//  AppConstants.swift
+//  TrackerConstants.swift
 //  HabitsTracker
 //
 //  Created by Andrey Ulanov on 28.10.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct AppConstants {
+struct TrackerConstants {
     static let trackerEmojis: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",

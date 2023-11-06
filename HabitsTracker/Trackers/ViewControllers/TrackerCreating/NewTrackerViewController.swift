@@ -26,8 +26,8 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 final class NewTrackerViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: NewTrackerViewControllerDelegate?
-    private let settingsEmojis = AppConstants.trackerEmojis
-    private let settingsColors: [UIColor] = AppConstants.trackerColors
+    private let settingsEmojis = TrackerConstants.trackerEmojis
+    private let settingsColors: [UIColor] = TrackerConstants.trackerColors
     private var selectedEmojiIndexPath: IndexPath?
     private var selectedColorIndexPath: IndexPath?
     private var textFieldMessageHeightConstraint: NSLayoutConstraint!
@@ -63,7 +63,7 @@ final class NewTrackerViewController: UIViewController {
     
     private var settingsCollectionViewHeight: CGFloat {
         let itemsInLine = CollectionSettings.settingsCollectionViewItemsPerLine
-        let linesCount = (AppConstants.trackerEmojis.count + AppConstants.trackerColors.count) / itemsInLine
+        let linesCount = (TrackerConstants.trackerEmojis.count + TrackerConstants.trackerColors.count) / itemsInLine
         let lineSpacing = CollectionSettings.settingsCollectionViewLineSpacing
         let spacing = lineSpacing * CGFloat(linesCount)
         var height = CGFloat(linesCount) * settingsCollectionViewItemSize.height + spacing
