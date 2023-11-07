@@ -47,10 +47,6 @@ final class TrackerStore: NSObject {
     
     weak var delegate: TrackerStoreDelegate?
     
-    var trackers: [TrackerCD] {
-        return fetchedResultsController.fetchedObjects!
-    }
-    
     func saveContext() {
         CoreDataManager.shared.saveContext()
     }
