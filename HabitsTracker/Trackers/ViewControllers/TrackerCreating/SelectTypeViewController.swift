@@ -8,7 +8,9 @@
 import UIKit
 
 final class SelectTypeViewController: UIViewController {
+    // MARK: - Properties
     weak var newTrackerDelegate: NewTrackerViewControllerDelegate?
+    
     // MARK: - UI Elements
     private lazy var buttonStack: UIStackView = {
         let stackView = UIStackView()
@@ -31,11 +33,13 @@ final class SelectTypeViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapIrregularButton(_:)), for: .touchUpInside)
         return button
     }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
+    
     // MARK: - Event Handlers
     @objc private func didTapHabitButton(_ sender: UIButton) {
         let newTrackerVC = NewTrackerViewController(trackerType: .habit)
@@ -48,14 +52,13 @@ final class SelectTypeViewController: UIViewController {
         newTrackerVC.delegate = newTrackerDelegate
         navigationController?.pushViewController(newTrackerVC, animated: true)
     }
-    // MARK: - Public Methods
 }
 
 // MARK: - Private Methods
 private extension SelectTypeViewController {
     // MARK: - Setup UI
     func setupUI() {
-        // MARK: - Add Subviews
+        // MARK: - Subviews
         view.addSubview(buttonStack)
         buttonStack.addArrangedSubview(habitButton)
         buttonStack.addArrangedSubview(irregularButton)

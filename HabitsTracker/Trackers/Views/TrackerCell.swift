@@ -21,11 +21,11 @@ protocol TrackerCellDelegate: AnyObject {
 }
 
 final class TrackerCell: UICollectionViewCell {
+    // MARK: - Properties
     weak var delegate: TrackerCellDelegate?
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     private var trackerState: TrackerState = .notDone
-    
     
     // MARK: - UI Elements
     private lazy var cardView: UIView = {
@@ -89,7 +89,6 @@ final class TrackerCell: UICollectionViewCell {
         return trackerButton
     }()
     
-    
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -112,8 +111,8 @@ final class TrackerCell: UICollectionViewCell {
         delegate?.trackerCell(self, didTapDoneButton: trackerButton, trackerState: trackerState, trackerId: trackerId, indexPath: indexPath)
     }
     
-    // MARK: - Methods
-    func configure(with tracker: Tracker, isDoneToday: Bool, daysStreak: Int, isDoneButtonAvailable: Bool, indexPath: IndexPath) {
+    // MARK: - Public Methods
+    func configure(withTracker tracker: Tracker, isDoneToday: Bool, daysStreak: Int, isDoneButtonAvailable: Bool, indexPath: IndexPath) {
         let color = tracker.color
         let buttonColor = isDoneButtonAvailable ? tracker.color : tracker.color.withAlphaComponent(0.5)
         self.indexPath = indexPath
@@ -130,8 +129,8 @@ final class TrackerCell: UICollectionViewCell {
     }
 }
 
+// MARK: - Private Methods
 private extension TrackerCell {
-    // MARK: - Private Methods
     func pluralizeDay(_ number: Int) -> String {
         let lastDigit = number % 10
         let lastTwoDigits = number % 100
@@ -145,7 +144,7 @@ private extension TrackerCell {
         }
     }
     
-    // MARK: - UI Configuring
+    // MARK: - Setup UI
     func setupUI() {
         // MARK: - Subviews
         contentView.addSubview(cardView)

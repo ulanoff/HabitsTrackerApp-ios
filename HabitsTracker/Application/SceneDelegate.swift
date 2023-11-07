@@ -20,7 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let tabBarController = TabBarController()
         window?.rootViewController = tabBarController
-//        window?.rootViewController = UINavigationController(rootViewController: NewTrackerViewController())
         window?.makeKeyAndVisible()
     }
 

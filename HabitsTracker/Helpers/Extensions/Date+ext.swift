@@ -5,6 +5,17 @@
 //  Created by Andrey Ulanov on 13.10.2023.
 //
 
+extension Date {
+    var onlyDate: Date {
+        get {
+            let calender = Calendar.current
+            var dateComponents = calender.dateComponents([.year, .month, .day], from: self)
+            dateComponents.timeZone = NSTimeZone.system
+            return calender.date(from: dateComponents) ?? Date()
+        }
+    }
+}
+
 #if canImport(Foundation)
 import Foundation
 

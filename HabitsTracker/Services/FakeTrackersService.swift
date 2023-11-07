@@ -46,7 +46,7 @@ final class FakeTrackersService {
                         name: "Кардио",
                         color: .ypSelection16,
                         emoji: "🫀",
-                        schedule: WeekDay.everyday
+                        schedule: WeekDay.allCases
                     ),
                 ]
             ),

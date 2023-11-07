@@ -13,7 +13,16 @@ fileprivate enum FilterOperation {
 }
 
 final class TrackersViewController: UIViewController {
-    private var categories: [TrackerCategory] = FakeTrackersService.getTrackers()
+    // MARK: - Properties
+    private lazy var trackerStore: TrackerStore = {
+        let store = TrackerStore()
+        store.delegate = self
+        return store
+    }()
+    private lazy var trackerCategoryStore = TrackerCategoryStore()
+    private lazy var trackerRecordStore = TrackerRecordStore()
+    
+    private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = [] {
         didSet {
             showNeededViews()
@@ -22,7 +31,7 @@ final class TrackersViewController: UIViewController {
     }
     private var completedTrackers: [TrackerRecord] = []
     private var lastFilterOperation: FilterOperation = .byWeekday
-    private var currentDate = Date()
+    private var currentDate = Date().onlyDate
     private var currentWeekDay: WeekDay {
         WeekDay(numberFromSunday: currentDate.weekday)!
     }
@@ -71,14 +80,14 @@ final class TrackersViewController: UIViewController {
     
     private lazy var noTrackersView: EmptyView = {
         let view = EmptyView()
-        view.setup(image: .noTrackers, text: "Что будем отслеживать?")
+        view.configure(image: .noTrackers, text: "Что будем отслеживать?")
         view.hide()
         return view
     }()
     
     private lazy var notFoundTrackersView: EmptyView = {
         let view = EmptyView()
-        view.setup(image: .notFound, text: "Ничего не найдено")
+        view.configure(image: .notFound, text: "Ничего не найдено")
         view.hide()
         return view
     }()
@@ -86,6 +95,8 @@ final class TrackersViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        try? getAllCategories()
+        try? getAllRecords()
         updateVisibleCategoriesByDate()
         setupUI()
         setupNavigationBar()
@@ -117,43 +128,41 @@ final class TrackersViewController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: - Methods
 }
 
+// MARK: - Private Methods
 private extension TrackersViewController {
-    // MARK: - Private Methods
+    func getAllCategories() throws {
+        do {
+            categories = try trackerCategoryStore.getAllCategories()
+        } catch {
+            throw error
+        }
+    }
+    
+    func getAllRecords() throws {
+        do {
+            completedTrackers = try trackerRecordStore.allRecords()
+        } catch {
+            throw error
+        }
+    }
+    
     func createTracker(settings: TrackerSettings) {
         guard
-            let id = settings.id,
             let name = settings.name,
             let color = settings.color,
             let emoji = settings.emoji,
             let schedule = settings.schedule,
-            let settingsCategory = settings.category
+            let settingsCategoryName = settings.categoryName
         else {
             assertionFailure("Failed to create Tracker")
             return
         }
                 
-        let tracker = Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule)
-        if categories.contains(settingsCategory) {
-            categories = categories.map {
-                if $0 == settingsCategory {
-                    var trackers = $0.trackers
-                    trackers.append(tracker)
-                    let category = TrackerCategory(name: $0.name, trackers: trackers)
-                    return category
-                } else {
-                    let category = TrackerCategory(name: $0.name, trackers: $0.trackers)
-                    return category
-                }
-            }
-        } else {
-            let category = TrackerCategory(name: settingsCategory.name, trackers: [tracker])
-            categories.append(category)
-        }
-        
-        updateVisibleCategoriesByDate()
+        let tracker = Tracker(id: settings.id, name: name, color: color, emoji: emoji, schedule: schedule)
+        let category = TrackerCategory(name: settingsCategoryName, trackers: [])
+        _ = trackerStore.createTracker(tracker, category: category)
     }
     
     func showCancelButton() {
@@ -202,7 +211,7 @@ private extension TrackersViewController {
         }.filter { !$0.trackers.isEmpty }
     }
     
-    // MARK: - UI Configuring
+    // MARK: - Setup UI
     func setupUI() {
         // MARK: - Subviews
         view.addSubview(searchTextField)
@@ -280,7 +289,7 @@ private extension TrackersViewController {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.date = Date()
+        datePicker.date = Date().onlyDate
         datePicker.addTarget(self, action: #selector(didChangeDateInDatePicker(_:)), for: .valueChanged)
         let rightBarButton = UIBarButtonItem(customView: datePicker)
         return rightBarButton
@@ -334,7 +343,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             trackerRecord.date == currentDate &&
             trackerRecord.trackerId == tracker.id
         }
-        cell.configure(with: tracker,
+        cell.configure(withTracker: tracker,
                        isDoneToday: isDoneToday,
                        daysStreak: daysStreak,
                        isDoneButtonAvailable: isDoneButtonAvailable,
@@ -349,7 +358,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             return UICollectionReusableView()
         }
-        view.setTitle(visibleCategories[indexPath.section].name)
+        view.configure(withTitle: visibleCategories[indexPath.section].name)
         return view
     }
 }
@@ -395,15 +404,17 @@ extension TrackersViewController: UISearchTextFieldDelegate {
 // MARK: - TrackerCellDelegate
 extension TrackersViewController: TrackerCellDelegate {
     func trackerCell(_ trackerCell: TrackerCell, didTapDoneButton button: UIButton, trackerState: TrackerState, trackerId: UUID, indexPath: IndexPath) {
+        let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
         switch trackerState {
         case .done:
             completedTrackers.removeAll { trackerRecord in
                 trackerRecord.trackerId == trackerId &&
                 trackerRecord.date == currentDate
             }
+            trackerRecordStore.deleteRecord(trackerRecord)
         case .notDone:
-            let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
             completedTrackers.append(trackerRecord)
+            _ = trackerRecordStore.createRecord(trackerRecord)
         }
         
         UIView.performWithoutAnimation {
@@ -416,5 +427,13 @@ extension TrackersViewController: TrackerCellDelegate {
 extension TrackersViewController: NewTrackerViewControllerDelegate {
     func newTrackerViewController(_ newTrackerViewController: NewTrackerViewController, didBuildTrackerWith settings: TrackerSettings) {
         createTracker(settings: settings)
+    }
+}
+
+// MARK: - TrackerStoreDelegate
+extension TrackersViewController: TrackerStoreDelegate {
+    func storeDidUpdate(_ store: TrackerStore) {
+        try? getAllCategories()
+        updateVisibleCategoriesByDate()
     }
 }
