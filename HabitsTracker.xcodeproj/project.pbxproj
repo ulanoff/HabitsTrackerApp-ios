@@ -34,6 +34,7 @@
 		5581FE692B011139009BFFBE /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581FE682B011139009BFFBE /* UserDefaultsKeys.swift */; };
 		5581FE6D2B011E02009BFFBE /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581FE6C2B011E02009BFFBE /* CategoriesViewModel.swift */; };
 		5581FE702B011F2E009BFFBE /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581FE6F2B011F2E009BFFBE /* Observable.swift */; };
+		5581FE722B0129E5009BFFBE /* CategoryNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5581FE712B0129E5009BFFBE /* CategoryNameViewModel.swift */; };
 		55B00FA02AF76C3900213065 /* HabitsTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 55B00F9E2AF76C3900213065 /* HabitsTracker.xcdatamodeld */; };
 		55B00FA72AF7765800213065 /* TrackerCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B00FA62AF7765800213065 /* TrackerCD.swift */; };
 		55B00FAF2AF7784C00213065 /* TrackerCategoryCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B00FAE2AF7784C00213065 /* TrackerCategoryCD.swift */; };
@@ -83,6 +84,7 @@
 		5581FE682B011139009BFFBE /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		5581FE6C2B011E02009BFFBE /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
 		5581FE6F2B011F2E009BFFBE /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		5581FE712B0129E5009BFFBE /* CategoryNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameViewModel.swift; sourceTree = "<group>"; };
 		55B00F9F2AF76C3900213065 /* HabitsTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitsTracker.xcdatamodel; sourceTree = "<group>"; };
 		55B00FA62AF7765800213065 /* TrackerCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCD.swift; sourceTree = "<group>"; };
 		55B00FAE2AF7784C00213065 /* TrackerCategoryCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryCD.swift; sourceTree = "<group>"; };
@@ -212,9 +214,10 @@
 			isa = PBXGroup;
 			children = (
 				55D2711B2AE409A500D4418A /* NewTrackerViewController.swift */,
-				557EEAA62AF9318D008CEFCD /* CategoryNameViewController.swift */,
 				55F20BA42AE2FAA000262572 /* SelectTypeViewController.swift */,
 				5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */,
+				557EEAA62AF9318D008CEFCD /* CategoryNameViewController.swift */,
+				5581FE712B0129E5009BFFBE /* CategoryNameViewModel.swift */,
 				557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */,
 				5581FE6C2B011E02009BFFBE /* CategoriesViewModel.swift */,
 			);
@@ -446,6 +449,7 @@
 				55C465BA2AD86B8900D75E2E /* SceneDelegate.swift in Sources */,
 				554BBC022AD9C68100BF1DD4 /* Date+ext.swift in Sources */,
 				55D2711C2AE409A500D4418A /* NewTrackerViewController.swift in Sources */,
+				5581FE722B0129E5009BFFBE /* CategoryNameViewModel.swift in Sources */,
 				5581FE6D2B011E02009BFFBE /* CategoriesViewModel.swift in Sources */,
 				5581633F2AEABD9D00A025F3 /* EmojiCell.swift in Sources */,
 				552CE9C82AE96304005E3602 /* String+ext.swift in Sources */,
