@@ -20,12 +20,7 @@ fileprivate struct TableSettings {
 
 final class CategoriesViewController: UIViewController {
     // MARK: - Properties
-    private let trackerCategoryStore = TrackerCategoryStore()
-    private var categories: [String] = [] {
-        didSet {
-            showEmptyViewIfNeeded()
-        }
-    }
+    private let viewModel = CategoriesViewModel()
     private var selectedIndexPath: IndexPath?
     
     weak var delegate: CategoriesViewControllerDelegate?
@@ -61,10 +56,10 @@ final class CategoriesViewController: UIViewController {
     // MARK: - Lifecycle
     init(selectedCategory: String?) {
         super.init(nibName: nil, bundle: nil)
-        getAllCategories()
-        if 
+        bind()
+        if
             let selectedCategory,
-            let row = categories.firstIndex(of: selectedCategory)
+            let row = viewModel.categories.firstIndex(of: selectedCategory)
         {
             let indexPath = IndexPath(row: row, section: 0)
             selectedIndexPath = indexPath
@@ -93,12 +88,15 @@ final class CategoriesViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension CategoriesViewController {
-    func getAllCategories() {
-        categories = trackerCategoryStore.getAllCategoriesNames()
+    func bind() {
+        viewModel.$categories.bind { [weak self] in
+            self?.tableView.reloadData()
+            self?.showEmptyViewIfNeeded()
+        }
     }
     
     func showEmptyViewIfNeeded() {
-        if categories.isEmpty {
+        if viewModel.categories.isEmpty {
             noCategoriesView.show()
         } else {
             noCategoriesView.hide()
@@ -142,12 +140,12 @@ private extension CategoriesViewController {
 // MARK: - UITableViewDataSource
 extension CategoriesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categories.count
+        viewModel.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = categories[indexPath.row]
+        cell.textLabel?.text = viewModel.categories[indexPath.row]
         cell.accessoryType = indexPath == selectedIndexPath ? .checkmark : .none
         cell.backgroundColor = .ypBackground
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
@@ -181,7 +179,7 @@ extension CategoriesViewController: UITableViewDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             guard let self else { return }
             self.navigationController?.popViewController(animated: true)
-            delegate?.categoriesViewController(self, didSelectCategory: categories[selectedIndexPath?.row ?? 0])
+            delegate?.categoriesViewController(self, didSelectCategory: viewModel.categories[selectedIndexPath?.row ?? 0])
         }
     }
     
@@ -198,16 +196,15 @@ extension CategoriesViewController: UITableViewDelegate {
                 return UIMenu(children: [
                     UIAction(title: "Редактировать") { [weak self] action in
                         guard let self else { return }
-                        let categoryName = self.categories[indexPath.row]
+                        let categoryName = self.viewModel.categories[indexPath.row]
                         let controller = CategoryNameViewController(type: .editing, categoryName: categoryName)
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },
                     UIAction(title: "Удалить", attributes: .destructive) { action in
-                        let categoryName = self.categories[indexPath.row]
+                        let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
-                        self.trackerCategoryStore.deleteCategory(category)
-                        self.getAllCategories()
+                        self.viewModel.didDeleteCategory(category)
                         self.tableView.reloadData()
                     },
                 ])
@@ -223,8 +220,7 @@ extension CategoriesViewController: CategoryNameViewControllerDelegate {
         didEditedCategory trackerCategory: TrackerCategory,
         to newTrackerCategory: TrackerCategory
     ) {
-        trackerCategoryStore.updateCategoryInfo(trackerCategory, to: newTrackerCategory)
-        getAllCategories()
+        viewModel.didUpdateCategory(trackerCategory, newCategory: newTrackerCategory)
         tableView.reloadData()
     }
     
@@ -232,8 +228,7 @@ extension CategoriesViewController: CategoryNameViewControllerDelegate {
         _ viewController: CategoryNameViewController,
         didSetupNewCategory trackerCategory: TrackerCategory
     ) {
-        _ = trackerCategoryStore.createCategory(trackerCategory)
-        categories.append(trackerCategory.name)
+        viewModel.didAddCategory(trackerCategory)
         tableView.reloadData()
     }
 }
