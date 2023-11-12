@@ -24,7 +24,6 @@ final class Observable<T> {
     }
     
     func bind(observer: @escaping () -> Void) {
-        observer()
         observers.append(observer)
     }
 }
