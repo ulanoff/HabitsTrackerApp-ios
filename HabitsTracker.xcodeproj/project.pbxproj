@@ -16,7 +16,6 @@
 		554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF82AD990C900BF1DD4 /* Tracker.swift */; };
 		554BBBFB2AD99FD600BF1DD4 /* TrackersHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBFA2AD99FD600BF1DD4 /* TrackersHeaderView.swift */; };
 		554BBBFD2AD9A03200BF1DD4 /* UICollectionReusableView+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBFC2AD9A03200BF1DD4 /* UICollectionReusableView+ext.swift */; };
-		554BBC002AD9BEB300BF1DD4 /* FakeTrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBFF2AD9BEB200BF1DD4 /* FakeTrackersService.swift */; };
 		554BBC022AD9C68100BF1DD4 /* Date+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBC012AD9C68100BF1DD4 /* Date+ext.swift */; };
 		55549E5E2AE415A000E198BF /* UITableViewCell+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55549E5D2AE415A000E198BF /* UITableViewCell+ext.swift */; };
 		55549E602AE4385D00E198BF /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */; };
@@ -68,7 +67,6 @@
 		554BBBF82AD990C900BF1DD4 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		554BBBFA2AD99FD600BF1DD4 /* TrackersHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersHeaderView.swift; sourceTree = "<group>"; };
 		554BBBFC2AD9A03200BF1DD4 /* UICollectionReusableView+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+ext.swift"; sourceTree = "<group>"; };
-		554BBBFF2AD9BEB200BF1DD4 /* FakeTrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTrackersService.swift; sourceTree = "<group>"; };
 		554BBC012AD9C68100BF1DD4 /* Date+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ext.swift"; sourceTree = "<group>"; };
 		55549E5D2AE415A000E198BF /* UITableViewCell+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+ext.swift"; sourceTree = "<group>"; };
 		55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
@@ -176,14 +174,6 @@
 				5571F3152AE50E7F00E514C2 /* WeekDay.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		554BBBFE2AD9BE9A00BF1DD4 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				554BBBFF2AD9BEB200BF1DD4 /* FakeTrackersService.swift */,
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		554E78A62B0207E100587E27 /* NewTracker */ = {
@@ -351,7 +341,6 @@
 				557DA1FD2AD91AFC00D7CD04 /* Trackers */,
 				5581FE632B00FBAA009BFFBE /* Onboarding */,
 				55B00F9D2AF76BB700213065 /* Storage */,
-				554BBBFE2AD9BE9A00BF1DD4 /* Services */,
 				55C912CF2AED8A2800955B10 /* CustomViews */,
 				557DA1F82AD9194900D7CD04 /* Navigation */,
 				554BBBF32AD98FDF00BF1DD4 /* Helpers */,
@@ -461,7 +450,6 @@
 				5581FE702B011F2E009BFFBE /* Observable.swift in Sources */,
 				55B00FA02AF76C3900213065 /* HabitsTracker.xcdatamodeld in Sources */,
 				557DA2012AD9275F00D7CD04 /* TrackerCell.swift in Sources */,
-				554BBC002AD9BEB300BF1DD4 /* FakeTrackersService.swift in Sources */,
 				5571F3162AE50E7F00E514C2 /* WeekDay.swift in Sources */,
 				55B00FBD2AF782F200213065 /* TrackerCategoryStore.swift in Sources */,
 				55C465D02AD86EC700D75E2E /* TabBarController.swift in Sources */,
