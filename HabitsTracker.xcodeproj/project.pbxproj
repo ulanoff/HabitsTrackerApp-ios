@@ -131,7 +131,7 @@
 			path = ValueTransformers;
 			sourceTree = "<group>";
 		};
-		554BBBF02AD9836A00BF1DD4 /* Views */ = {
+		554BBBF02AD9836A00BF1DD4 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
 				557DA2002AD9275F00D7CD04 /* TrackerCell.swift */,
@@ -141,7 +141,7 @@
 				55C912A62AED171500955B10 /* ColorCell.swift */,
 				55C912A82AED346100955B10 /* SettingsCollectionHeaderView.swift */,
 			);
-			path = Views;
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 		554BBBF32AD98FDF00BF1DD4 /* Helpers */ = {
@@ -186,6 +186,49 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		554E78A62B0207E100587E27 /* NewTracker */ = {
+			isa = PBXGroup;
+			children = (
+				55D2711B2AE409A500D4418A /* NewTrackerViewController.swift */,
+				5581FE752B01406C009BFFBE /* NewTrackerViewModel.swift */,
+			);
+			path = NewTracker;
+			sourceTree = "<group>";
+		};
+		554E78A72B02082500587E27 /* CategoryName */ = {
+			isa = PBXGroup;
+			children = (
+				557EEAA62AF9318D008CEFCD /* CategoryNameViewController.swift */,
+				5581FE712B0129E5009BFFBE /* CategoryNameViewModel.swift */,
+			);
+			path = CategoryName;
+			sourceTree = "<group>";
+		};
+		554E78A82B02083100587E27 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		554E78A92B02083D00587E27 /* TrackerTypeSelection */ = {
+			isa = PBXGroup;
+			children = (
+				55F20BA42AE2FAA000262572 /* SelectTypeViewController.swift */,
+			);
+			path = TrackerTypeSelection;
+			sourceTree = "<group>";
+		};
+		554E78AA2B02085E00587E27 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */,
+				5581FE6C2B011E02009BFFBE /* CategoriesViewModel.swift */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		557DA1F82AD9194900D7CD04 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,34 +240,30 @@
 		557DA1FD2AD91AFC00D7CD04 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				55C912CA2AED720A00955B10 /* TrackerConstants.swift */,
-				557EEAA82AF97DA5008CEFCD /* ViewControllers */,
+				557EEAA82AF97DA5008CEFCD /* Screens */,
 				554BBBF72AD990B400BF1DD4 /* Models */,
-				554BBBF02AD9836A00BF1DD4 /* Views */,
+				554BBBF02AD9836A00BF1DD4 /* CustomViews */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
 		};
-		557EEAA82AF97DA5008CEFCD /* ViewControllers */ = {
+		557EEAA82AF97DA5008CEFCD /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				557EEAAA2AF97DCB008CEFCD /* Main */,
 				557EEAA92AF97DAD008CEFCD /* TrackerCreating */,
 			);
-			path = ViewControllers;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		557EEAA92AF97DAD008CEFCD /* TrackerCreating */ = {
 			isa = PBXGroup;
 			children = (
-				55D2711B2AE409A500D4418A /* NewTrackerViewController.swift */,
-				5581FE752B01406C009BFFBE /* NewTrackerViewModel.swift */,
-				55F20BA42AE2FAA000262572 /* SelectTypeViewController.swift */,
-				5571F3192AE51F6000E514C2 /* ScheduleViewController.swift */,
-				557EEAA62AF9318D008CEFCD /* CategoryNameViewController.swift */,
-				5581FE712B0129E5009BFFBE /* CategoryNameViewModel.swift */,
-				557EEAA42AF92106008CEFCD /* CategoriesViewController.swift */,
-				5581FE6C2B011E02009BFFBE /* CategoriesViewModel.swift */,
+				554E78A92B02083D00587E27 /* TrackerTypeSelection */,
+				554E78A62B0207E100587E27 /* NewTracker */,
+				554E78A72B02082500587E27 /* CategoryName */,
+				554E78AA2B02085E00587E27 /* Categories */,
+				554E78A82B02083100587E27 /* Schedule */,
 			);
 			path = TrackerCreating;
 			sourceTree = "<group>";
@@ -250,6 +289,7 @@
 		5581FE6A2B0111F3009BFFBE /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				55C912CA2AED720A00955B10 /* TrackerConstants.swift */,
 				5581FE682B011139009BFFBE /* UserDefaultsKeys.swift */,
 			);
 			path = Constants;
@@ -308,11 +348,11 @@
 			children = (
 				5581FE6A2B0111F3009BFFBE /* Constants */,
 				55C465CD2AD86BBC00D75E2E /* Application */,
-				55B00F9D2AF76BB700213065 /* Storage */,
-				554BBBFE2AD9BE9A00BF1DD4 /* Services */,
 				557DA1FD2AD91AFC00D7CD04 /* Trackers */,
 				5581FE632B00FBAA009BFFBE /* Onboarding */,
-				55C912CF2AED8A2800955B10 /* Views */,
+				55B00F9D2AF76BB700213065 /* Storage */,
+				554BBBFE2AD9BE9A00BF1DD4 /* Services */,
+				55C912CF2AED8A2800955B10 /* CustomViews */,
 				557DA1F82AD9194900D7CD04 /* Navigation */,
 				554BBBF32AD98FDF00BF1DD4 /* Helpers */,
 				55C465CC2AD86BAB00D75E2E /* Supporting */,
@@ -339,13 +379,13 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		55C912CF2AED8A2800955B10 /* Views */ = {
+		55C912CF2AED8A2800955B10 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
 				55F20BA72AE2FE0D00262572 /* Button.swift */,
 				55D2711D2AE40B7D00D4418A /* TextField.swift */,
 			);
-			path = Views;
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
