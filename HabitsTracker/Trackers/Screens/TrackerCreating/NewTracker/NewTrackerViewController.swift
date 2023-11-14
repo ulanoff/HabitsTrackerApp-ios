@@ -202,23 +202,23 @@ final class NewTrackerViewController: UIViewController {
 // MARK: - Private Methods
 private extension NewTrackerViewController {
     func bind() {
-        viewModel.$isValidName.bind { [weak self] in
+        viewModel.$isValidName.bind { [weak self] _ in
             self?.updateCreateButtonState()
         }
         
-        viewModel.$nameErrorMessage.bind { [weak self] in
-            if let message = self?.viewModel.nameErrorMessage {
+        viewModel.$nameErrorMessage.bind { [weak self] nameErrorMessage in
+            if let message = nameErrorMessage {
                 self?.showTextFieldMessage(text: message)
             } else {
                 self?.hideTextFieldMessage()
             }
         }
         
-        viewModel.$trackerSettings.bind { [weak self] in
+        viewModel.$trackerSettings.bind { [weak self] _ in
             self?.updateCreateButtonState()
         }
         
-        viewModel.$trackerCategory.bind { [weak self] in
+        viewModel.$trackerCategory.bind { [weak self] _ in
             let categoryIndexPath = IndexPath(row: 0, section: 0)
             self?.settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
         }

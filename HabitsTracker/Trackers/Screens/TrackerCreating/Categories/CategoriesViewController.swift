@@ -74,15 +74,15 @@ final class CategoriesViewController: UIViewController {
 // MARK: - Private Methods
 private extension CategoriesViewController {
     func bind() {
-        viewModel.$categories.bind { [weak self] in
+        viewModel.$categories.bind { [weak self] _ in
             self?.tableView.reloadData()
             self?.showEmptyViewIfNeeded()
         }
         
-        viewModel.$selectedCategoryIndex.bind { [weak self] in
+        viewModel.$selectedCategoryIndex.bind { [weak self] selectedCategoryIndex in
             guard
                 let self,
-                let selectedCategoryIndex = viewModel.selectedCategoryIndex
+                let selectedCategoryIndex
             else {
                 return
             }
@@ -93,10 +93,10 @@ private extension CategoriesViewController {
             }
         }
         
-        viewModel.$oldSelectedCategoryIndex.bind { [weak self] in
-            guard 
+        viewModel.$oldSelectedCategoryIndex.bind { [weak self] oldSelectedCategoryIndex in
+            guard
                 let self,
-                let oldSelectedCategoryIndex = self.viewModel.oldSelectedCategoryIndex
+                let oldSelectedCategoryIndex
             else {
                 return
             }

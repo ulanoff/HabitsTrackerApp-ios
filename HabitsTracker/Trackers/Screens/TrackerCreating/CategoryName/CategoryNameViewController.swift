@@ -96,14 +96,14 @@ final class CategoryNameViewController: UIViewController {
 // MARK: - Private Methods
 private extension CategoryNameViewController {
     func bind() {
-        viewModel.$categoryName.bind { [weak self] in
+        viewModel.$categoryName.bind { [weak self] categoryName in
             guard let self else { return }
-            categoryName = viewModel.categoryName
+            self.categoryName = categoryName
         }
         
-        viewModel.$isNameValid.bind { [weak self] in
+        viewModel.$isNameValid.bind { [weak self] isNameValid in
             guard let self else { return }
-            self.updateContinueButtonState(isNameValid: self.viewModel.isNameValid)
+            self.updateContinueButtonState(isNameValid: isNameValid)
         }
     }
     

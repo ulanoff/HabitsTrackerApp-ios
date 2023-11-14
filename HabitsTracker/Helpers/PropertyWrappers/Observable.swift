@@ -9,11 +9,11 @@ import Foundation
 
 @propertyWrapper
 final class Observable<T> {
-    private var observers: [() -> Void] = []
+    private var observers: [(T) -> Void] = []
     
     var wrappedValue: T {
         didSet {
-            observers.forEach { $0() }
+            observers.forEach { $0(wrappedValue) }
         }
     }
     
@@ -23,7 +23,7 @@ final class Observable<T> {
         self.wrappedValue = wrappedValue
     }
     
-    func bind(observer: @escaping () -> Void) {
+    func bind(observer: @escaping (T) -> Void) {
         observers.append(observer)
     }
 }

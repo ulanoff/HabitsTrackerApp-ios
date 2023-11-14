@@ -104,7 +104,7 @@ final class TrackersViewController: UIViewController {
 // MARK: - Private Methods
 private extension TrackersViewController {
     func bind() {
-        viewModel.$visibleCategories.bind { [weak self] in
+        viewModel.$visibleCategories.bind { [weak self] _ in
             self?.showNeededViews()
             self?.collectionView.reloadData()
         }
