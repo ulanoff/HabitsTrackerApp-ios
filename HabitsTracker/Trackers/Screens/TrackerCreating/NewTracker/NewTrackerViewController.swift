@@ -26,7 +26,7 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 final class NewTrackerViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: NewTrackerViewControllerDelegate?
-    private var viewModel: NewTrackerViewModel
+    private let viewModel: NewTrackerViewModel
     private let settingsEmojis = TrackerConstants.trackerEmojis
     private let settingsColors: [UIColor] = TrackerConstants.trackerColors
     private var selectedEmojiIndexPath: IndexPath?

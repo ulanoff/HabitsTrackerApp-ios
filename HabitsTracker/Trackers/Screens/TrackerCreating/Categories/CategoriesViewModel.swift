@@ -12,6 +12,11 @@ enum CategoryState {
     case selected
 }
 
+enum CategoriesState {
+    case standart
+    case empty
+}
+
 protocol CategoriesViewModelDelegate: AnyObject {
     func categoriesViewModel(
         _ viewModel: CategoriesViewModel,
@@ -24,7 +29,12 @@ final class CategoriesViewModel {
     private let trackerCategoryStore = TrackerCategoryStore()
     @Observable var selectedCategoryIndex: Int?
     @Observable var oldSelectedCategoryIndex: Int?
-    @Observable var categories: [String]
+    @Observable var categories: [String] {
+        didSet {
+            updateState()
+        }
+    }
+    @Observable var state: CategoriesState = .standart
     
     init(delegate: CategoriesViewModelDelegate, selectedCategory: String?) {
         self.delegate = delegate
@@ -68,6 +78,14 @@ final class CategoriesViewModel {
             .selected
         } else {
             .standart
+        }
+    }
+    
+    func updateState() {
+        if categories.isEmpty {
+            state = .empty
+        } else {
+            state = .standart
         }
     }
     

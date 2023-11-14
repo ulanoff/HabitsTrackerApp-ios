@@ -12,8 +12,19 @@ enum FilterOperation {
     case byWeekday
 }
 
+enum TrackersState {
+    case standart
+    case emptyByDate
+    case emptyBySearch
+}
+
 final class TrackersViewModel {
-    @Observable var visibleCategories: [TrackerCategory] = []
+    @Observable var visibleCategories: [TrackerCategory] = [] {
+        didSet {
+            updateState()
+        }
+    }
+    @Observable var state: TrackersState = .standart
     var completedTrackers: [TrackerRecord] = []
     var selectedDate = Date().onlyDate
     var lastFilterOperation: FilterOperation = .byWeekday
@@ -71,6 +82,21 @@ final class TrackersViewModel {
         }
     }
     
+    func trackerViewConfiguration(for tracker: Tracker) -> TrackerViewConfiguration {
+        let isDoneButtonAvailable = isFulfillmentAvailable
+        let daysStreak = completedTrackers.filter { $0.trackerId == tracker.id }.count
+        let isDoneToday = completedTrackers.contains { trackerRecord in
+            trackerRecord.date == selectedDate &&
+            trackerRecord.trackerId == tracker.id
+        }
+        
+        return TrackerViewConfiguration(
+            isDoneToday: isDoneToday,
+            isDoneButtonAvailable: isDoneButtonAvailable,
+            daysCount: daysStreak
+        )
+    }
+    
     private func getAllCategories() throws {
         do {
             categories = try trackerCategoryStore.getAllCategories()
@@ -84,6 +110,19 @@ final class TrackersViewModel {
             completedTrackers = try trackerRecordStore.allRecords()
         } catch {
             throw error
+        }
+    }
+    
+    func updateState() {
+        guard visibleCategories.isEmpty else {
+            state = .standart
+            return
+        }
+        switch lastFilterOperation {
+        case .search:
+            state = .emptyBySearch
+        case .byWeekday:
+            state = .emptyByDate
         }
     }
     

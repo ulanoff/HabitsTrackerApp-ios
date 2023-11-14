@@ -14,22 +14,17 @@ final class CategoryNameViewModel {
     private let maxLength = 24
     
     func didEnterNewName(_ name: String) {
-        if name.isEmpty || name.isBlank {
-            isNameValid = false
-            return
-        } else {
-            isNameValid = true
-        }
-        
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if trimmedName.count > maxLength {
+        guard 
+            !(trimmedName.isEmpty || trimmedName.isBlank),
+            trimmedName.count <= maxLength
+        else {
             isNameValid = false
             return
-        } else {
-            isNameValid = true
         }
         
+        isNameValid = true
         categoryName = trimmedName
     }
 }

@@ -72,7 +72,7 @@ final class TrackersViewController: UIViewController {
         super.viewDidLoad()
         bind()
         setupUI()
-        showNeededViews()
+        viewModel.updateState()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,32 +105,30 @@ final class TrackersViewController: UIViewController {
 private extension TrackersViewController {
     func bind() {
         viewModel.$visibleCategories.bind { [weak self] _ in
-            self?.showNeededViews()
             self?.collectionView.reloadData()
+        }
+        
+        viewModel.$state.bind { [weak self] state in
+            switch state {
+            case .standart:
+                self?.filtersButton.show()
+                self?.noTrackersView.hide()
+                self?.notFoundTrackersView.hide()
+            case .emptyByDate:
+                self?.filtersButton.hide()
+                self?.noTrackersView.show()
+                self?.notFoundTrackersView.hide()
+            case .emptyBySearch:
+                self?.filtersButton.hide()
+                self?.noTrackersView.hide()
+                self?.notFoundTrackersView.show()
+            }
         }
     }
     
     func showCancelButton() {
         UIView.animate(withDuration: 0.2) { [weak self] in
             self?.view.layoutIfNeeded()
-        }
-    }
-    
-    func showNeededViews() {
-        if viewModel.visibleCategories.isEmpty {
-            switch viewModel.lastFilterOperation {
-            case .byWeekday:
-                noTrackersView.show()
-                notFoundTrackersView.hide()
-            case .search:
-                noTrackersView.hide()
-                notFoundTrackersView.show()
-            }
-            filtersButton.hide()
-        } else {
-            noTrackersView.hide()
-            notFoundTrackersView.hide()
-            filtersButton.show()
         }
     }
     
@@ -260,18 +258,10 @@ extension TrackersViewController: UICollectionViewDataSource {
             assertionFailure("Couldn't deque reusable cell of type TrackerCell")
             return UICollectionViewCell()
         }
-        
         let tracker = viewModel.visibleCategories[indexPath.section].trackers[indexPath.item]
-        let isDoneButtonAvailable = viewModel.isFulfillmentAvailable
-        let daysStreak = viewModel.completedTrackers.filter { $0.trackerId == tracker.id }.count
-        let isDoneToday = viewModel.completedTrackers.contains { trackerRecord in
-            trackerRecord.date == viewModel.selectedDate &&
-            trackerRecord.trackerId == tracker.id
-        }
+        let trackerViewConfiguration = viewModel.trackerViewConfiguration(for: tracker)
         cell.configure(withTracker: tracker,
-                       isDoneToday: isDoneToday,
-                       daysStreak: daysStreak,
-                       isDoneButtonAvailable: isDoneButtonAvailable,
+                       configuration: trackerViewConfiguration,
                        indexPath: indexPath)
         cell.delegate = self
         return cell

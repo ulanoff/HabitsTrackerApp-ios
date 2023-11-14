@@ -57,7 +57,7 @@ final class CategoriesViewController: UIViewController {
         super.viewDidLoad()
         bind()
         setupUI()
-        showEmptyViewIfNeeded()
+        viewModel.updateState()
     }
     
     // MARK: - Event Handlers
@@ -76,7 +76,15 @@ private extension CategoriesViewController {
     func bind() {
         viewModel.$categories.bind { [weak self] _ in
             self?.tableView.reloadData()
-            self?.showEmptyViewIfNeeded()
+        }
+        
+        viewModel.$state.bind { [weak self] state in
+            switch state {
+            case .standart:
+                self?.noCategoriesView.hide()
+            case .empty:
+                self?.noCategoriesView.show()
+            }
         }
         
         viewModel.$selectedCategoryIndex.bind { [weak self] selectedCategoryIndex in
@@ -102,14 +110,6 @@ private extension CategoriesViewController {
             }
             let indexPath = IndexPath(row: oldSelectedCategoryIndex, section: 0)
             self.tableView.delegate?.tableView?(self.tableView, didDeselectRowAt: indexPath)
-        }
-    }
-    
-    func showEmptyViewIfNeeded() {
-        if viewModel.categories.isEmpty {
-            noCategoriesView.show()
-        } else {
-            noCategoriesView.hide()
         }
     }
     

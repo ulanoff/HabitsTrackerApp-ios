@@ -19,26 +19,22 @@ final class NewTrackerViewModel {
     }
     
     func didEnterNewName(_ name: String) {
-        if name.isEmpty || name.isBlank {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !(trimmedName.isEmpty || trimmedName.isBlank) else {
             nameErrorMessage = nil
             isValidName = false
             return
-        } else {
-            nameErrorMessage = nil
-            isValidName = true
         }
         
-        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if name.count > nameMaxLength {
+        guard trimmedName.count <= nameMaxLength else {
             nameErrorMessage = "Ограничение 38 символов"
             isValidName = false
             return
-        } else {
-            nameErrorMessage = nil
-            isValidName = true
         }
         
+        nameErrorMessage = nil
+        isValidName = true
         trackerSettings.name = trimmedName
     }
     
