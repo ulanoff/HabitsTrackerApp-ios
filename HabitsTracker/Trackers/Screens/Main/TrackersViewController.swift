@@ -9,7 +9,7 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     // MARK: - Properties
-    private let viewModel = TrackersViewModel()
+    private let viewModel: TrackersViewModel
     
     // MARK: - UI Elements
     private lazy var searchTextField: UISearchTextField = {
@@ -59,6 +59,15 @@ final class TrackersViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
+    init(viewModel: TrackersViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()

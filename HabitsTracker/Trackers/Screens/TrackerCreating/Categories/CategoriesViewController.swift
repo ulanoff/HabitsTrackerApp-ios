@@ -62,7 +62,8 @@ final class CategoriesViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapCreateButton() {
-        let controller = CategoryNameViewController(type: .creating, categoryName: nil)
+        let viewModel = CategoryNameViewModel()
+        let controller = CategoryNameViewController(type: .creating, categoryName: nil, viewModel: viewModel)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -197,7 +198,8 @@ extension CategoriesViewController: UITableViewDelegate {
                     UIAction(title: "Редактировать") { [weak self] action in
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
-                        let controller = CategoryNameViewController(type: .editing, categoryName: categoryName)
+                        let viewModel = CategoryNameViewModel()
+                        let controller = CategoryNameViewController(type: .editing, categoryName: categoryName, viewModel: viewModel)
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },

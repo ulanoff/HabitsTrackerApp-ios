@@ -26,7 +26,7 @@ enum CategoryNameViewControllerType {
 
 final class CategoryNameViewController: UIViewController {
     // MARK: - Properties
-    private let viewModel = CategoryNameViewModel()
+    private let viewModel: CategoryNameViewModel
     private var oldCategoryName = ""
     private var categoryName = ""
     private let controllerType: CategoryNameViewControllerType
@@ -52,7 +52,8 @@ final class CategoryNameViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
-    init(type: CategoryNameViewControllerType, categoryName: String?) {
+    init(type: CategoryNameViewControllerType, categoryName: String?, viewModel: CategoryNameViewModel) {
+        self.viewModel = viewModel
         self.controllerType = type
         super.init(nibName: nil, bundle: nil)
         if let categoryName {
