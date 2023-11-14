@@ -9,8 +9,9 @@ import UIKit
 
 final class NewTrackerViewModel {
     @Observable private(set) var trackerSettings: TrackerSettings
-    @Observable var isValidName: Bool = false
-    @Observable var nameErrorMessage: String?
+    @Observable private(set) var trackerCategory: String?
+    @Observable private(set) var isValidName: Bool = false
+    @Observable private(set) var nameErrorMessage: String?
     let nameMaxLength = 38
     
     init(trackerType: TrackerType) {
@@ -43,6 +44,7 @@ final class NewTrackerViewModel {
     
     func didUpdateCategory(name: String?) {
         trackerSettings.categoryName = name
+        trackerCategory = name
     }
     
     func didUpdateEmoji(newEmoji: String?) {
@@ -55,5 +57,11 @@ final class NewTrackerViewModel {
     
     func didUpdateSchedule(newSchedule: [WeekDay]?) {
         trackerSettings.schedule = newSchedule
+    }
+}
+
+extension NewTrackerViewModel: CategoriesViewModelDelegate {
+    func categoriesViewModel(_ viewModel: CategoriesViewModel, didSelectCategory name: String) {
+        didUpdateCategory(name: name)
     }
 }

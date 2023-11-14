@@ -8,8 +8,8 @@
 import Foundation
 
 final class CategoryNameViewModel {
-    @Observable<String> var categoryName: String = ""
-    @Observable<Bool> var isNameValid: Bool = false
+    @Observable var categoryName: String = ""
+    @Observable var isNameValid: Bool = false
     
     private let maxLength = 24
     
@@ -21,7 +21,7 @@ final class CategoryNameViewModel {
             isNameValid = true
         }
         
-        var trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if trimmedName.count > maxLength {
             isNameValid = false

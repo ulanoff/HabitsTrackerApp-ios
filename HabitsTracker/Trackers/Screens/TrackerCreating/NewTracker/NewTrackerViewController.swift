@@ -217,6 +217,11 @@ private extension NewTrackerViewController {
         viewModel.$trackerSettings.bind { [weak self] in
             self?.updateCreateButtonState()
         }
+        
+        viewModel.$trackerCategory.bind { [weak self] in
+            let categoryIndexPath = IndexPath(row: 0, section: 0)
+            self?.settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
+        }
     }
     
     func makeScheduleDescription() -> String? {
@@ -428,8 +433,9 @@ extension NewTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            let controller = CategoriesViewController(selectedCategory: viewModel.trackerSettings.categoryName)
-            controller.delegate = self
+            let viewModel = CategoriesViewModel(delegate: self.viewModel, selectedCategory: viewModel.trackerSettings.categoryName)
+            let controller = CategoriesViewController(viewModel: viewModel)
+            
             navigationController?.pushViewController(controller, animated: true)
         case 1:
             let controller = ScheduleViewController(currentSchedule: viewModel.trackerSettings.schedule ?? [])
@@ -571,14 +577,6 @@ extension NewTrackerViewController: ScheduleViewControllerDelegate {
         viewModel.didUpdateSchedule(newSchedule: weekDays)
         let scheduleIndexPath = IndexPath(row: 1, section: 0)
         settingsTableView.reloadRows(at: [scheduleIndexPath], with: .automatic)
-    }
-}
-
-extension NewTrackerViewController: CategoriesViewControllerDelegate {
-    func categoriesViewController(_ viewController: CategoriesViewController, didSelectCategory name: String) {
-        viewModel.didUpdateCategory(name: name)
-        let categoryIndexPath = IndexPath(row: 0, section: 0)
-        settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
     }
 }
 

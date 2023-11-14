@@ -7,23 +7,13 @@
 
 import UIKit
 
-protocol CategoriesViewControllerDelegate: AnyObject {
-    func categoriesViewController(
-        _ viewController: CategoriesViewController,
-        didSelectCategory name: String
-    )
-}
-
 fileprivate struct TableSettings {
     static let tableRowHeight: CGFloat = 75
 }
 
 final class CategoriesViewController: UIViewController {
     // MARK: - Properties
-    private let viewModel = CategoriesViewModel()
-    private var selectedIndexPath: IndexPath?
-    
-    weak var delegate: CategoriesViewControllerDelegate?
+    private let viewModel: CategoriesViewModel
     
     // MARK: - UI Elements
     private lazy var tableView: UITableView = {
@@ -54,16 +44,9 @@ final class CategoriesViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
-    init(selectedCategory: String?) {
+    init(viewModel: CategoriesViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        bind()
-        if
-            let selectedCategory,
-            let row = viewModel.categories.firstIndex(of: selectedCategory)
-        {
-            let indexPath = IndexPath(row: row, section: 0)
-            selectedIndexPath = indexPath
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -72,6 +55,7 @@ final class CategoriesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         setupUI()
         showEmptyViewIfNeeded()
     }
@@ -92,6 +76,31 @@ private extension CategoriesViewController {
         viewModel.$categories.bind { [weak self] in
             self?.tableView.reloadData()
             self?.showEmptyViewIfNeeded()
+        }
+        
+        viewModel.$selectedCategoryIndex.bind { [weak self] in
+            guard
+                let self,
+                let selectedCategoryIndex = viewModel.selectedCategoryIndex
+            else {
+                return
+            }
+            let indexPath = IndexPath(row: selectedCategoryIndex, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        viewModel.$oldSelectedCategoryIndex.bind { [weak self] in
+            guard 
+                let self,
+                let oldSelectedCategoryIndex = self.viewModel.oldSelectedCategoryIndex
+            else {
+                return
+            }
+            let indexPath = IndexPath(row: oldSelectedCategoryIndex, section: 0)
+            self.tableView.delegate?.tableView?(self.tableView, didDeselectRowAt: indexPath)
         }
     }
     
@@ -145,8 +154,9 @@ extension CategoriesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let categoryState = viewModel.stateForCategoryAtIndex(index: indexPath.row)
         cell.textLabel?.text = viewModel.categories[indexPath.row]
-        cell.accessoryType = indexPath == selectedIndexPath ? .checkmark : .none
+        cell.accessoryType = categoryState == .selected ? .checkmark : .none
         cell.backgroundColor = .ypBackground
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         if indexPath.row == 0 && tableView.numberOfRows(inSection: 0) == 1 {
@@ -170,17 +180,7 @@ extension CategoriesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension CategoriesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let oldSelectedIndexPath = selectedIndexPath {
-            self.selectedIndexPath = indexPath
-            tableView.delegate?.tableView?(tableView, didDeselectRowAt: oldSelectedIndexPath)
-        }
-        self.selectedIndexPath = indexPath
-        tableView.reloadRows(at: [indexPath], with: .none)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            guard let self else { return }
-            self.navigationController?.popViewController(animated: true)
-            delegate?.categoriesViewController(self, didSelectCategory: viewModel.categories[selectedIndexPath?.row ?? 0])
-        }
+        viewModel.didSelectCategoryAt(index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
