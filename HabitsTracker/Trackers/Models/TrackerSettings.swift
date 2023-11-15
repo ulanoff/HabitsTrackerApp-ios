@@ -28,7 +28,7 @@ struct TrackerSettings {
         }
     }
     
-    var isReady: Bool {
+    var isValid: Bool {
         if name != nil &&
             color != nil &&
             emoji != nil &&

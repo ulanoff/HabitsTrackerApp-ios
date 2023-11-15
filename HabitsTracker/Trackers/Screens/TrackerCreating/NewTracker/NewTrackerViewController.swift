@@ -26,6 +26,7 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 final class NewTrackerViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: NewTrackerViewControllerDelegate?
+    private let viewModel: NewTrackerViewModel
     private let settingsEmojis = TrackerConstants.trackerEmojis
     private let settingsColors: [UIColor] = TrackerConstants.trackerColors
     private var selectedEmojiIndexPath: IndexPath?
@@ -33,20 +34,12 @@ final class NewTrackerViewController: UIViewController {
     private var textFieldMessageHeightConstraint: NSLayoutConstraint!
     private var settingsCollectionViewHeightConstraint: NSLayoutConstraint!
     
-    private var trackerSettings: TrackerSettings {
-        didSet { updateCreateButtonState() }
-    }
-    
-    private var isValidationPassed = true {
-        didSet { updateCreateButtonState() }
-    }
-    
     private var settingsTableNumberOfRows: Int {
-        trackerSettings.trackerType == .habit ? 2 : 1
+        viewModel.trackerSettings.trackerType == .habit ? 2 : 1
     }
     
     private var settingsTableHeight: CGFloat {
-        trackerSettings.trackerType == .habit ?
+        viewModel.trackerSettings.trackerType == .habit ?
         TableSettings.settingsTableRowHeight * 2 :
         TableSettings.settingsTableRowHeight
     }
@@ -168,7 +161,7 @@ final class NewTrackerViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(trackerType: TrackerType) {
-        trackerSettings = TrackerSettings(trackerType: trackerType)
+        viewModel = NewTrackerViewModel(trackerType: trackerType)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -178,6 +171,7 @@ final class NewTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         setupUI()
     }
     
@@ -193,7 +187,7 @@ final class NewTrackerViewController: UIViewController {
     // MARK: - Event Handlers
     @objc private func didTapCreateButton(_ button: UIButton) {
         dismiss(animated: true)
-        delegate?.newTrackerViewController(self, didBuildTrackerWith: trackerSettings)
+        delegate?.newTrackerViewController(self, didBuildTrackerWith: viewModel.trackerSettings)
     }
     
     @objc private func didTapCancelButton(_ button: UIButton) {
@@ -207,8 +201,31 @@ final class NewTrackerViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension NewTrackerViewController {
+    func bind() {
+        viewModel.$isValidName.bind { [weak self] _ in
+            self?.updateCreateButtonState()
+        }
+        
+        viewModel.$nameErrorMessage.bind { [weak self] nameErrorMessage in
+            if let message = nameErrorMessage {
+                self?.showTextFieldMessage(text: message)
+            } else {
+                self?.hideTextFieldMessage()
+            }
+        }
+        
+        viewModel.$trackerSettings.bind { [weak self] _ in
+            self?.updateCreateButtonState()
+        }
+        
+        viewModel.$trackerCategory.bind { [weak self] _ in
+            let categoryIndexPath = IndexPath(row: 0, section: 0)
+            self?.settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
+        }
+    }
+    
     func makeScheduleDescription() -> String? {
-        guard let schedule = trackerSettings.schedule else { return nil }
+        guard let schedule = viewModel.trackerSettings.schedule else { return nil }
         if schedule.count == 7 {
             return "Каждый день"
         }
@@ -249,10 +266,10 @@ private extension NewTrackerViewController {
         
         if isSelect {
             emojiCell.selected()
-            trackerSettings.emoji = settingsEmojis[indexPath.item]
+            viewModel.didUpdateEmoji(newEmoji: settingsEmojis[indexPath.item])
         } else {
             emojiCell.deselected()
-            trackerSettings.emoji = nil
+            viewModel.didUpdateEmoji(newEmoji: nil)
         }
     }
     
@@ -265,16 +282,16 @@ private extension NewTrackerViewController {
         
         if isSelect {
             colorCell.selected()
-            trackerSettings.color = settingsColors[indexPath.item]
+            viewModel.didUpdateColor(newColor: settingsColors[indexPath.item])
         } else {
             colorCell.deselected()
-            trackerSettings.color = nil
+            viewModel.didUpdateColor(newColor: nil)
         }
     }
     
     func updateCreateButtonState() {
-        if trackerSettings.isReady &&
-            isValidationPassed
+        if viewModel.trackerSettings.isValid &&
+            viewModel.isValidName
         {
             createButton.isUserInteractionEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -369,7 +386,7 @@ private extension NewTrackerViewController {
         // MARK: - Views Configuring
         view.backgroundColor = .ypWhite
         navigationItem.setHidesBackButton(true, animated: false)
-        title = trackerSettings.trackerType == .habit ?
+        title = viewModel.trackerSettings.trackerType == .habit ?
         "Новая привычка":
         "Новое нерегулярное событие"
     }
@@ -391,13 +408,13 @@ extension NewTrackerViewController: UITableViewDataSource {
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         
         if indexPath.row == 0,
-           let categoryName = trackerSettings.categoryName
+           let categoryName = viewModel.trackerSettings.categoryName
         {
             cell.detailTextLabel?.text = categoryName
         }
         
         if indexPath.row == 1,
-           let _ = trackerSettings.schedule,
+           let _ = viewModel.trackerSettings.schedule,
            let scheduleDescription = makeScheduleDescription()
         {
             cell.detailTextLabel?.text = scheduleDescription
@@ -416,11 +433,12 @@ extension NewTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            let controller = CategoriesViewController(selectedCategory: trackerSettings.categoryName)
-            controller.delegate = self
+            let viewModel = CategoriesViewModel(delegate: self.viewModel, selectedCategory: viewModel.trackerSettings.categoryName)
+            let controller = CategoriesViewController(viewModel: viewModel)
+            
             navigationController?.pushViewController(controller, animated: true)
         case 1:
-            let controller = ScheduleViewController(currentSchedule: trackerSettings.schedule ?? [])
+            let controller = ScheduleViewController(currentSchedule: viewModel.trackerSettings.schedule ?? [])
             controller.delegate = self
             navigationController?.pushViewController(controller, animated: true)
         default:
@@ -556,52 +574,24 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - ScheduleViewControllerDelegate
 extension NewTrackerViewController: ScheduleViewControllerDelegate {
     func scheduleViewController(_ scheduleViewController: ScheduleViewController, didSelectWeekDays weekDays: [WeekDay]) {
-        trackerSettings.schedule = weekDays
+        viewModel.didUpdateSchedule(newSchedule: weekDays)
         let scheduleIndexPath = IndexPath(row: 1, section: 0)
         settingsTableView.reloadRows(at: [scheduleIndexPath], with: .automatic)
-    }
-}
-
-extension NewTrackerViewController: CategoriesViewControllerDelegate {
-    func categoriesViewController(_ viewController: CategoriesViewController, didSelectCategory name: String) {
-        trackerSettings.categoryName = name
-        let categoryIndexPath = IndexPath(row: 0, section: 0)
-        settingsTableView.reloadRows(at: [categoryIndexPath], with: .automatic)
     }
 }
 
 // MARK: - UITextFieldDelegate
 extension NewTrackerViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength = 38
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        if updatedText.isEmpty || updatedText.isBlank {
-            isValidationPassed = false
-            updateCreateButtonState()
-            return true
-        } else {
-            isValidationPassed = true
-        }
-        
-        trackerSettings.name = updatedText.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if updatedText.count > maxLength {
-            showTextFieldMessage(text: "Ограничение 38 символов")
-            isValidationPassed = false
-        } else {
-            hideTextFieldMessage()
-            isValidationPassed = true
-        }
+        viewModel.didEnterNewName(updatedText)
         return true
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        isValidationPassed = false
-        updateCreateButtonState()
-        hideTextFieldMessage()
+        viewModel.didEnterNewName("")
         return true
     }
 }

@@ -26,6 +26,7 @@ enum CategoryNameViewControllerType {
 
 final class CategoryNameViewController: UIViewController {
     // MARK: - Properties
+    private let viewModel: CategoryNameViewModel
     private var oldCategoryName = ""
     private var categoryName = ""
     private let controllerType: CategoryNameViewControllerType
@@ -51,7 +52,8 @@ final class CategoryNameViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
-    init(type: CategoryNameViewControllerType, categoryName: String?) {
+    init(type: CategoryNameViewControllerType, categoryName: String?, viewModel: CategoryNameViewModel) {
+        self.viewModel = viewModel
         self.controllerType = type
         super.init(nibName: nil, bundle: nil)
         if let categoryName {
@@ -66,9 +68,10 @@ final class CategoryNameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         setupUI()
-        updateContinueButtonState()
         addMainViewTapGesture()
+        viewModel.didEnterNewName(oldCategoryName)
     }
     
     // MARK: - Event Handlers
@@ -92,8 +95,20 @@ final class CategoryNameViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension CategoryNameViewController {
-    func updateContinueButtonState() {
-        if isValidationPassed
+    func bind() {
+        viewModel.$categoryName.bind { [weak self] categoryName in
+            guard let self else { return }
+            self.categoryName = categoryName
+        }
+        
+        viewModel.$isNameValid.bind { [weak self] isNameValid in
+            guard let self else { return }
+            self.updateContinueButtonState(isNameValid: isNameValid)
+        }
+    }
+    
+    func updateContinueButtonState(isNameValid: Bool) {
+        if isNameValid
         {
             continueButton.isUserInteractionEnabled = true
             continueButton.backgroundColor = .ypBlack
@@ -144,34 +159,15 @@ private extension CategoryNameViewController {
 // MARK: - Protocols Conforming
 extension CategoryNameViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength = 24
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        if updatedText.isEmpty || updatedText.isBlank {
-            isValidationPassed = false
-            updateContinueButtonState()
-            return true
-        } else {
-            isValidationPassed = true
-        }
-        
-        categoryName = updatedText.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if updatedText.count > maxLength {
-            isValidationPassed = false
-        } else {
-            isValidationPassed = true
-        }
-        
-        updateContinueButtonState()
+        viewModel.didEnterNewName(updatedText)
         return true
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        isValidationPassed = false
-        updateContinueButtonState()
+        viewModel.didEnterNewName("")
         return true
     }
 }

@@ -12,6 +12,12 @@ enum TrackerState {
     case notDone
 }
 
+struct TrackerViewConfiguration {
+    let isDoneToday: Bool
+    let isDoneButtonAvailable: Bool
+    let daysCount: Int
+}
+
 protocol TrackerCellDelegate: AnyObject {
     func trackerCell(_ trackerCell: TrackerCell,
                      didTapDoneButton button: UIButton,
@@ -112,18 +118,18 @@ final class TrackerCell: UICollectionViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(withTracker tracker: Tracker, isDoneToday: Bool, daysStreak: Int, isDoneButtonAvailable: Bool, indexPath: IndexPath) {
+    func configure(withTracker tracker: Tracker, configuration: TrackerViewConfiguration, indexPath: IndexPath) {
         let color = tracker.color
-        let buttonColor = isDoneButtonAvailable ? tracker.color : tracker.color.withAlphaComponent(0.5)
+        let buttonColor = configuration.isDoneButtonAvailable ? tracker.color : tracker.color.withAlphaComponent(0.5)
         self.indexPath = indexPath
         trackerId = tracker.id
-        trackerState = isDoneToday ? .done : .notDone
+        trackerState = configuration.isDoneToday ? .done : .notDone
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
-        daysLabel.text = pluralizeDay(daysStreak)
+        daysLabel.text = pluralizeDay(configuration.daysCount)
         cardView.backgroundColor = color
-        trackerButton.setImage(isDoneToday ? .doneButtonIcon : .notDoneButtonIcon, for: .normal)
-        trackerButton.isUserInteractionEnabled = isDoneButtonAvailable
+        trackerButton.setImage(configuration.isDoneToday ? .doneButtonIcon : .notDoneButtonIcon, for: .normal)
+        trackerButton.isUserInteractionEnabled = configuration.isDoneButtonAvailable
         trackerButton.backgroundColor = buttonColor
         isPinnedImageView.hide()
     }
