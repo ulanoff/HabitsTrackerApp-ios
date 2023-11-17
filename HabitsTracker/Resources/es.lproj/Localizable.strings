@@ -1,0 +1,89 @@
+/* 
+  Localizable.strings
+  HabitsTracker
+
+  Created by Andrey Ulanov on 17.11.2023.
+  
+*/
+
+// MARK: Onboarding
+onboarding.firstScreen.text = "Realiza un seguimiento solo de lo que te importa";
+onboarding.secondScreen.text = "Incluso si no son litros de agua y yoga";
+onboarding.skipButton = "¡Eso es tecnología para ti!";
+
+// MARK: TabBar
+tabBar.trackers = "Seguimientos";
+tabBar.statistics = "Estadísticas";
+
+// MARK: Main Screen
+mainScreen.title = "Seguimientos";
+mainScreen.searchTextField.placeholder = "Buscar";
+mainScreen.searchTextField.candelButton = "Cancelar";
+mainScreen.emptyStateByDate = "¿Qué deseas seguir?";
+mainScreen.emptyStateBySearch = "Nada encontrado";
+mainScreen.filterButton = "Filtros";
+
+// MARK: Tracker Type
+trackerTypeScreen.title = "Crear Seguimiento";
+trackerTypeScreen.habitButton = "Hábito";
+trackerTypeScreen.eventButton = "Evento Irregular";
+
+// MARK: Tracker Settings
+trackerSettingsScreen.title.habit = "Nuevo Hábito";
+trackerSettingsScreen.title.event = "Nuevo Evento Irregular";
+trackerSettingsScreen.nameTextField.placeholder = "Ingrese el nombre del seguimiento";
+trackerSettingsScreen.nameTextField.maxLengthError = "El límite es de 38 caracteres";
+trackerSettingsScreen.categoryButton = "Categoría";
+trackerSettingsScreen.scheduleButton = "Programa";
+trackerSettingsScreen.emojiTitle = "Emoji";
+trackerSettingsScreen.colorTitle = "Color";
+trackerSettingsScreen.cancelButton = "Cancelar";
+trackerSettingsScreen.createButton = "Crear";
+
+// MARK: Categories Screen
+categoriesScreen.title = "Categoría";
+categoriesScreen.emptyState = "Los hábitos y eventos se pueden agrupar \nsegún su significado";
+categoriesScreen.createButton = "Crear Categoría";
+categoriesScreen.deleteWarning = "¿Realmente quieres eliminar esta categoría?";
+categoriesScreen.deleteConfirm = "Eliminar";
+categoriesScreen.deleteCancel = "Cancelar";
+
+// MARK: New Category Screen
+newCategoryScreen.title = "Nueva Categoría";
+newCategoryScreen.nameTextField.placeholder = "Ingrese el nombre de la categoría";
+newCategoryScreen.confirmButton = "Hecho";
+
+// MARK: Edit Category Screen
+editCategoryScreen.title = "Editar Categoría";
+editCategoryScreen.confirmButton = "Hecho";
+
+// MARK: Schedule Screen
+scheduleScreen.title = "Programa";
+scheduleScreen.confirmButton = "Hecho";
+
+// MARK: Context Menu
+contextMenu.delete = "Eliminar";
+contextMenu.edit = "Editar";
+contextMenu.pin = "Fijar";
+contextMenu.unpin = "Desfijar";
+
+// MARK: Week Days
+weekDay.everyday = "Todos los días";
+
+// MARK: Week Days (full)
+weekDay.monday.full = "Lunes";
+weekDay.tuesday.full = "Martes";
+weekDay.wednesday.full = "Miércoles";
+weekDay.thursday.full = "Jueves";
+weekDay.friday.full = "Viernes";
+weekDay.saturday.full = "Sábado";
+weekDay.sunday.full = "Domingo";
+
+// MARK: Week Days (short)
+weekDay.monday.short = "Lun";
+weekDay.tuesday.short = "Mar";
+weekDay.wednesday.short = "Mié";
+weekDay.thursday.short = "Jue";
+weekDay.friday.short = "Vie";
+weekDay.saturday.short = "Sáb";
+weekDay.sunday.short = "Dom";
