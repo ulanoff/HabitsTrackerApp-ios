@@ -19,13 +19,13 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: ScheduleViewControllerDelegate?
     private let weekDaysStrings: [String] = [
-        "Понедельник",
-        "Вторник",
-        "Среда",
-        "Четверг",
-        "Пятница",
-        "Суббота",
-        "Воскресенье",
+        NSLocalizedString("weekDay.monday.full", comment: ""),
+        NSLocalizedString("weekDay.tuesday.full", comment: ""),
+        NSLocalizedString("weekDay.wednesday.full", comment: ""),
+        NSLocalizedString("weekDay.thursday.full", comment: ""),
+        NSLocalizedString("weekDay.friday.full", comment: ""),
+        NSLocalizedString("weekDay.saturday.full", comment: ""),
+        NSLocalizedString("weekDay.sunday.full", comment: ""),
     ]
     private var selectedWeekDays: Set<WeekDay> = []
     private var scheduleTableHeight: CGFloat {
@@ -50,7 +50,8 @@ final class ScheduleViewController: UIViewController {
     
     private lazy var continueButton: Button = {
         let button = Button()
-        button.setTitle("Готово", for: .normal)
+        let title = NSLocalizedString("scheduleScreen.confirmButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapContinueButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -117,7 +118,7 @@ private extension ScheduleViewController {
         // MARK: - Views Configuring
         navigationItem.setHidesBackButton(true, animated: false)
         view.backgroundColor = .ypWhite
-        title = "Расписание"
+        title = NSLocalizedString("scheduleScreen.title", comment: "")
     }
 }
 

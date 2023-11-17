@@ -14,9 +14,11 @@ final class TrackersViewController: UIViewController {
     // MARK: - UI Elements
     private lazy var searchTextField: UISearchTextField = {
         let textField = UISearchTextField()
-        textField.placeholder = "Поиск"
+        let placeholder = NSLocalizedString("mainScreen.searchTextField.placeholder", comment: "")
+        let cancelButtonText = NSLocalizedString("mainScreen.searchTextField.candelButton", comment: "")
+        textField.placeholder = placeholder
         textField.borderStyle = .line
-        textField.setCustomClearButtonWithText("Отменить")
+        textField.setCustomClearButtonWithText(cancelButtonText)
         textField.delegate = self
         return textField
     }()
@@ -33,8 +35,9 @@ final class TrackersViewController: UIViewController {
     
     private lazy var filtersButton: UIButton = {
         let button = UIButton(type: .system)
+        let title = NSLocalizedString("mainScreen.filterButton", comment: "")
         button.backgroundColor = .ypBlue
-        button.setTitle("Фильтры", for: .normal)
+        button.setTitle(title, for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
@@ -46,14 +49,16 @@ final class TrackersViewController: UIViewController {
     
     private lazy var noTrackersView: EmptyView = {
         let view = EmptyView()
-        view.configure(image: .noTrackers, text: "Что будем отслеживать?")
+        let text = NSLocalizedString("mainScreen.emptyStateByDate", comment: "")
+        view.configure(image: .noTrackers, text: text)
         view.hide()
         return view
     }()
     
     private lazy var notFoundTrackersView: EmptyView = {
         let view = EmptyView()
-        view.configure(image: .notFound, text: "Ничего не найдено")
+        let text = NSLocalizedString("mainScreen.emptyStateBySearch", comment: "")
+        view.configure(image: .notFound, text: text)
         view.hide()
         return view
     }()
@@ -181,7 +186,7 @@ private extension TrackersViewController {
     }
     
     func setupNavigationBar() {
-        title = "Трекеры"
+        title = NSLocalizedString("mainScreen.title", comment: "")
         let leftBarButton = makeLeftBarButton()
         let rightBarButton = makeRightBarButton()
         navigationItem.setLeftBarButton(leftBarButton, animated: false)

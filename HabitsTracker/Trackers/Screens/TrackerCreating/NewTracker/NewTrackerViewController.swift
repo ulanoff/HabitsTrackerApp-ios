@@ -10,7 +10,10 @@ import UIKit
 // MARK: - Constants
 fileprivate struct TableSettings {
     static let settingsTableRowHeight: CGFloat = 75
-    static let settingsTableRowLabels = ["Категория", "Расписание"]
+    static let settingsTableRowLabels = [
+        NSLocalizedString("trackerSettingsScreen.categoryButton", comment: ""),
+        NSLocalizedString("trackerSettingsScreen.scheduleButton", comment: "")
+    ]
 }
 
 fileprivate struct CollectionSettings {
@@ -88,8 +91,9 @@ final class NewTrackerViewController: UIViewController {
     
     private lazy var trackerNameTextField: TextField = {
         let textField = TextField()
+        let placeholder = NSLocalizedString("trackerSettingsScreen.nameTextField.placeholder", comment: "")
         textField.delegate = self
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = placeholder
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -140,7 +144,8 @@ final class NewTrackerViewController: UIViewController {
     
     private lazy var createButton: Button = {
         let button = Button()
-        button.setTitle("Создать", for: .normal)
+        let title = NSLocalizedString("trackerSettingsScreen.createButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
         button.backgroundColor = .ypGray
         button.isUserInteractionEnabled = false
@@ -150,7 +155,8 @@ final class NewTrackerViewController: UIViewController {
     
     private lazy var cancelButton: Button = {
         let button = Button()
-        button.setTitle("Отменить", for: .normal)
+        let title = NSLocalizedString("trackerSettingsScreen.cancelButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.setTitleColor(.ypRed, for: .normal)
         button.backgroundColor = .ypWhite
         button.layer.borderWidth = 1
@@ -227,7 +233,8 @@ private extension NewTrackerViewController {
     func makeScheduleDescription() -> String? {
         guard let schedule = viewModel.trackerSettings.schedule else { return nil }
         if schedule.count == 7 {
-            return "Каждый день"
+            let everyday = NSLocalizedString("weekDay.everyday", comment: "")
+            return everyday
         }
         let sortedSchedule = schedule.sorted(by: <)
         let weekDays = sortedSchedule.map { $0.description }
@@ -387,8 +394,8 @@ private extension NewTrackerViewController {
         view.backgroundColor = .ypWhite
         navigationItem.setHidesBackButton(true, animated: false)
         title = viewModel.trackerSettings.trackerType == .habit ?
-        "Новая привычка":
-        "Новое нерегулярное событие"
+        NSLocalizedString("trackerSettingsScreen.title.habit", comment: ""):
+        NSLocalizedString("trackerSettingsScreen.title.event", comment: "")
     }
 }
 
@@ -549,10 +556,11 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
             return UICollectionReusableView()
         }
         
+        
         let headerText = if indexPath.section == 0 {
-            "Emoji"
+            NSLocalizedString("trackerSettingsScreen.emojiTitle", comment: "")
         } else {
-            "Цвет"
+            NSLocalizedString("trackerSettingsScreen.colorTitle", comment: "")
         }
         headerView.configure(withText: headerText)
         return headerView

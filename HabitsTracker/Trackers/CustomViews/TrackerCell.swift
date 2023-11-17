@@ -138,16 +138,21 @@ final class TrackerCell: UICollectionViewCell {
 // MARK: - Private Methods
 private extension TrackerCell {
     func pluralizeDay(_ number: Int) -> String {
-        let lastDigit = number % 10
-        let lastTwoDigits = number % 100
+        String.localizedStringWithFormat(
+            NSLocalizedString("days", comment: ""),
+            number
+        )
         
-        if lastDigit == 1 && lastTwoDigits != 11 {
-            return "\(number) день"
-        } else if (lastDigit >= 2 && lastDigit <= 4) && (lastTwoDigits < 10 || lastTwoDigits >= 20) {
-            return "\(number) дня"
-        } else {
-            return "\(number) дней"
-        }
+//        let lastDigit = number % 10
+//        let lastTwoDigits = number % 100
+//        
+//        if lastDigit == 1 && lastTwoDigits != 11 {
+//            return "\(number) день"
+//        } else if (lastDigit >= 2 && lastDigit <= 4) && (lastTwoDigits < 10 || lastTwoDigits >= 20) {
+//            return "\(number) дня"
+//        } else {
+//            return "\(number) дней"
+//        }
     }
     
     // MARK: - Setup UI

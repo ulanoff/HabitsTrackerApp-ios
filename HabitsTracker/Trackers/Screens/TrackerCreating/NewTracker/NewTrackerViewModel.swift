@@ -28,7 +28,11 @@ final class NewTrackerViewModel {
         }
         
         guard trimmedName.count <= nameMaxLength else {
-            nameErrorMessage = "Ограничение 38 символов"
+            let message = NSLocalizedString(
+                "trackerSettingsScreen.nameTextField.maxLengthError",
+                comment: ""
+            )
+            nameErrorMessage = message
             isValidName = false
             return
         }

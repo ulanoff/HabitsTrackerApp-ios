@@ -50,19 +50,19 @@ enum WeekDay: Int, Comparable, CaseIterable {
         get {
             switch self {
             case .monday:
-                "Пн"
+                NSLocalizedString("weekDay.monday.short", comment: "")
             case .tuesday:
-                "Вт"
+                NSLocalizedString("weekDay.tuesday.short", comment: "")
             case .wednesday:
-                "Ср"
+                NSLocalizedString("weekDay.wednesday.short", comment: "")
             case .thursday:
-                "Чт"
+                NSLocalizedString("weekDay.thursday.short", comment: "")
             case .friday:
-                "Пт"
+                NSLocalizedString("weekDay.friday.short", comment: "")
             case .saturday:
-                "Сб"
+                NSLocalizedString("weekDay.saturday.short", comment: "")
             case .sunday:
-                "Вс"
+                NSLocalizedString("weekDay.sunday.short", comment: "")
             }
         }
     }

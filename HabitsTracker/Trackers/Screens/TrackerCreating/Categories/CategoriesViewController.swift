@@ -31,14 +31,16 @@ final class CategoriesViewController: UIViewController {
     
     private lazy var createButton: Button = {
         let button = Button()
-        button.setTitle("Добавить категорию", for: .normal)
+        let title = NSLocalizedString("categoriesScreen.createButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         return button
     }()
     
     private lazy var noCategoriesView: EmptyView = {
         let view = EmptyView()
-        view.configure(image: .noTrackers, text: "Привычки и события можно \nобъединить по смыслу")
+        let text = NSLocalizedString("categoriesScreen.emptyState", comment: "")
+        view.configure(image: .noTrackers, text: text)
         view.hide()
         return view
     }()
@@ -143,7 +145,7 @@ private extension CategoriesViewController {
         // MARK: - Views Configuring
         navigationItem.setHidesBackButton(true, animated: false)
         view.backgroundColor = .ypWhite
-        title = "Категория"
+        title = NSLocalizedString("categoriesScreen.title", comment: "")
     }
 }
 
@@ -194,8 +196,10 @@ extension CategoriesViewController: UITableViewDelegate {
         point: CGPoint) -> UIContextMenuConfiguration? {
             let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
                 guard let self else { return UIMenu() }
+                let editButtonTitle = NSLocalizedString("contextMenu.edit", comment: "")
+                let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
                 return UIMenu(children: [
-                    UIAction(title: "Редактировать") { [weak self] action in
+                    UIAction(title: editButtonTitle) { [weak self] action in
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let viewModel = CategoryNameViewModel()
@@ -203,7 +207,7 @@ extension CategoriesViewController: UITableViewDelegate {
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },
-                    UIAction(title: "Удалить", attributes: .destructive) { action in
+                    UIAction(title: deleteButtonTitle, attributes: .destructive) { action in
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
                         self.viewModel.didDeleteCategory(category)

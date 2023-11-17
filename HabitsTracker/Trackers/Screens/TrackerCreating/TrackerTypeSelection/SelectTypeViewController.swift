@@ -22,14 +22,16 @@ final class SelectTypeViewController: UIViewController {
     
     private lazy var habitButton: Button = {
         let button = Button()
-        button.setTitle("Привычка", for: .normal)
+        let title = NSLocalizedString("trackerTypeScreen.habitButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
         return button
     }()
     
     private lazy var irregularButton: Button = {
         let button = Button()
-        button.setTitle("Нерегулярное событие", for: .normal)
+        let title = NSLocalizedString("trackerTypeScreen.eventButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapIrregularButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -79,6 +81,6 @@ private extension SelectTypeViewController {
         
         // MARK: - Views Configuring
         view.backgroundColor = .ypWhite
-        title = "Создание трекера"
+        title = NSLocalizedString("trackerTypeScreen.title", comment: "")
     }
 }
