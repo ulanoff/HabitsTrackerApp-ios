@@ -432,7 +432,7 @@
 			};
 			buildConfigurationList = 55C465AF2AD86B8900D75E2E /* Build configuration list for PBXProject "HabitsTracker" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = ru;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
