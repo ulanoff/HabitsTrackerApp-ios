@@ -39,6 +39,8 @@ final class TrackersViewController: UIViewController {
         collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
         collectionView.register(TrackersHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackersHeaderView.reuseIdentifier)
         collectionView.showsVerticalScrollIndicator = false
+        let bottomInset: CGFloat = 75.0
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
         return collectionView
     }()
     
