@@ -23,6 +23,13 @@ mainScreen.emptyStateByDate = "What do you want to track?";
 mainScreen.emptyStateBySearch = "Nothing found";
 mainScreen.filterButton = "Filters";
 
+filtersScreen.title = "Filters";
+filter.byWeekday = "All Trackers";
+filter.byToday = "Today";
+filter.byCompleteness = "Completed";
+filter.byNotCompleteness = "Incomplete";
+filter.search = "Search";
+
 // MARK: Tracker Type
 trackerTypeScreen.title = "Create Tracker";
 trackerTypeScreen.habitButton = "Habit";

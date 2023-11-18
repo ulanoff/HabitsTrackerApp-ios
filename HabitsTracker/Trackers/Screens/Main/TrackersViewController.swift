@@ -12,6 +12,15 @@ final class TrackersViewController: UIViewController {
     private let viewModel: TrackersViewModel
     
     // MARK: - UI Elements
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.date = Date().onlyDate
+        datePicker.addTarget(self, action: #selector(didChangeDateInDatePicker(_:)), for: .valueChanged)
+        return datePicker
+    }()
+    
     private lazy var searchTextField: UISearchTextField = {
         let textField = UISearchTextField()
         let placeholder = NSLocalizedString("mainScreen.searchTextField.placeholder", comment: "")
@@ -45,6 +54,14 @@ final class TrackersViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapFiltersButton(_:)), for: .touchUpInside)
         button.hide()
         return button
+    }()
+    
+    private lazy var filtersButtonActiveView: UIView = {
+        let activeView = UIView()
+        activeView.backgroundColor = .ypRed
+        activeView.layer.cornerRadius = 7.5
+        activeView.hide()
+        return activeView
     }()
     
     private lazy var noTrackersView: EmptyView = {
@@ -93,7 +110,12 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func didTapFiltersButton(_ sender: UIButton) {
-        
+        let viewModel = FiltersViewModel(
+            delegate: viewModel,
+            selectedFilter: viewModel.selectedFilterOperation
+        )
+        let controller = FiltersViewController(viewModel: viewModel)
+        present(controller.wrappedInNavigationController(), animated: true)
     }
     
     @objc private func didChangeDateInDatePicker(_ sender: UIDatePicker) {
@@ -117,17 +139,34 @@ private extension TrackersViewController {
             switch state {
             case .standart:
                 self?.filtersButton.show()
+                self?.filtersButtonActiveView.hide()
                 self?.noTrackersView.hide()
                 self?.notFoundTrackersView.hide()
-            case .emptyByDate:
+            case .emptyByDefault:
                 self?.filtersButton.hide()
+                self?.filtersButtonActiveView.hide()
                 self?.noTrackersView.show()
                 self?.notFoundTrackersView.hide()
             case .emptyBySearch:
                 self?.filtersButton.hide()
+                self?.filtersButtonActiveView.hide()
                 self?.noTrackersView.hide()
                 self?.notFoundTrackersView.show()
+            case .emptyByFilter:
+                self?.filtersButton.show()
+                self?.filtersButtonActiveView.show()
+                self?.noTrackersView.hide()
+                self?.notFoundTrackersView.show()
+            case .filtersEnabled:
+                self?.filtersButton.show()
+                self?.filtersButtonActiveView.show()
+                self?.noTrackersView.hide()
+                self?.notFoundTrackersView.hide()
             }
+        }
+        
+        viewModel.$selectedDate.bind { [weak self] date in
+            self?.datePicker.setDate(date, animated: true)
         }
     }
     
@@ -146,6 +185,7 @@ private extension TrackersViewController {
         view.addSubview(filtersButton)
         view.addSubview(noTrackersView)
         view.addSubview(notFoundTrackersView)
+        view.addSubview(filtersButtonActiveView)
         
         // MARK: - Constraints
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -153,6 +193,7 @@ private extension TrackersViewController {
         filtersButton.translatesAutoresizingMaskIntoConstraints = false
         noTrackersView.translatesAutoresizingMaskIntoConstraints = false
         notFoundTrackersView.translatesAutoresizingMaskIntoConstraints = false
+        filtersButtonActiveView.translatesAutoresizingMaskIntoConstraints = false
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -170,6 +211,11 @@ private extension TrackersViewController {
             filtersButton.heightAnchor.constraint(equalToConstant: 50),
             filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             filtersButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
+            
+            filtersButtonActiveView.widthAnchor.constraint(equalToConstant: 15),
+            filtersButtonActiveView.heightAnchor.constraint(equalToConstant: 15),
+            filtersButtonActiveView.topAnchor.constraint(equalTo: filtersButton.topAnchor, constant: -4.5),
+            filtersButtonActiveView.trailingAnchor.constraint(equalTo: filtersButton.trailingAnchor, constant: 4.5),
             
             noTrackersView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
             noTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
@@ -214,11 +260,6 @@ private extension TrackersViewController {
     }
     
     func makeRightBarButton() -> UIBarButtonItem {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.date = Date().onlyDate
-        datePicker.addTarget(self, action: #selector(didChangeDateInDatePicker(_:)), for: .valueChanged)
         let rightBarButton = UIBarButtonItem(customView: datePicker)
         return rightBarButton
     }

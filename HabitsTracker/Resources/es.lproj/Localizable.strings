@@ -23,6 +23,14 @@ mainScreen.emptyStateByDate = "¿Qué deseas seguir?";
 mainScreen.emptyStateBySearch = "Nada encontrado";
 mainScreen.filterButton = "Filtros";
 
+// MARK: Filters Screen
+filtersScreen.title = "Filtros";
+filter.byWeekday = "Todos los Seguimientos";
+filter.byToday = "Seguimientos para Hoy";
+filter.byCompleteness = "Completados";
+filter.byNotCompleteness = "Incompletos";
+filter.search = "Buscar";
+
 // MARK: Tracker Type
 trackerTypeScreen.title = "Crear Seguimiento";
 trackerTypeScreen.habitButton = "Hábito";

@@ -23,6 +23,14 @@ mainScreen.emptyStateByDate = "Что будем отслеживать?";
 mainScreen.emptyStateBySearch = "Ничего не найдено";
 mainScreen.filterButton = "Фильтры";
 
+// MARK: Filters Screen
+filtersScreen.title = "Фильтры";
+filter.byWeekday = "Все трекеры";
+filter.byToday = "Трекеры на сегодня";
+filter.byCompleteness = "Завершенные";
+filter.byNotCompleteness = "Не завершенные";
+filter.search = "Поиск";
+
 // MARK: Tracker Type
 trackerTypeScreen.title = "Создание трекера";
 trackerTypeScreen.habitButton = "Привычка";

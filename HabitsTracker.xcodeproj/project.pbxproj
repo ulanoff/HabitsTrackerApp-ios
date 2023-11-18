@@ -13,6 +13,9 @@
 		552936012AF800D700EF3DEC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552936002AF800D700EF3DEC /* CoreDataManager.swift */; };
 		552C70122AE6A2A900BB68A9 /* UITextField+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */; };
 		552CE9C82AE96304005E3602 /* String+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552CE9C72AE96304005E3602 /* String+ext.swift */; };
+		554590962B09047800B408F4 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554590952B09047800B408F4 /* FiltersViewController.swift */; };
+		554590982B0907D700B408F4 /* FiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554590972B0907D700B408F4 /* FiltersViewModel.swift */; };
+		5545909A2B091CF800B408F4 /* FilterOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554590992B091CF800B408F4 /* FilterOperation.swift */; };
 		554BBBF22AD9838B00BF1DD4 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF12AD9838B00BF1DD4 /* EmptyView.swift */; };
 		554BBBF62AD9900100BF1DD4 /* UIView+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */; };
 		554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBBF82AD990C900BF1DD4 /* Tracker.swift */; };
@@ -70,6 +73,9 @@
 		552936002AF800D700EF3DEC /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		552C70112AE6A2A900BB68A9 /* UITextField+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+ext.swift"; sourceTree = "<group>"; };
 		552CE9C72AE96304005E3602 /* String+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ext.swift"; sourceTree = "<group>"; };
+		554590952B09047800B408F4 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		554590972B0907D700B408F4 /* FiltersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewModel.swift; sourceTree = "<group>"; };
+		554590992B091CF800B408F4 /* FilterOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterOperation.swift; sourceTree = "<group>"; };
 		554BBBF12AD9838B00BF1DD4 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		554BBBF52AD9900100BF1DD4 /* UIView+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ext.swift"; sourceTree = "<group>"; };
 		554BBBF82AD990C900BF1DD4 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 				554BBBF82AD990C900BF1DD4 /* Tracker.swift */,
 				5571F3132AE50E5A00E514C2 /* TrackerSettings.swift */,
 				5571F3152AE50E7F00E514C2 /* WeekDay.swift */,
+				554590992B091CF800B408F4 /* FilterOperation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -280,6 +287,8 @@
 			children = (
 				55C465D12AD8766000D75E2E /* TrackersViewController.swift */,
 				5581FE772B014865009BFFBE /* TrackersViewModel.swift */,
+				554590952B09047800B408F4 /* FiltersViewController.swift */,
+				554590972B0907D700B408F4 /* FiltersViewModel.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -491,10 +500,13 @@
 				55F20BA82AE2FE0D00262572 /* Button.swift in Sources */,
 				55B00FBB2AF77AAF00213065 /* TrackerStore.swift in Sources */,
 				554BBBF92AD990C900BF1DD4 /* Tracker.swift in Sources */,
+				5545909A2B091CF800B408F4 /* FilterOperation.swift in Sources */,
+				554590982B0907D700B408F4 /* FiltersViewModel.swift in Sources */,
 				5581FE692B011139009BFFBE /* UserDefaultsKeys.swift in Sources */,
 				557EEAA52AF92106008CEFCD /* CategoriesViewController.swift in Sources */,
 				55B00FAF2AF7784C00213065 /* TrackerCategoryCD.swift in Sources */,
 				55C465B82AD86B8900D75E2E /* AppDelegate.swift in Sources */,
+				554590962B09047800B408F4 /* FiltersViewController.swift in Sources */,
 				554BBBF22AD9838B00BF1DD4 /* EmptyView.swift in Sources */,
 				55C912A92AED346100955B10 /* SettingsCollectionHeaderView.swift in Sources */,
 				5581FE652B00FBD2009BFFBE /* OnboardingViewController.swift in Sources */,
