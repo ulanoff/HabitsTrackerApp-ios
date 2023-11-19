@@ -7,8 +7,9 @@
 
 import UIKit
 
-struct Tracker {
+struct Tracker: Equatable {
     let id: UUID
+    let isPinned: Bool
     let name: String
     let color: UIColor
     let emoji: String

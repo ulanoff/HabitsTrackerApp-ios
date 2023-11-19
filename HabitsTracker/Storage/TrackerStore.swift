@@ -74,6 +74,7 @@ final class TrackerStore: NSObject {
         trackerCD.emoji = tracker.emoji
         trackerCD.id = tracker.id
         trackerCD.schedule = coreDataSchedule(from: tracker.schedule)
+        trackerCD.isPinned = false
         trackerCD.timestamp = Date()
         
         if let categoryCD = trackerCategoryStore.findCategory(category) {
@@ -90,6 +91,17 @@ final class TrackerStore: NSObject {
     func deleteTracker(_ tracker: Tracker) {
         if let tracker = findTracker(tracker) {
             context.delete(tracker)
+            saveContext()
+        }
+    }
+    
+    func updateTracker(_ tracker: Tracker, to newTracker: Tracker) {
+        if let tracker = findTracker(tracker) {
+            tracker.color = newTracker.color
+            tracker.emoji = newTracker.emoji
+            tracker.name = newTracker.name
+            tracker.schedule = coreDataSchedule(from: newTracker.schedule)
+            tracker.isPinned = newTracker.isPinned
             saveContext()
         }
     }
@@ -122,8 +134,10 @@ final class TrackerStore: NSObject {
         else {
             throw TrackerStoreError.convertingError
         }
+        let isPinned = trackerCD.isPinned
         
         return Tracker(id: id,
+                       isPinned: isPinned,
                        name: name,
                        color: color,
                        emoji: emoji,

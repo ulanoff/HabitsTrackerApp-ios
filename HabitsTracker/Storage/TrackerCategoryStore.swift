@@ -27,7 +27,8 @@ final class TrackerCategoryStore: NSObject {
         }
         
         do {
-            let categories = try result.map { categoryCD in
+            let pinndedCategory = try getPinnedCategory()
+            var categories = try result.map { categoryCD in
                 guard
                     let name = categoryCD.name,
                     let trackersCD = categoryCD.trackers?.allObjects as? [TrackerCD]
@@ -49,10 +50,13 @@ final class TrackerCategoryStore: NSObject {
                     } catch {
                         throw TrackerCategoryStoreError.convertingError
                     }
+                }.filter { tracker in
+                    return !pinndedCategory.trackers.contains(tracker)
                 }
                 
                 return TrackerCategory(name: name, trackers: trackers)
             }
+            categories.insert(pinndedCategory, at: 0)
             return categories
         } catch {
             throw error
@@ -65,6 +69,26 @@ final class TrackerCategoryStore: NSObject {
             return result.map { $0.name ?? "" }
         } else {
             return []
+        }
+    }
+    
+    private func getPinnedCategory() throws -> TrackerCategory {
+        let name = NSLocalizedString("defaultCategory.pinned", comment: "")
+        let request = TrackerCD.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "%K = YES",
+            #keyPath(TrackerCD.isPinned)
+        )
+        guard let result = try? context.fetch(request) else {
+            return TrackerCategory(name: name, trackers: [])
+        }
+        do {
+            let trackers = try result.map {
+                try trackerStore.trackerViewModel(from: $0)
+            }
+            return TrackerCategory(name: name, trackers: trackers)
+        } catch {
+            throw TrackerCategoryStoreError.convertingError
         }
     }
     

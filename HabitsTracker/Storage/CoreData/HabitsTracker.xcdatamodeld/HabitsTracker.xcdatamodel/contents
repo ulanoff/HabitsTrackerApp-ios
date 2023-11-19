@@ -9,6 +9,7 @@
         <attribute name="color" attributeType="Transformable" valueTransformerName="UIColorValueTransformer" customClassName="UIColor"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="schedule" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="[Int]"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>

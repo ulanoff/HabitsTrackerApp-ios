@@ -131,7 +131,7 @@ final class TrackerCell: UICollectionViewCell {
         trackerButton.setImage(configuration.isDoneToday ? .doneButtonIcon : .notDoneButtonIcon, for: .normal)
         trackerButton.isUserInteractionEnabled = configuration.isDoneButtonAvailable
         trackerButton.backgroundColor = buttonColor
-        isPinnedImageView.hide()
+        isPinnedImageView.isHidden = !tracker.isPinned
     }
 }
 

@@ -96,3 +96,6 @@ weekDay.friday.short = "Пт";
 weekDay.saturday.short = "Сб";
 weekDay.sunday.short = "Вс";
 
+// MARK: Default Categories
+defaultCategory.pinned = "Закрепленные";
+

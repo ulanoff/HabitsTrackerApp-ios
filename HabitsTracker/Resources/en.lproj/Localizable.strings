@@ -95,3 +95,5 @@ weekDay.friday.short = "Fri";
 weekDay.saturday.short = "Sat";
 weekDay.sunday.short = "Sun";
 
+// MARK: Default Categories
+defaultCategory.pinned = "Pinned";

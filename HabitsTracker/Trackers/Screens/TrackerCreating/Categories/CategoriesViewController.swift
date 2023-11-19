@@ -207,7 +207,8 @@ extension CategoriesViewController: UITableViewDelegate {
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },
-                    UIAction(title: deleteButtonTitle, attributes: .destructive) { action in
+                    UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                        guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
                         self.viewModel.didDeleteCategory(category)

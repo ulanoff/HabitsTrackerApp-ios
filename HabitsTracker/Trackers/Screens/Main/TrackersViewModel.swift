@@ -15,6 +15,11 @@ enum TrackersState {
     case emptyByFilter
 }
 
+struct TrackerIndex {
+    let categoryIndex: Int
+    let trackerIndex: Int
+}
+
 final class TrackersViewModel {
     @Observable var visibleCategories: [TrackerCategory] = [] {
         didSet {
@@ -47,7 +52,7 @@ final class TrackersViewModel {
     private lazy var trackerRecordStore = TrackerRecordStore()
     private var categories: [TrackerCategory] = [] {
         didSet {
-            filterByWeekday()
+            filterBy(filterOperation: selectedFilterOperation)
         }
     }
     
@@ -97,6 +102,24 @@ final class TrackersViewModel {
         }
     }
     
+    func didDeleteTrackerAt(index: TrackerIndex) {
+        let tracker = visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
+        trackerStore.deleteTracker(tracker)
+    }
+    
+    func didPinOrUnpinTracker(index: TrackerIndex) {
+        let tracker = visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
+        let pinnedTracker = Tracker(
+            id: tracker.id,
+            isPinned: !tracker.isPinned,
+            name: tracker.name,
+            color: tracker.color,
+            emoji: tracker.emoji,
+            schedule: tracker.schedule
+        )
+        trackerStore.updateTracker(tracker, to: pinnedTracker)
+    }
+    
     func trackerViewConfiguration(for tracker: Tracker) -> TrackerViewConfiguration {
         let isDoneButtonAvailable = isFulfillmentAvailable && tracker.schedule.contains(selectedWeekDay)
         let daysStreak = completedTrackers.filter { $0.trackerId == tracker.id }.count
@@ -110,6 +133,10 @@ final class TrackersViewModel {
             isDoneButtonAvailable: isDoneButtonAvailable,
             daysCount: daysStreak
         )
+    }
+    
+    func isTrackerPinnedAt(index: TrackerIndex) -> Bool {
+        visibleCategories[index.categoryIndex].trackers[index.trackerIndex].isPinned
     }
     
     private func getAllCategories() throws {
@@ -259,7 +286,7 @@ final class TrackersViewModel {
             return
         }
                 
-        let tracker = Tracker(id: settings.id, name: name, color: color, emoji: emoji, schedule: schedule)
+        let tracker = Tracker(id: settings.id, isPinned: false, name: name, color: color, emoji: emoji, schedule: schedule)
         let category = TrackerCategory(name: settingsCategoryName, trackers: [])
         _ = trackerStore.createTracker(tracker, category: category)
     }

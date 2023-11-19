@@ -348,6 +348,48 @@ extension TrackersViewController: UISearchTextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+        point: CGPoint) -> UIContextMenuConfiguration?
+    {
+        guard let indexPath = indexPaths.first else {
+            assertionFailure("Failed to unwrap indexPath")
+            return nil
+        }
+        let trackerIndex = TrackerIndex(
+            categoryIndex: indexPath.section,
+            trackerIndex: indexPath.item
+        )
+        let isPinned = viewModel.isTrackerPinnedAt(index: trackerIndex)
+        
+        let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
+            guard let self else { return UIMenu() }
+            
+            let editButtonTitle = NSLocalizedString("contextMenu.edit", comment: "")
+            let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
+            let pinButtonTitle = switch isPinned {
+            case true: NSLocalizedString("contextMenu.unpin", comment: "")
+            case false: NSLocalizedString("contextMenu.pin", comment: "")
+            }
+            
+            return UIMenu(children: [
+                UIAction(title: pinButtonTitle) { [weak self] action in
+                    guard let self else { return }
+                    viewModel.didPinOrUnpinTracker(index: trackerIndex)
+                },
+                UIAction(title: editButtonTitle) { [weak self] action in
+                    guard let self else { return }
+                },
+                UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                    guard let self else { return }
+                    viewModel.didDeleteTrackerAt(index: trackerIndex)
+                },
+            ])
+        })
+        return configuration
+    }
 }
 
 // MARK: - TrackerCellDelegate
