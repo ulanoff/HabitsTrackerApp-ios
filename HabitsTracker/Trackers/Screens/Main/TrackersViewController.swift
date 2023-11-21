@@ -178,6 +178,25 @@ private extension TrackersViewController {
         }
     }
     
+    func deleteTrackerAt(index: TrackerIndex) {
+        let alertTitle = NSLocalizedString("actionSheet.title", comment: "")
+        let deleteActionTitle = NSLocalizedString("actionSheet.deleteAction.title", comment: "")
+        let cancelActionTitle = NSLocalizedString("actionSheet.cancelAction.title", comment: "")
+        
+        let alert = UIAlertController(
+            title: alertTitle,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let deleteAction = UIAlertAction(title: deleteActionTitle, style: .destructive) { [weak self] _ in
+            self?.viewModel.didDeleteTrackerAt(index: index)
+        }
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
     
     // MARK: - Setup UI
     func setupUI() {
@@ -387,7 +406,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                 },
                 UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
                     guard let self else { return }
-                    viewModel.didDeleteTrackerAt(index: trackerIndex)
+                    deleteTrackerAt(index: trackerIndex)
                 },
             ])
         })

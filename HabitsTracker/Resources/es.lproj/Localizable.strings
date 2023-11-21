@@ -78,6 +78,11 @@ contextMenu.edit = "Editar";
 contextMenu.pin = "Fijar";
 contextMenu.unpin = "Desfijar";
 
+// MARK: Confirmation Action Sheet
+actionSheet.title = "¿Estás seguro de que quieres eliminar el rastreador?";
+actionSheet.deleteAction.title = "Eliminar";
+actionSheet.cancelAction.title = "Cancelar";
+
 // MARK: Week Days
 weekDay.everyday = "Todos los días";
 

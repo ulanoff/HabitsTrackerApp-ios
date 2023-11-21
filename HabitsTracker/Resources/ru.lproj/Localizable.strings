@@ -78,6 +78,11 @@ contextMenu.edit = "Редактировать";
 contextMenu.pin = "Закрепить";
 contextMenu.unpin = "Открепить";
 
+// MARK: Confirmation Action Sheet
+actionSheet.title = "Уверены что хотите удалить трекер";
+actionSheet.deleteAction.title = "Удалить";
+actionSheet.cancelAction.title = "Отменить";
+
 // MARK: Week Days
 weekDay.everyday = "Каждый день";
 

@@ -77,6 +77,11 @@ contextMenu.edit = "Edit";
 contextMenu.pin = "Pin";
 contextMenu.unpin = "Unpin";
 
+// MARK: Confirmation Action Sheet
+actionSheet.title = "Are you sure you want to delete the tracker?";
+actionSheet.deleteAction.title = "Delete";
+actionSheet.cancelAction.title = "Cancel";
+
 // MARK: Week Days
 weekDay.everyday = "Everyday";
 
