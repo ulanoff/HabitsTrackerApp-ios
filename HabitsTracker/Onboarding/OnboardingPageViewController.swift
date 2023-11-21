@@ -20,7 +20,7 @@ final class OnboardingPageViewController: UIViewController {
     
     private lazy var backgroundImageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .center
         return image
     }()
     
