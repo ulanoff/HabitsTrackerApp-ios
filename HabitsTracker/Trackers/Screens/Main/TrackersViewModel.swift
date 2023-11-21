@@ -62,7 +62,7 @@ final class TrackersViewModel {
     }
     
     func didChangeDate(newDate: Date) {
-        isFulfillmentAvailable = !selectedDate.isInFuture
+        isFulfillmentAvailable = !newDate.isInFuture
         
         if 
             selectedFilterOperation == .byCompleteness ||
