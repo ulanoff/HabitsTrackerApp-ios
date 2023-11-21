@@ -33,7 +33,13 @@ final class TabBarController: UITabBarController {
         
         let trackersViewModel = TrackersViewModel()
         let trackersViewController = TrackersViewController(viewModel: trackersViewModel)
-        let statsViewController = UIViewController()
+        let statsViewModel = StatisticsViewModel(
+            statisticsService: StatisticsService(
+                trackerStore: TrackerStore(),
+                trackerRecordStore: TrackerRecordStore()
+            )
+        )
+        let statsViewController = StatisticsViewController(viewModel: statsViewModel)
         
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
         let statsNavigationController = UINavigationController(rootViewController: statsViewController)

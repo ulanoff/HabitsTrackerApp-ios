@@ -71,6 +71,14 @@ editCategoryScreen.confirmButton = "Done";
 scheduleScreen.title = "Schedule";
 scheduleScreen.confirmButton = "Done";
 
+// MARK: Statistics Screen
+statisticsScreen.title = "Statistics";
+statisticsScreen.emptyView = "Nothing to analyze yet";
+statisticsScreen.bestStreak = "Best Streak";
+statisticsScreen.perfectDays = "Perfect Days";
+statisticsScreen.trackersCompleted = "Trackers Completed";
+statisticsScreen.averageCompletions = "Average Value";
+
 // MARK: Context Menu
 contextMenu.delete = "Delete";
 contextMenu.edit = "Edit";

@@ -72,6 +72,14 @@ editCategoryScreen.confirmButton = "Hecho";
 scheduleScreen.title = "Programa";
 scheduleScreen.confirmButton = "Hecho";
 
+// MARK: Statistics Screen
+statisticsScreen.title = "Estadísticas";
+statisticsScreen.emptyView = "Nada que analizar aún";
+statisticsScreen.bestStreak = "Mejor período";
+statisticsScreen.perfectDays = "Días perfectos";
+statisticsScreen.trackersCompleted = "Trackers completados";
+statisticsScreen.averageCompletions = "Valor promedio";
+
 // MARK: Context Menu
 contextMenu.delete = "Eliminar";
 contextMenu.edit = "Editar";

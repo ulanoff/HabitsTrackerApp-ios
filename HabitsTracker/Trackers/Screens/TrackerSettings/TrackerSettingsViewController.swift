@@ -223,7 +223,6 @@ final class TrackerSettingsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(settingsCollectionViewHeight)
         if isValidCollectionHeight {
             settingsCollectionViewHeightConstraint.constant = settingsCollectionViewHeight
             view.layoutIfNeeded()

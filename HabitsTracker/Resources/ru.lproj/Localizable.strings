@@ -72,6 +72,14 @@ editCategoryScreen.confirmButton = "Готово";
 scheduleScreen.title = "Расписание";
 scheduleScreen.confirmButton = "Готово";
 
+// MARK: Statistics Screen
+statisticsScreen.title = "Статистика";
+statisticsScreen.emptyView = "Анализировать пока нечего";
+statisticsScreen.bestStreak = "Лучший период";
+statisticsScreen.perfectDays = "Идеальные дни";
+statisticsScreen.trackersCompleted = "Трекеров завершено";
+statisticsScreen.averageCompletions = "Среднее значение";
+
 // MARK: Context Menu
 contextMenu.delete = "Удалить";
 contextMenu.edit = "Редактировать";

@@ -52,6 +52,15 @@ final class TrackerStore: NSObject {
         CoreDataManager.shared.saveContext()
     }
     
+    func getAllTracker() throws -> [Tracker] {
+        let request = TrackerCD.fetchRequest()
+        return if let result = try? context.fetch(request) {
+            try result.map { try trackerViewModel(from: $0) }
+        } else {
+            []
+        }
+    }
+    
     func findTracker(_ tracker: Tracker) -> TrackerCD? {
         let request = TrackerCD.fetchRequest()
         request.predicate = NSPredicate(
@@ -93,6 +102,11 @@ final class TrackerStore: NSObject {
     func deleteTracker(_ tracker: Tracker) {
         if let tracker = findTracker(tracker) {
             context.delete(tracker)
+            trackerRecordStore.allRecordsCD().filter {
+                $0.trackerId == tracker.id
+            }.forEach {
+                context.delete($0)
+            }
             saveContext()
         }
     }

@@ -28,11 +28,7 @@ final class TrackersViewModel {
     }
     @Observable var state: TrackersState = .standart
     var completedTrackers: [TrackerRecord] = []
-    var selectedFilterOperation: FilterOperation = .byWeekday {
-        didSet {
-            print(selectedFilterOperation)
-        }
-    }
+    var selectedFilterOperation: FilterOperation = .byWeekday
     var lastFilterOperation: FilterOperation = .byWeekday
     var isFulfillmentAvailable = true
     private var currentDate = Date().onlyDate
