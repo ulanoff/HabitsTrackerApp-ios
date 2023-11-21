@@ -355,7 +355,6 @@ extension TrackersViewController: UISearchTextFieldDelegate {
         point: CGPoint) -> UIContextMenuConfiguration?
     {
         guard let indexPath = indexPaths.first else {
-            assertionFailure("Failed to unwrap indexPath")
             return nil
         }
         let trackerIndex = TrackerIndex(
@@ -381,6 +380,10 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                 },
                 UIAction(title: editButtonTitle) { [weak self] action in
                     guard let self else { return }
+                    let tracker = viewModel.trackerForEdit(at: trackerIndex)
+                    let controller = TrackerSettingsViewController(tracker: tracker)
+                    controller.delegate = viewModel
+                    present(controller.wrappedInNavigationController(), animated: true)
                 },
                 UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
                     guard let self else { return }

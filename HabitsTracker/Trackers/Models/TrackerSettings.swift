@@ -7,11 +7,6 @@
 
 import UIKit
 
-enum TrackerType {
-    case habit
-    case irregularEvent
-}
-
 struct TrackerSettings {
     var trackerType: TrackerType
     var id = UUID()
@@ -26,6 +21,16 @@ struct TrackerSettings {
         if trackerType == .irregularEvent {
             schedule = WeekDay.allCases
         }
+    }
+    
+    init(for tracker: Tracker, trackerCategoryStore: TrackerCategoryStore) {
+        trackerType = tracker.type
+        id = tracker.id
+        name = tracker.name
+        color = tracker.color
+        emoji = tracker.emoji
+        schedule = tracker.schedule
+        categoryName = trackerCategoryStore.getCategoryNameFor(tracker: tracker)
     }
     
     var isValid: Bool {

@@ -37,8 +37,10 @@ trackerTypeScreen.habitButton = "Привычка";
 trackerTypeScreen.eventButton = "Нерегулярное событие";
 
 // MARK: Tracker Settings
-trackerSettingsScreen.title.habit = "Новая привычка";
-trackerSettingsScreen.title.event = "Новое нерегулярное событие";
+trackerSettingsScreen.title.habitCreating = "Новая привычка";
+trackerSettingsScreen.title.eventCreating = "Новое нерегулярное событие";
+trackerSettingsScreen.title.habitEditing = "Редактирование привычки";
+trackerSettingsScreen.title.eventEditing = "Редактирование события";
 trackerSettingsScreen.nameTextField.placeholder = "Введите название трекера";
 trackerSettingsScreen.nameTextField.maxLengthError = "Ограничение 38 символов";
 trackerSettingsScreen.categoryButton = "Категория";
@@ -46,7 +48,8 @@ trackerSettingsScreen.scheduleButton = "Расписание";
 trackerSettingsScreen.emojiTitle = "Emoji";
 trackerSettingsScreen.colorTitle = "Цвет";
 trackerSettingsScreen.cancelButton = "Отменить";
-trackerSettingsScreen.createButton = "Создать";
+trackerSettingsScreen.confirmButton.create = "Создать";
+trackerSettingsScreen.confirmButton.save = "Сохранить";
 
 // MARK: Categories Screen
 categoriesScreen.title = "Категория";

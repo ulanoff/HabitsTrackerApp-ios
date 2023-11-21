@@ -108,16 +108,14 @@ final class TrackersViewModel {
     }
     
     func didPinOrUnpinTracker(index: TrackerIndex) {
+        
         let tracker = visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
-        let pinnedTracker = Tracker(
-            id: tracker.id,
-            isPinned: !tracker.isPinned,
-            name: tracker.name,
-            color: tracker.color,
-            emoji: tracker.emoji,
-            schedule: tracker.schedule
-        )
+        let pinnedTracker = tracker.pinToggled
         trackerStore.updateTracker(tracker, to: pinnedTracker)
+    }
+    
+    func trackerForEdit(at index: TrackerIndex) -> Tracker {
+        visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
     }
     
     func trackerViewConfiguration(for tracker: Tracker) -> TrackerViewConfiguration {
@@ -286,9 +284,21 @@ final class TrackersViewModel {
             return
         }
                 
-        let tracker = Tracker(id: settings.id, isPinned: false, name: name, color: color, emoji: emoji, schedule: schedule)
+        let tracker = Tracker(
+            id: settings.id,
+            isPinned: false,
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: schedule,
+            type: settings.trackerType
+        )
         let category = TrackerCategory(name: settingsCategoryName, trackers: [])
         _ = trackerStore.createTracker(tracker, category: category)
+    }
+    
+    private func updateTracker(old: Tracker, new: Tracker) {
+        trackerStore.updateTracker(old, to: new)
     }
 }
 
@@ -298,8 +308,12 @@ extension TrackersViewModel: TrackerStoreDelegate {
     }
 }
 
-extension TrackersViewModel: NewTrackerViewControllerDelegate {
-    func newTrackerViewController(_ newTrackerViewController: NewTrackerViewController, didBuildTrackerWith settings: TrackerSettings) {
+extension TrackersViewModel: TrackerSettingsViewControllerDelegate {
+    func trackerSettingsViewController(_ trackerSettingsViewController: TrackerSettingsViewController, didEditTracker tracker: Tracker, to newTracker: Tracker) {
+        updateTracker(old: tracker, new: newTracker)
+    }
+    
+    func trackerSettingsViewController(_ trackerSettingsViewController: TrackerSettingsViewController, didCreateTrackerWith settings: TrackerSettings) {
         createTracker(settings: settings)
     }
 }

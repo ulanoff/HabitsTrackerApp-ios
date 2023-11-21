@@ -36,9 +36,11 @@ trackerTypeScreen.title = "Crear Seguimiento";
 trackerTypeScreen.habitButton = "Hábito";
 trackerTypeScreen.eventButton = "Evento Irregular";
 
-// MARK: Tracker Settings
-trackerSettingsScreen.title.habit = "Nuevo Hábito";
-trackerSettingsScreen.title.event = "Nuevo Evento Irregular";
+// MARK: Configuración del Rastreador
+trackerSettingsScreen.title.habitCreating = "Nuevo Hábito";
+trackerSettingsScreen.title.eventCreating = "Nuevo Evento Irregular";
+trackerSettingsScreen.title.habitEditing = "Editar Hábito";
+trackerSettingsScreen.title.eventEditing = "Editar Evento";
 trackerSettingsScreen.nameTextField.placeholder = "Ingrese el nombre del seguimiento";
 trackerSettingsScreen.nameTextField.maxLengthError = "El límite es de 38 caracteres";
 trackerSettingsScreen.categoryButton = "Categoría";
@@ -46,7 +48,8 @@ trackerSettingsScreen.scheduleButton = "Programa";
 trackerSettingsScreen.emojiTitle = "Emoji";
 trackerSettingsScreen.colorTitle = "Color";
 trackerSettingsScreen.cancelButton = "Cancelar";
-trackerSettingsScreen.createButton = "Crear";
+trackerSettingsScreen.confirmButton.create = "Create";
+trackerSettingsScreen.confirmButton.save = "Guardar";
 
 // MARK: Categories Screen
 categoriesScreen.title = "Categoría";

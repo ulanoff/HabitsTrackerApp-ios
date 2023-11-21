@@ -142,17 +142,6 @@ private extension TrackerCell {
             NSLocalizedString("days", comment: ""),
             number
         )
-        
-//        let lastDigit = number % 10
-//        let lastTwoDigits = number % 100
-//        
-//        if lastDigit == 1 && lastTwoDigits != 11 {
-//            return "\(number) день"
-//        } else if (lastDigit >= 2 && lastDigit <= 4) && (lastTwoDigits < 10 || lastTwoDigits >= 20) {
-//            return "\(number) дня"
-//        } else {
-//            return "\(number) дней"
-//        }
     }
     
     // MARK: - Setup UI

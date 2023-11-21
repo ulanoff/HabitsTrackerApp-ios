@@ -16,9 +16,10 @@ public class TrackerCD: NSManagedObject, Identifiable {
     @NSManaged public var color: UIColor?
     @NSManaged public var emoji: String?
     @NSManaged public var id: UUID?
+    @NSManaged public var isPinned: Bool
     @NSManaged public var name: String?
     @NSManaged public var schedule: [Int]?
     @NSManaged public var timestamp: Date?
-    @NSManaged public var isPinned: Bool
+    @NSManaged public var type: Int64
     @NSManaged public var category: TrackerCategoryCD?
 }

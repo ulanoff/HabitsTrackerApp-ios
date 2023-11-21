@@ -25,6 +25,23 @@ final class TrackerRecordStore {
         }
     }
     
+    func allRecordsCD() -> [TrackerRecordCD] {
+        let request = TrackerRecordCD.fetchRequest()
+        if let result = try? context.fetch(request) {
+            return result
+        } else {
+            return []
+        }
+    }
+    
+    func recordsFor(trackerID: UUID) -> Int {
+        let allRecords = allRecordsCD()
+        let trackerRecords = allRecords.filter {
+            $0.trackerId == trackerID
+        }
+        return trackerRecords.count
+    }
+    
     func findRecord(_ record: TrackerRecord) -> TrackerRecordCD? {
         let request = TrackerRecordCD.fetchRequest()
         request.predicate = NSPredicate(

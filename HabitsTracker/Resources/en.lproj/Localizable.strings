@@ -36,8 +36,10 @@ trackerTypeScreen.habitButton = "Habit";
 trackerTypeScreen.eventButton = "Irregular Event";
 
 // MARK: Tracker Settings
-trackerSettingsScreen.title.habit = "New Habit";
-trackerSettingsScreen.title.event = "New Irregular Event";
+trackerSettingsScreen.title.habitCreating = "New Habit";
+trackerSettingsScreen.title.eventCreating = "New Irregular Event";
+trackerSettingsScreen.title.habitEditing = "Edit Habit";
+trackerSettingsScreen.title.eventEditing = "Edit Event";
 trackerSettingsScreen.nameTextField.placeholder = "Enter tracker name";
 trackerSettingsScreen.nameTextField.maxLengthError = "Limit is 38 characters";
 trackerSettingsScreen.categoryButton = "Category";
@@ -45,7 +47,8 @@ trackerSettingsScreen.scheduleButton = "Schedule";
 trackerSettingsScreen.emojiTitle = "Emoji";
 trackerSettingsScreen.colorTitle = "Color";
 trackerSettingsScreen.cancelButton = "Cancel";
-trackerSettingsScreen.createButton = "Create";
+trackerSettingsScreen.confirmButton.create = "Create";
+trackerSettingsScreen.confirmButton.save = "Save";
 
 // MARK: Categories Screen
 categoriesScreen.title = "Category";

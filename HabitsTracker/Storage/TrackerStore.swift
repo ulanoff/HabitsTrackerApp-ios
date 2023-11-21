@@ -19,6 +19,7 @@ protocol TrackerStoreDelegate: AnyObject {
 final class TrackerStore: NSObject {
     private let context = CoreDataManager.shared.context
     private lazy var trackerCategoryStore = TrackerCategoryStore()
+    private lazy var trackerRecordStore = TrackerRecordStore()
     private var fetchedResultsController: NSFetchedResultsController<TrackerCD>!
     
     override init() {
@@ -69,6 +70,7 @@ final class TrackerStore: NSObject {
     
     func createTracker(_ tracker: Tracker, category: TrackerCategory) -> TrackerCD {
         let trackerCD = TrackerCD(context: context)
+        trackerCD.type = Int64(tracker.type.rawValue)
         trackerCD.name = tracker.name
         trackerCD.color = tracker.color
         trackerCD.emoji = tracker.emoji
@@ -130,18 +132,22 @@ final class TrackerStore: NSObject {
             let emoji = trackerCD.emoji,
             let color = trackerCD.color,
             let cdSchedule = trackerCD.schedule,
-            let schedule = viewModelSchedule(from: cdSchedule)
+            let schedule = viewModelSchedule(from: cdSchedule),
+            let type = TrackerType(rawValue: Int(trackerCD.type))
         else {
             throw TrackerStoreError.convertingError
         }
         let isPinned = trackerCD.isPinned
         
-        return Tracker(id: id,
-                       isPinned: isPinned,
-                       name: name,
-                       color: color,
-                       emoji: emoji,
-                       schedule: schedule)
+        return Tracker(
+            id: id,
+            isPinned: isPinned,
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: schedule,
+            type: type
+        )
     }
 }
 

@@ -33,7 +33,7 @@ final class CategoriesViewController: UIViewController {
         let button = Button()
         let title = NSLocalizedString("categoriesScreen.createButton", comment: "")
         button.setTitle(title, for: .normal)
-        button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         return button
     }()
     
@@ -63,7 +63,7 @@ final class CategoriesViewController: UIViewController {
     }
     
     // MARK: - Event Handlers
-    @objc private func didTapCreateButton() {
+    @objc private func didTapConfirmButton() {
         let viewModel = CategoryNameViewModel()
         let controller = CategoryNameViewController(type: .creating, categoryName: nil, viewModel: viewModel)
         controller.delegate = self

@@ -72,6 +72,21 @@ final class TrackerCategoryStore: NSObject {
         }
     }
     
+    func getCategoryNameFor(tracker: Tracker) -> String? {
+        let request = TrackerCategoryCD.fetchRequest()
+        if let result = try? context.fetch(request) {
+            let trackerCategory = result.filter {
+                guard let category = try? trackerCategoryViewModel(from: $0) else {
+                    return false
+                }
+                return category.trackers.contains(tracker)
+            }.first
+            return trackerCategory?.name
+        } else {
+            return nil
+        }
+    }
+    
     private func getPinnedCategory() throws -> TrackerCategory {
         let name = NSLocalizedString("defaultCategory.pinned", comment: "")
         let request = TrackerCD.fetchRequest()
