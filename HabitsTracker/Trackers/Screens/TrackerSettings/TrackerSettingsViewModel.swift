@@ -27,7 +27,7 @@ final class TrackerSettingsViewModel {
     init(tracker: Tracker) {
         trackerSettings = TrackerSettings(
             for: tracker, 
-            trackerCategoryStore: TrackerCategoryStore()
+            trackerCategoryStore: TrackerCategoryStore.shared
         )
         isValidName = true
         trackerForEditing = tracker

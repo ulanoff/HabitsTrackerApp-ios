@@ -40,12 +40,12 @@ final class TrackersViewModel {
         WeekDay(numberFromSunday: selectedDate.weekday)!
     }
     private lazy var trackerStore: TrackerStore = {
-        let store = TrackerStore()
+        let store = TrackerStore.shared
         store.delegate = self
         return store
     }()
-    private lazy var trackerCategoryStore = TrackerCategoryStore()
-    private lazy var trackerRecordStore = TrackerRecordStore()
+    private lazy var trackerCategoryStore = TrackerCategoryStore.shared
+    private lazy var trackerRecordStore = TrackerRecordStore.shared
     private var categories: [TrackerCategory] = [] {
         didSet {
             filterBy(filterOperation: selectedFilterOperation)
@@ -143,7 +143,7 @@ final class TrackersViewModel {
     
     private func getAllRecords() throws {
         do {
-            completedTrackers = try trackerRecordStore.allRecords()
+            completedTrackers = try trackerRecordStore.getAllRecords()
         } catch {
             throw error
         }

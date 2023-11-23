@@ -5,17 +5,34 @@
 //  Created by Andrey Ulanov on 05.11.2023.
 //
 
-import Foundation
+import UIKit
 
 enum TrackerCategoryStoreError: Error {
     case convertingError
 }
 
 final class TrackerCategoryStore: NSObject {
+    static let shared = TrackerCategoryStore()
+    private lazy var trackerStore = TrackerStore.shared
     private let context = CoreDataManager.shared.context
-    private lazy var trackerStore = TrackerStore()
+    private let isMockDataMode: Bool
+    private var firstFetch = true
+    
+    override init() {
+        guard let isMockDataMode = (UIApplication.shared.delegate as? AppDelegate)?.mockMode
+        else {
+            self.isMockDataMode = false
+            assertionFailure("Failed to cast UIApplication Delegate to AppDelegate")
+            return
+        }
+        self.isMockDataMode = isMockDataMode
+    }
     
     func getAllCategories() throws -> [TrackerCategory] {
+        if isMockDataMode && firstFetch {
+            addMocks()
+        }
+        firstFetch = false
         let request = TrackerCategoryCD.fetchRequest()
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCategoryCD.timestamp, ascending: false)
@@ -105,6 +122,26 @@ final class TrackerCategoryStore: NSObject {
         } catch {
             throw TrackerCategoryStoreError.convertingError
         }
+    }
+    
+    private func addMocks() {
+        let mockCategories = MockService.shared.getMockCategories()
+        for category in mockCategories {
+            _ = createMockCategory(category)
+        }
+        saveContext()
+    }
+    
+    private func createMockCategory(_ category: TrackerCategory) -> TrackerCategoryCD {
+        let categoryCD = TrackerCategoryCD(context: context)
+        categoryCD.name = category.name
+        categoryCD.timestamp = Date()
+        for tracker in category.trackers {
+            let tracker = trackerStore.createTracker(tracker, category: category)
+            categoryCD.addToTrackers(tracker)
+        }
+        saveContext()
+        return categoryCD
     }
     
     func saveContext() {

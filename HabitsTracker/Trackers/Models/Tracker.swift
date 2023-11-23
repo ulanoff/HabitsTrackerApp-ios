@@ -22,7 +22,7 @@ struct Tracker: Equatable {
     let type: TrackerType
     
     var records: Int {
-        let trackerRecordStore = TrackerRecordStore()
+        let trackerRecordStore = TrackerRecordStore.shared
         return trackerRecordStore.recordsFor(trackerID: id)
     }
     

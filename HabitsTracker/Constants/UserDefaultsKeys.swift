@@ -9,4 +9,5 @@ import Foundation
 
 struct UserDefaultsKeys {
     static let launchedBefore = "launchedBefore"
+    static let lastLaunchIsMock = "lastLaunchIsMock"
 }

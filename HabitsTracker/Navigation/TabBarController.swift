@@ -35,8 +35,8 @@ final class TabBarController: UITabBarController {
         let trackersViewController = TrackersViewController(viewModel: trackersViewModel)
         let statsViewModel = StatisticsViewModel(
             statisticsService: StatisticsService(
-                trackerStore: TrackerStore(),
-                trackerRecordStore: TrackerRecordStore()
+                trackerStore: TrackerStore.shared,
+                trackerRecordStore: TrackerRecordStore.shared
             )
         )
         let statsViewController = StatisticsViewController(viewModel: statsViewModel)

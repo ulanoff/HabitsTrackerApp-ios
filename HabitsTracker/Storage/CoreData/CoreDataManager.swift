@@ -39,4 +39,22 @@ final class CoreDataManager {
             }
         }
     }
+    
+    func clearData() {
+        let fetchRequests: [NSFetchRequest] = [
+            TrackerCategoryCD.fetchRequest(),
+            TrackerCD.fetchRequest(),
+            TrackerRecordCD.fetchRequest()
+        ]
+        let deleteRequests = fetchRequests.map { NSBatchDeleteRequest(fetchRequest: $0) }
+        
+        do {
+            for request in deleteRequests {
+                try context.execute(request)
+            }
+            saveContext()
+        } catch {
+            assertionFailure("Failed to clear CoreData")
+        }
+    }
 }

@@ -17,9 +17,10 @@ protocol TrackerStoreDelegate: AnyObject {
 }
 
 final class TrackerStore: NSObject {
+    static let shared = TrackerStore()
+    private lazy var trackerCategoryStore = TrackerCategoryStore.shared
+    private lazy var trackerRecordStore = TrackerRecordStore.shared
     private let context = CoreDataManager.shared.context
-    private lazy var trackerCategoryStore = TrackerCategoryStore()
-    private lazy var trackerRecordStore = TrackerRecordStore()
     private var fetchedResultsController: NSFetchedResultsController<TrackerCD>!
     
     override init() {
@@ -52,7 +53,7 @@ final class TrackerStore: NSObject {
         CoreDataManager.shared.saveContext()
     }
     
-    func getAllTracker() throws -> [Tracker] {
+    func getAllTrackers() throws -> [Tracker] {
         let request = TrackerCD.fetchRequest()
         return if let result = try? context.fetch(request) {
             try result.map { try trackerViewModel(from: $0) }
@@ -102,7 +103,7 @@ final class TrackerStore: NSObject {
     func deleteTracker(_ tracker: Tracker) {
         if let tracker = findTracker(tracker) {
             context.delete(tracker)
-            trackerRecordStore.allRecordsCD().filter {
+            trackerRecordStore.getAllRecordsCD().filter {
                 $0.trackerId == tracker.id
             }.forEach {
                 context.delete($0)

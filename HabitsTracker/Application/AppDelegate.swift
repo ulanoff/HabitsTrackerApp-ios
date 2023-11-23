@@ -10,11 +10,20 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    let mockMode = true
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         print("Library Directory: ", FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last ?? "Not Found!")
+        let userDefaults = UserDefaults.standard
+        let coreDataManager = CoreDataManager.shared
+        let lastLaunchIsMock = userDefaults.bool(forKey: UserDefaultsKeys.lastLaunchIsMock)
+        
+        if mockMode || lastLaunchIsMock {
+            coreDataManager.clearData()
+        }
+        
+        userDefaults.setValue(mockMode, forKey: UserDefaultsKeys.lastLaunchIsMock)
         return true
     }
 
