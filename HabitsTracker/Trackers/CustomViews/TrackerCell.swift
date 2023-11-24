@@ -64,7 +64,7 @@ final class TrackerCell: UICollectionViewCell {
         Text
         Text
         """
-        titleLabel.textColor = .ypWhite
+        titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         titleLabel.numberOfLines = 2
         return titleLabel
@@ -80,7 +80,7 @@ final class TrackerCell: UICollectionViewCell {
     
     private lazy var isPinnedImageView: UIImageView = {
         let isPinnedImageView = UIImageView()
-        isPinnedImageView.tintColor = .ypWhite
+        isPinnedImageView.tintColor = .white
         isPinnedImageView.image = .pinnedIcon
         return isPinnedImageView
     }()
@@ -89,7 +89,7 @@ final class TrackerCell: UICollectionViewCell {
         let trackerButton = UIButton(type: .system)
         trackerButton.setImage(.notDoneButtonIcon, for: .normal)
         trackerButton.backgroundColor = .ypSelection3
-        trackerButton.tintColor = .ypWhite
+        trackerButton.tintColor = .white
         trackerButton.layer.cornerRadius = 17
         trackerButton.addTarget(self, action: #selector(didTapDoneButton(_:)), for: .touchUpInside)
         return trackerButton

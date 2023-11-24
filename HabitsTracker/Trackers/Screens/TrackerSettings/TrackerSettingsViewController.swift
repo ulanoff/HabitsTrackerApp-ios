@@ -112,7 +112,10 @@ final class TrackerSettingsViewController: UIViewController {
         let textField = TextField()
         let placeholder = NSLocalizedString("trackerSettingsScreen.nameTextField.placeholder", comment: "")
         textField.delegate = self
-        textField.placeholder = placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.ypGray]
+        )
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -134,6 +137,7 @@ final class TrackerSettingsViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         return tableView
     }()
     

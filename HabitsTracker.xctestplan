@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "636B6DA3-C5E6-410B-9E16-5C4B8B0DC3E1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:HabitsTracker.xcodeproj",
+        "identifier" : "5521DAE62B0E538B001E20DA",
+        "name" : "HabitsTrackerTests"
+      }
+    }
+  ],
+  "version" : 1
+}

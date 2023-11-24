@@ -44,6 +44,7 @@ final class ScheduleViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.tableHeaderView = UIView()
         return tableView
     }()
@@ -140,6 +141,9 @@ extension ScheduleViewController: UITableViewDataSource {
         switcher.isOn = selectedWeekDays.contains(weekDay)
         switcher.addTarget(self, action: #selector(didChangeValueInSwitch(_:)), for: .valueChanged)
         switcher.onTintColor = .ypBlue
+        switcher.backgroundColor = .ypLightGray
+        switcher.layer.cornerRadius = 16
+        switcher.clipsToBounds = true
         
         cell.textLabel?.text = weekDaysStrings[indexPath.row]
         cell.accessoryView = switcher

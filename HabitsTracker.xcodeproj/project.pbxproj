@@ -84,6 +84,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5505E0252B1101DC00043E10 /* HabitsTracker.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = HabitsTracker.xctestplan; sourceTree = SOURCE_ROOT; };
 		5507FA7A2B07B65300B70288 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5507FA7B2B07C4D300B70288 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5507FA812B07D4DB00B70288 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -209,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				5521DAE92B0E538B001E20DA /* HabitsTrackerTests.swift */,
+				5505E0252B1101DC00043E10 /* HabitsTracker.xctestplan */,
 			);
 			path = HabitsTrackerTests;
 			sourceTree = "<group>";

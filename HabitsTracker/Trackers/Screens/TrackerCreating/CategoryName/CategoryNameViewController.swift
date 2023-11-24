@@ -39,7 +39,10 @@ final class CategoryNameViewController: UIViewController {
         let textField = TextField()
         let placeholder = NSLocalizedString("newCategoryScreen.nameTextField.placeholder", comment: "")
         textField.delegate = self
-        textField.placeholder = placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.ypGray]
+        )
         textField.clearButtonMode = .whileEditing
         textField.text = oldCategoryName
         return textField

@@ -25,6 +25,7 @@ final class CategoriesViewController: UIViewController {
         tableView.allowsSelection = true
         tableView.allowsMultipleSelection = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.tableHeaderView = UIView()
         return tableView
     }()

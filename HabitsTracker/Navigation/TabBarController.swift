@@ -22,12 +22,35 @@ final class TabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        switch traitCollection.userInterfaceStyle {
+        case .unspecified:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .light:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .dark:
+            tabBar.layer.borderColor = UIColor.clear.cgColor
+        @unknown default:
+            fatalError()
+        }
+    }
+    
     private func configure() {
         tabBar.barTintColor = .ypGray
         tabBar.tintColor = .ypBlue
         tabBar.backgroundColor = .ypWhite
         
-        tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        switch traitCollection.userInterfaceStyle {
+        case .unspecified:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .light:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .dark:
+            tabBar.layer.borderColor = UIColor.clear.cgColor
+        @unknown default:
+            fatalError()
+        }
+        
         tabBar.layer.borderWidth = 1
         tabBar.layer.masksToBounds = false
         

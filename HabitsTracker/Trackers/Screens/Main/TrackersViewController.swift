@@ -14,6 +14,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - UI Elements
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
+        datePicker.tintColor = .ypBlack
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
         datePicker.date = Date().onlyDate
@@ -25,7 +26,10 @@ final class TrackersViewController: UIViewController {
         let textField = UISearchTextField()
         let placeholder = NSLocalizedString("mainScreen.searchTextField.placeholder", comment: "")
         let cancelButtonText = NSLocalizedString("mainScreen.searchTextField.candelButton", comment: "")
-        textField.placeholder = placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.ypGray]
+        )
         textField.borderStyle = .line
         textField.setCustomClearButtonWithText(cancelButtonText)
         textField.delegate = self
@@ -41,6 +45,7 @@ final class TrackersViewController: UIViewController {
         collectionView.showsVerticalScrollIndicator = false
         let bottomInset: CGFloat = 75.0
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
+        collectionView.backgroundColor = .ypWhite
         return collectionView
     }()
     
@@ -49,7 +54,7 @@ final class TrackersViewController: UIViewController {
         let title = NSLocalizedString("mainScreen.filterButton", comment: "")
         button.backgroundColor = .ypBlue
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.ypWhite, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 17)
