@@ -33,6 +33,8 @@ final class TrackerCell: UICollectionViewCell {
     private var indexPath: IndexPath?
     private var trackerState: TrackerState = .notDone
     
+    var contextMenuPreview: UIView { cardView }
+    
     // MARK: - UI Elements
     private lazy var cardView: UIView = {
         let cardView = UIView()

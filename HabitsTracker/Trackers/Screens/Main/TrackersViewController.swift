@@ -427,6 +427,19 @@ extension TrackersViewController: UISearchTextFieldDelegate {
         })
         return configuration
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfiguration configuration: UIContextMenuConfiguration,
+        highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview?
+    {
+        guard 
+            let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell
+        else {
+            return nil
+        }
+        return UITargetedPreview(view: cell.contextMenuPreview)
+    }
 }
 
 // MARK: - TrackerCellDelegate
