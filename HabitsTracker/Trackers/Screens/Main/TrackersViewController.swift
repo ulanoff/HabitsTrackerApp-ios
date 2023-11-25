@@ -104,19 +104,27 @@ final class TrackersViewController: UIViewController {
         viewModel.updateState()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AnalyticsService.sendCloseEvent(screen: .main)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AnalyticsService.sendOpenEvent(screen: .main)
         searchTextField.borderStyle = .roundedRect
     }
     
     // MARK: - Event Handlers
     @objc private func didTapAddButton(_ sender: UIButton) {
+        AnalyticsService.sendClickEvent(screen: .main, item: "Add Tracker Button")
         let controller = SelectTypeViewController()
         controller.newTrackerDelegate = viewModel
         present(controller.wrappedInNavigationController(), animated: true)
     }
     
     @objc private func didTapFiltersButton(_ sender: UIButton) {
+        AnalyticsService.sendClickEvent(screen: .main, item: "Filters Button")
         let viewModel = FiltersViewModel(
             delegate: viewModel,
             selectedFilter: viewModel.selectedFilterOperation
@@ -403,6 +411,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                     viewModel.didPinOrUnpinTracker(index: trackerIndex)
                 },
                 UIAction(title: editButtonTitle) { [weak self] action in
+                    AnalyticsService.sendClickEvent(screen: .main, item: "Tracker Edit Button")
                     guard let self else { return }
                     let tracker = viewModel.trackerForEdit(at: trackerIndex)
                     let controller = TrackerSettingsViewController(tracker: tracker)
@@ -410,6 +419,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                     present(controller.wrappedInNavigationController(), animated: true)
                 },
                 UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                    AnalyticsService.sendClickEvent(screen: .main, item: "Tracker Delete Button")
                     guard let self else { return }
                     deleteTrackerAt(index: trackerIndex)
                 },
@@ -422,6 +432,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
 // MARK: - TrackerCellDelegate
 extension TrackersViewController: TrackerCellDelegate {
     func trackerCell(_ trackerCell: TrackerCell, didTapDoneButton button: UIButton, trackerState: TrackerState, trackerId: UUID, indexPath: IndexPath) {
+        AnalyticsService.sendClickEvent(screen: .main, item: "Tracker Done Button")
         viewModel.didTapDoneButtonOnTracker(trackerState: trackerState, trackerId: trackerId)
         UIView.performWithoutAnimation {
             collectionView.reloadItems(at: [indexPath])

@@ -40,11 +40,29 @@ final class FiltersViewModel {
         index == selectedFilterIndex ? .selected : .standart
     }
     
+    func sendAnalyticsEvent(filter: FilterOperation) {
+        switch filter {
+        case .byWeekday:
+            AnalyticsService.sendClickEvent(screen: .filters, item: "All Trackers Button")
+        case .byToday:
+            AnalyticsService.sendClickEvent(screen: .filters, item: "Today Button")
+        case .byCompleteness:
+            AnalyticsService.sendClickEvent(screen: .filters, item: "Completed")
+        case .byNotCompleteness:
+            AnalyticsService.sendClickEvent(screen: .filters, item: "Incomplete")
+        case .search:
+            break
+        }
+    }
+    
     func didSelectFilterAt(index: Int) {
+        let selectedFilter = filters[index]
+        sendAnalyticsEvent(filter: selectedFilter)
+        
         let oldSelectedFilterIndex = selectedFilterIndex
         selectedFilterIndex = index
         self.oldSelectedFilterIndex = oldSelectedFilterIndex
         
-        delegate?.filtersViewModel(self, didSelectFilter: filters[index])
+        delegate?.filtersViewModel(self, didSelectFilter: selectedFilter)
     }
 }

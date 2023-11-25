@@ -44,12 +44,14 @@ final class SelectTypeViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapHabitButton(_ sender: UIButton) {
+        AnalyticsService.sendClickEvent(screen: .newTrackerType, item: "Habit Button")
         let newTrackerVC = TrackerSettingsViewController(trackerType: .habit)
         newTrackerVC.delegate = newTrackerDelegate
         navigationController?.pushViewController(newTrackerVC, animated: true)
     }
     
     @objc private func didTapIrregularButton(_ sender: UIButton) {
+        AnalyticsService.sendClickEvent(screen: .newTrackerType, item: "Irregular Event Button")
         let newTrackerVC = TrackerSettingsViewController(trackerType: .irregularEvent)
         newTrackerVC.delegate = newTrackerDelegate
         navigationController?.pushViewController(newTrackerVC, animated: true)

@@ -43,9 +43,6 @@ final class FiltersViewController: UIViewController {
         bind()
         setupUI()
     }
-    
-    // MARK: - Event Handlers
-    // MARK: - Public Methods
 }
 
 // MARK: - Private Methods

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         print("Library Directory: ", FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last ?? "Not Found!")
+        
+        guard let configuration = YMMYandexMetricaConfiguration(apiKey: APIKeys.appMetricaAPIKey)
+        else {
+            assertionFailure("Failed to configure AppMetrica SDK with API key: \(APIKeys.appMetricaAPIKey)")
+            return true
+        }
+        YMMYandexMetrica.activate(with: configuration)
+        
         let userDefaults = UserDefaults.standard
         let coreDataManager = CoreDataManager.shared
         let lastLaunchIsMock = userDefaults.bool(forKey: UserDefaultsKeys.lastLaunchIsMock)

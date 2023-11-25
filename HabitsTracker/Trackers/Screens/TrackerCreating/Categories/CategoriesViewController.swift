@@ -34,7 +34,7 @@ final class CategoriesViewController: UIViewController {
         let button = Button()
         let title = NSLocalizedString("categoriesScreen.createButton", comment: "")
         button.setTitle(title, for: .normal)
-        button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         return button
     }()
     
@@ -64,7 +64,8 @@ final class CategoriesViewController: UIViewController {
     }
     
     // MARK: - Event Handlers
-    @objc private func didTapConfirmButton() {
+    @objc private func didTapCreateButton() {
+        AnalyticsService.sendClickEvent(screen: .categories, item: "Add Category Button")
         let viewModel = CategoryNameViewModel()
         let controller = CategoryNameViewController(type: .creating, categoryName: nil, viewModel: viewModel)
         controller.delegate = self
@@ -201,6 +202,7 @@ extension CategoriesViewController: UITableViewDelegate {
                 let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
                 return UIMenu(children: [
                     UIAction(title: editButtonTitle) { [weak self] action in
+                        AnalyticsService.sendClickEvent(screen: .categories, item: "Category Edit Button")
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let viewModel = CategoryNameViewModel()
@@ -209,6 +211,7 @@ extension CategoriesViewController: UITableViewDelegate {
                         navigationController?.pushViewController(controller, animated: true)
                     },
                     UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                        AnalyticsService.sendClickEvent(screen: .categories, item: "Category Delete Button")
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
