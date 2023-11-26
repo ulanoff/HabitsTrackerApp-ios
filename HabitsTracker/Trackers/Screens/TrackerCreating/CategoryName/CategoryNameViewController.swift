@@ -113,8 +113,7 @@ private extension CategoryNameViewController {
     }
     
     func updateContinueButtonState(isNameValid: Bool) {
-        if isNameValid
-        {
+        if isNameValid {
             continueButton.isUserInteractionEnabled = true
             continueButton.backgroundColor = .ypBlack
         } else {
@@ -146,7 +145,7 @@ private extension CategoryNameViewController {
             continueButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
             continueButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
             continueButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
-            continueButton.heightAnchor.constraint(equalToConstant: 60),
+            continueButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         // MARK: - Views Configuring

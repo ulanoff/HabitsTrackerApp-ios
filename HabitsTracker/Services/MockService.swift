@@ -46,7 +46,7 @@ final class MockService {
                     emoji: TrackerConstants.trackerEmojis[2],
                     schedule: WeekDay.allCases,
                     type: .habit
-                ),
+                )
             ]),
             TrackerCategory(name: "Events", trackers: [
                 Tracker(
@@ -57,7 +57,7 @@ final class MockService {
                     emoji: TrackerConstants.trackerEmojis[3],
                     schedule: WeekDay.allCases,
                     type: .irregularEvent
-                ),
+                )
             ])
         ]
     }
@@ -68,7 +68,7 @@ final class MockService {
             TrackerRecord(trackerId: MockUUIDs.uuid1, date: Date().yesterday.onlyDate),
             TrackerRecord(trackerId: MockUUIDs.uuid2, date: Date().yesterday.onlyDate),
             TrackerRecord(trackerId: MockUUIDs.uuid3, date: Date().yesterday.yesterday.onlyDate),
-            TrackerRecord(trackerId: MockUUIDs.uuid4, date: Date().onlyDate),
+            TrackerRecord(trackerId: MockUUIDs.uuid4, date: Date().onlyDate)
         ]
     }
     

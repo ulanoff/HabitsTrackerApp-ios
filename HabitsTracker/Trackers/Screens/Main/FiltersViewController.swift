@@ -119,7 +119,6 @@ extension FiltersViewController: UITableViewDataSource {
     }
 }
 
-
 // MARK: - UITableViewDelegate
 extension FiltersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

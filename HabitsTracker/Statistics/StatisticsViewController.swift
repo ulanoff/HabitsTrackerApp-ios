@@ -143,7 +143,7 @@ private extension StatisticsViewController {
             
             stackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 77),
             stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16)
         ])
         
         // MARK: - Views Configuring

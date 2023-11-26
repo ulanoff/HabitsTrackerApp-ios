@@ -60,10 +60,8 @@ final class TrackersViewModel {
     func didChangeDate(newDate: Date) {
         isFulfillmentAvailable = !newDate.isInFuture
         
-        if 
-            selectedFilterOperation == .byCompleteness ||
-            selectedFilterOperation == .byNotCompleteness
-        {
+        if selectedFilterOperation == .byCompleteness ||
+           selectedFilterOperation == .byNotCompleteness {
             selectedDate = newDate
             filterBy(filterOperation: selectedFilterOperation)
             return
@@ -151,10 +149,8 @@ final class TrackersViewModel {
     
     func updateState() {
         guard visibleCategories.isEmpty else {
-            if 
-                selectedFilterOperation == .byCompleteness ||
-                selectedFilterOperation == .byNotCompleteness 
-            {
+            if selectedFilterOperation == .byCompleteness ||
+               selectedFilterOperation == .byNotCompleteness {
                 state = .filtersEnabled
             } else {
                 state = .standart
@@ -195,8 +191,8 @@ final class TrackersViewModel {
     private func filterByWeekday() {
         lastFilterOperation = .byWeekday
         visibleCategories = categories.filter { category in
-            for tracker in category.trackers {
-                if tracker.schedule.contains(selectedWeekDay) { return true }
+            for tracker in category.trackers where tracker.schedule.contains(selectedWeekDay) {
+                return true
             }
             return false
         }.map { catetegory in
@@ -211,8 +207,8 @@ final class TrackersViewModel {
         lastFilterOperation = .byToday
         selectedDate = currentDate
         visibleCategories = categories.filter { category in
-            for tracker in category.trackers {
-                if tracker.schedule.contains(currentWeekDay) { return true }
+            for tracker in category.trackers where tracker.schedule.contains(currentWeekDay) {
+                return true
             }
             return false
         }.map { catetegory in
@@ -237,8 +233,7 @@ final class TrackersViewModel {
                 var isCompleted = false
                 completedTrackers.forEach {
                     if tracker.id == $0.trackerId &&
-                       $0.date == selectedDate
-                    {
+                       $0.date == selectedDate {
                         isCompleted = true
                         return
                     }
@@ -256,8 +251,7 @@ final class TrackersViewModel {
                 var isCompleted = true
                 completedTrackers.forEach {
                     if tracker.id == $0.trackerId &&
-                       $0.date == selectedDate
-                    {
+                       $0.date == selectedDate {
                         isCompleted = false
                         return
                     }

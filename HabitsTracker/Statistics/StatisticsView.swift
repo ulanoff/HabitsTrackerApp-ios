@@ -38,7 +38,7 @@ final class StatisticsView: UIView {
         let colors = [
             UIColor(hex: "#007BFA"),
             UIColor(hex: "#46E69D"),
-            UIColor(hex: "#FD4C49"),
+            UIColor(hex: "#FD4C49")
         ]
         addGradientBorder(colors: colors, orientation: .horizontal, width: 3, cornerRadius: 16)
     }
@@ -72,7 +72,7 @@ private extension StatisticsView {
             nameLabel.topAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 7),
             nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
         
         // MARK: - View Configuring
@@ -80,4 +80,3 @@ private extension StatisticsView {
         clipsToBounds = true
     }
 }
-

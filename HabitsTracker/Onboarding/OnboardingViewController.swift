@@ -114,7 +114,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
-        guard 
+        guard
             let currentPage = viewController as? OnboardingPageViewController,
             let currentIndex = pages.firstIndex(of: currentPage)
         else {

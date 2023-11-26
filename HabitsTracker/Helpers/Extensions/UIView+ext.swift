@@ -53,7 +53,6 @@ extension UIView {
         gradientLayer.startPoint = orientation.startPoint
         gradientLayer.endPoint = orientation.endPoint
         
-        
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = width
         shapeLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath

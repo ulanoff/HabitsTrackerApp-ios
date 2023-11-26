@@ -34,16 +34,11 @@ struct TrackerSettings {
     }
     
     var isValid: Bool {
-        if name != nil &&
-            color != nil &&
-            emoji != nil &&
-            schedule != nil &&
-            schedule != [] &&
-            categoryName != nil
-        {
-            return true
-        } else {
-            return false
-        }
+        name != nil &&
+        color != nil &&
+        emoji != nil &&
+        schedule != nil &&
+        schedule != [] &&
+        categoryName != nil
     }
 }

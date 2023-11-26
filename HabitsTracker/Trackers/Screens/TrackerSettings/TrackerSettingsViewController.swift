@@ -303,7 +303,7 @@ private extension TrackerSettingsViewController {
         }
         let sortedSchedule = schedule.sorted(by: <)
         let weekDays = sortedSchedule.map { $0.description }
-        let description = (weekDays.map{$0}.joined(separator: ", "))
+        let description = (weekDays.map { $0 }.joined(separator: ", "))
         return description
     }
     
@@ -374,8 +374,7 @@ private extension TrackerSettingsViewController {
     func updateCreateButtonState() {
         
         if viewModel.trackerSettings.isValid &&
-            viewModel.isValidName
-        {
+           viewModel.isValidName {
             confirmButton.isUserInteractionEnabled = true
             confirmButton.backgroundColor = .ypBlack
         } else {
@@ -495,15 +494,13 @@ extension TrackerSettingsViewController: UITableViewDataSource {
         cell.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         
         if indexPath.row == 0,
-           let categoryName = viewModel.trackerSettings.categoryName
-        {
+           let categoryName = viewModel.trackerSettings.categoryName {
             cell.detailTextLabel?.text = categoryName
         }
         
         if indexPath.row == 1,
-           let _ = viewModel.trackerSettings.schedule,
-           let scheduleDescription = makeScheduleDescription()
-        {
+           viewModel.trackerSettings.schedule != nil,
+           let scheduleDescription = makeScheduleDescription() {
             cell.detailTextLabel?.text = scheduleDescription
         }
         
@@ -530,7 +527,6 @@ extension TrackerSettingsViewController: UITableViewDelegate {
             navigationController?.pushViewController(controller, animated: true)
         default:
             assertionFailure("Not expected indexPath")
-            break
         }
     }
 }
@@ -634,7 +630,6 @@ extension TrackerSettingsViewController: UICollectionViewDelegateFlowLayout {
             return UICollectionReusableView()
         }
         
-        
         let headerText = if indexPath.section == 0 {
             NSLocalizedString("trackerSettingsScreen.emojiTitle", comment: "")
         } else {
@@ -681,4 +676,3 @@ extension TrackerSettingsViewController: UITextFieldDelegate {
         return true
     }
 }
-

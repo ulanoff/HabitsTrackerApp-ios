@@ -21,66 +21,66 @@ final class HabitsTrackerTests: XCTestCase {
     }
     
     func testTrackersViewController() {
-        let vm = TrackersViewModel()
-        let vc = TrackersViewController(viewModel: vm)
-        assertSnapshot(of: vc, as: .image)
+        let viewModel = TrackersViewModel()
+        let viewController = TrackersViewController(viewModel: viewModel)
+        assertSnapshot(of: viewController, as: .image)
     }
     
     func testOnboardingViewController() {
-        let vc = OnboardingViewController()
-        assertSnapshot(of: vc, as: .image)
+        let viewController = OnboardingViewController()
+        assertSnapshot(of: viewController, as: .image)
     }
     
     func testOnboardingPageViewController() {
-        let vc = OnboardingPageViewController(text: "Test", backgroundImage: .checkmark)
-        assertSnapshot(of: vc, as: .image)
+        let viewController = OnboardingPageViewController(text: "Test", backgroundImage: .checkmark)
+        assertSnapshot(of: viewController, as: .image)
     }
     
     func testFiltersViewController() {
         let delegate = FilterViewModelDelegateFake()
-        let vm1 = FiltersViewModel(delegate: delegate, selectedFilter: nil)
-        let vc1 = FiltersViewController(viewModel: vm1)
-        let vm2 = FiltersViewModel(delegate: delegate, selectedFilter: .byWeekday)
-        let vc2 = FiltersViewController(viewModel: vm2)
-        assertSnapshot(of: vc1, as: .image)
-        assertSnapshot(of: vc2, as: .image)
+        let viewModel1 = FiltersViewModel(delegate: delegate, selectedFilter: nil)
+        let viewController1 = FiltersViewController(viewModel: viewModel1)
+        let viewModel2 = FiltersViewModel(delegate: delegate, selectedFilter: .byWeekday)
+        let viewController2 = FiltersViewController(viewModel: viewModel2)
+        assertSnapshot(of: viewController1, as: .image)
+        assertSnapshot(of: viewController2, as: .image)
     }
     
     func testTrackerSettingsViewController() {
         let mockTracker = mockService.getMockTracker()
-        let vc1 = TrackerSettingsViewController(tracker: mockTracker)
-        let vc2 = TrackerSettingsViewController(trackerType: .habit)
-        assertSnapshot(of: vc1, as: .image)
-        assertSnapshot(of: vc2, as: .image)
+        let viewController1 = TrackerSettingsViewController(tracker: mockTracker)
+        let viewController2 = TrackerSettingsViewController(trackerType: .habit)
+        assertSnapshot(of: viewController1, as: .image)
+        assertSnapshot(of: viewController2, as: .image)
     }
     
     func testSelectTypeViewController() {
-        let vc = SelectTypeViewController()
-        assertSnapshot(of: vc, as: .image)
+        let viewController = SelectTypeViewController()
+        assertSnapshot(of: viewController, as: .image)
     }
     
     func testCategoryNameViewController() {
-        let vm = CategoryNameViewModel()
-        let vc1 = CategoryNameViewController(type: .editing, categoryName: "Test", viewModel: vm)
-        let vc2 = CategoryNameViewController(type: .creating, categoryName: "Test", viewModel: vm)
-        assertSnapshot(of: vc1, as: .image)
-        assertSnapshot(of: vc2, as: .image)
+        let viewModel = CategoryNameViewModel()
+        let viewController1 = CategoryNameViewController(type: .editing, categoryName: "Test", viewModel: viewModel)
+        let viewController2 = CategoryNameViewController(type: .creating, categoryName: "Test", viewModel: viewModel)
+        assertSnapshot(of: viewController1, as: .image)
+        assertSnapshot(of: viewController2, as: .image)
     }
     
     func testCategoriesViewController() {
         let delegate = CategoriesViewModelDelegateFake()
         let mockCategory = mockService.getMockCategories()[0]
-        let vm1 = CategoriesViewModel(delegate: delegate, selectedCategory: nil)
-        let vc1 = CategoriesViewController(viewModel: vm1)
-        let vm2 = CategoriesViewModel(delegate: delegate, selectedCategory: mockCategory.name)
-        let vc2 = CategoriesViewController(viewModel: vm2)
-        assertSnapshot(of: vc1, as: .image)
-        assertSnapshot(of: vc2, as: .image)
+        let viewModel1 = CategoriesViewModel(delegate: delegate, selectedCategory: nil)
+        let viewController1 = CategoriesViewController(viewModel: viewModel1)
+        let viewModel2 = CategoriesViewModel(delegate: delegate, selectedCategory: mockCategory.name)
+        let viewController2 = CategoriesViewController(viewModel: viewModel2)
+        assertSnapshot(of: viewController1, as: .image)
+        assertSnapshot(of: viewController2, as: .image)
     }
     
     func testScheduleViewController() {
-        let vc = ScheduleViewController(currentSchedule: [.monday, .tuesday, .thursday, .saturday])
-        assertSnapshot(of: vc, as: .image)
+        let viewController = ScheduleViewController(currentSchedule: [.monday, .tuesday, .thursday, .saturday])
+        assertSnapshot(of: viewController, as: .image)
     }
     
     func testStatisticsViewController() {
@@ -88,9 +88,9 @@ final class HabitsTrackerTests: XCTestCase {
             trackerStore: TrackerStore.shared,
             trackerRecordStore: TrackerRecordStore.shared
         )
-        let vm = StatisticsViewModel(statisticsService: statsService)
-        let vc = StatisticsViewController(viewModel: vm)
-        assertSnapshot(of: vc, as: .image)
+        let viewModel = StatisticsViewModel(statisticsService: statsService)
+        let viewController = StatisticsViewController(viewModel: viewModel)
+        assertSnapshot(of: viewController, as: .image)
     }
     
 }
@@ -102,5 +102,3 @@ final class FilterViewModelDelegateFake: FiltersViewModelDelegate {
 final class CategoriesViewModelDelegateFake: CategoriesViewModelDelegate {
     func categoriesViewModel(_ viewModel: HabitsTracker.CategoriesViewModel, didSelectCategory name: String) {}
 }
-
-

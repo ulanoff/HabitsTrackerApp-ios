@@ -41,7 +41,11 @@ final class TrackersViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
-        collectionView.register(TrackersHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackersHeaderView.reuseIdentifier)
+        collectionView.register(
+            TrackersHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersHeaderView.reuseIdentifier
+        )
         collectionView.showsVerticalScrollIndicator = false
         let bottomInset: CGFloat = 75.0
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
@@ -255,7 +259,7 @@ private extension TrackersViewController {
             noTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
             
             notFoundTrackersView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            notFoundTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+            notFoundTrackersView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         ])
         
         // MARK: - Views Configuring
@@ -282,11 +286,11 @@ private extension TrackersViewController {
             action: #selector(didTapAddButton(_:))
         )
         leftBarButton.setTitleTextAttributes(
-            [.font : UIFont.systemFont(ofSize: 36)],
+            [.font: UIFont.systemFont(ofSize: 36)],
             for: .normal
         )
         leftBarButton.setTitleTextAttributes(
-            [.font : UIFont.systemFont(ofSize: 36)],
+            [.font: UIFont.systemFont(ofSize: 36)],
             for: .highlighted
         )
         leftBarButton.tintColor = .ypBlack
@@ -349,7 +353,11 @@ extension TrackersViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader,
-              let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TrackersHeaderView.reuseIdentifier, for: indexPath) as? TrackersHeaderView 
+              let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: TrackersHeaderView.reuseIdentifier,
+                for: indexPath
+              ) as? TrackersHeaderView
         else {
             return UICollectionReusableView()
         }
@@ -395,7 +403,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
         )
         let isPinned = viewModel.isTrackerPinnedAt(index: trackerIndex)
         
-        let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
+        let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] _ in
             guard let self else { return UIMenu() }
             
             let editButtonTitle = NSLocalizedString("contextMenu.edit", comment: "")
@@ -406,11 +414,11 @@ extension TrackersViewController: UISearchTextFieldDelegate {
             }
             
             return UIMenu(children: [
-                UIAction(title: pinButtonTitle) { [weak self] action in
+                UIAction(title: pinButtonTitle) { [weak self] _ in
                     guard let self else { return }
                     viewModel.didPinOrUnpinTracker(index: trackerIndex)
                 },
-                UIAction(title: editButtonTitle) { [weak self] action in
+                UIAction(title: editButtonTitle) { [weak self] _ in
                     AnalyticsService.sendClickEvent(screen: .main, item: .edit)
                     guard let self else { return }
                     let tracker = viewModel.trackerForEdit(at: trackerIndex)
@@ -418,11 +426,11 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                     controller.delegate = viewModel
                     present(controller.wrappedInNavigationController(), animated: true)
                 },
-                UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] _ in
                     AnalyticsService.sendClickEvent(screen: .main, item: .delete)
                     guard let self else { return }
                     deleteTrackerAt(index: trackerIndex)
-                },
+                }
             ])
         })
         return configuration

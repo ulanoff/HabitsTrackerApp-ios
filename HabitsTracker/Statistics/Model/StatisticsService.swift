@@ -17,8 +17,7 @@ final class StatisticsService {
         self.trackerStore = trackerStore
         self.trackerRecordStore = trackerRecordStore
         if let allTracker = try? trackerStore.getAllTrackers(),
-           let allRecords = try? trackerRecordStore.getAllRecords()
-        {
+           let allRecords = try? trackerRecordStore.getAllRecords() {
             self.allTrackers = allTracker
             self.allRecords = allRecords
         } else {
@@ -45,7 +44,7 @@ final class StatisticsService {
         var currentStreak: [Date] = []
         var longestStreak: [Date] = []
         for id in trackerIDs {
-            let dates = Array(Set(allRecords.filter { $0.trackerId == id}.map { $0.date } ))
+            let dates = Array(Set(allRecords.filter { $0.trackerId == id}.map { $0.date }))
             let sortedDates = dates.sorted()
             for date in sortedDates {
                 if let lastDate = currentStreak.last, Calendar.current.isDate(date, inSameDayAs: lastDate.addingTimeInterval(24 * 60 * 60)) {
@@ -108,8 +107,7 @@ final class StatisticsService {
     
     private func updateData() {
         if let allTracker = try? trackerStore.getAllTrackers(),
-           let allRecords = try? trackerRecordStore.getAllRecords()
-        {
+           let allRecords = try? trackerRecordStore.getAllRecords() {
             self.allTrackers = allTracker
             self.allRecords = allRecords
         } else {

@@ -194,7 +194,7 @@ private extension TrackerCell {
             trackerButton.topAnchor.constraint(equalTo: quantityManagementView.topAnchor, constant: 8),
             trackerButton.trailingAnchor.constraint(equalTo: quantityManagementView.trailingAnchor, constant: -12),
             trackerButton.heightAnchor.constraint(equalToConstant: 34),
-            trackerButton.widthAnchor.constraint(equalToConstant: 34),
+            trackerButton.widthAnchor.constraint(equalToConstant: 34)
         ])
         
         // MARK: - Views Configuring

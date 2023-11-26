@@ -78,7 +78,7 @@ private extension SelectTypeViewController {
             buttonStack.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
             
             habitButton.heightAnchor.constraint(equalToConstant: 60),
-            irregularButton.heightAnchor.constraint(equalToConstant: 60),
+            irregularButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         // MARK: - Views Configuring

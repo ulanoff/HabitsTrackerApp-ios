@@ -54,7 +54,7 @@ private extension EmojiCell {
             emojiLabel.topAnchor.constraint(equalTo: topAnchor),
             emojiLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             emojiLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            emojiLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            emojiLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         // MARK: - Views Configuring
     }

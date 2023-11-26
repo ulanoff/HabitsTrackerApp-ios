@@ -25,13 +25,12 @@ final class ScheduleViewController: UIViewController {
         NSLocalizedString("weekDay.thursday.full", comment: ""),
         NSLocalizedString("weekDay.friday.full", comment: ""),
         NSLocalizedString("weekDay.saturday.full", comment: ""),
-        NSLocalizedString("weekDay.sunday.full", comment: ""),
+        NSLocalizedString("weekDay.sunday.full", comment: "")
     ]
     private var selectedWeekDays: Set<WeekDay> = []
     private var scheduleTableHeight: CGFloat {
         TableSettings.scheduleTableRowHeight * CGFloat(weekDaysStrings.count)
     }
-    
     
     // MARK: - UI Elements
     private lazy var scheduleTableView: UITableView = {

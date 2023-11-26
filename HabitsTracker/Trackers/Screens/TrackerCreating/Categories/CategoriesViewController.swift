@@ -7,7 +7,7 @@
 
 import UIKit
 
-fileprivate struct TableSettings {
+private struct TableSettings {
     static let tableRowHeight: CGFloat = 75
 }
 
@@ -141,7 +141,7 @@ private extension CategoriesViewController {
             createButton.heightAnchor.constraint(equalToConstant: 60),
             
             noCategoriesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noCategoriesView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noCategoriesView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         // MARK: - Views Configuring
@@ -196,12 +196,12 @@ extension CategoriesViewController: UITableViewDelegate {
         _ tableView: UITableView,
         contextMenuConfigurationForRowAt indexPath: IndexPath,
         point: CGPoint) -> UIContextMenuConfiguration? {
-            let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
+            let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] _ in
                 guard let self else { return UIMenu() }
                 let editButtonTitle = NSLocalizedString("contextMenu.edit", comment: "")
                 let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
                 return UIMenu(children: [
-                    UIAction(title: editButtonTitle) { [weak self] action in
+                    UIAction(title: editButtonTitle) { [weak self] _ in
                         AnalyticsService.sendClickEvent(screen: .categories, item: .edit)
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
@@ -210,14 +210,14 @@ extension CategoriesViewController: UITableViewDelegate {
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },
-                    UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
+                    UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] _ in
                         AnalyticsService.sendClickEvent(screen: .categories, item: .delete)
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
                         self.viewModel.didDeleteCategory(category)
                         self.tableView.reloadData()
-                    },
+                    }
                 ])
             })
             return configuration

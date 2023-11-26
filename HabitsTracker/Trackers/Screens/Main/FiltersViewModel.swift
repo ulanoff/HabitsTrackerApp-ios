@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum FilterState {
     case standart
     case selected

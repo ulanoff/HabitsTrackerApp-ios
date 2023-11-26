@@ -43,7 +43,7 @@ private extension SettingsCollectionHeaderView {
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         // MARK: - Views Configuring
     }
