@@ -4,6 +4,7 @@
 target 'HabitsTracker' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  inhibit_all_warnings!
 
   # Pods for HabitsTracker
   pod 'YandexMobileMetrica/Dynamic', '~> 4.5.0'

@@ -38,6 +38,7 @@
 		554BBC022AD9C68100BF1DD4 /* Date+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BBC012AD9C68100BF1DD4 /* Date+ext.swift */; };
 		55549E5E2AE415A000E198BF /* UITableViewCell+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55549E5D2AE415A000E198BF /* UITableViewCell+ext.swift */; };
 		55549E602AE4385D00E198BF /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */; };
+		5562E9B82B13B76D000435C7 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5562E9B72B13B76D000435C7 /* .swiftlint.yml */; };
 		5571F3142AE50E5A00E514C2 /* TrackerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5571F3132AE50E5A00E514C2 /* TrackerSettings.swift */; };
 		5571F3162AE50E7F00E514C2 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5571F3152AE50E7F00E514C2 /* WeekDay.swift */; };
 		5571F3182AE51C4A00E514C2 /* UIViewController+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5571F3172AE51C4A00E514C2 /* UIViewController+ext.swift */; };
@@ -124,6 +125,7 @@
 		554BBC012AD9C68100BF1DD4 /* Date+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ext.swift"; sourceTree = "<group>"; };
 		55549E5D2AE415A000E198BF /* UITableViewCell+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+ext.swift"; sourceTree = "<group>"; };
 		55549E5F2AE4385D00E198BF /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
+		5562E9B72B13B76D000435C7 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5571F3132AE50E5A00E514C2 /* TrackerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSettings.swift; sourceTree = "<group>"; };
 		5571F3152AE50E7F00E514C2 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		5571F3172AE51C4A00E514C2 /* UIViewController+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ext.swift"; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 		55C465AB2AD86B8900D75E2E = {
 			isa = PBXGroup;
 			children = (
+				5562E9B72B13B76D000435C7 /* .swiftlint.yml */,
 				55C465B62AD86B8900D75E2E /* HabitsTracker */,
 				5521DAE82B0E538B001E20DA /* HabitsTrackerTests */,
 				55C465B52AD86B8900D75E2E /* Products */,
@@ -558,6 +561,7 @@
 			buildPhases = (
 				18375E4DE49586EFE4059ADA /* [CP] Check Pods Manifest.lock */,
 				55C465B02AD86B8900D75E2E /* Sources */,
+				5562E9B62B13B335000435C7 /* SwiftLint */,
 				55C465B12AD86B8900D75E2E /* Frameworks */,
 				55C465B22AD86B8900D75E2E /* Resources */,
 				8DCBDF5523AF4DCADE2D0E3F /* [CP] Embed Pods Frameworks */,
@@ -626,6 +630,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5562E9B82B13B76D000435C7 /* .swiftlint.yml in Resources */,
 				55C465C42AD86B8A00D75E2E /* LaunchScreen.storyboard in Resources */,
 				5507FA7E2B07D4D700B70288 /* Localizable.stringsdict in Resources */,
 				5507FA772B07B5AB00B70288 /* Localizable.strings in Resources */,
@@ -657,6 +662,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		5562E9B62B13B335000435C7 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		8DCBDF5523AF4DCADE2D0E3F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
