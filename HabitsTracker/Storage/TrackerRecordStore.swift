@@ -5,16 +5,33 @@
 //  Created by Andrey Ulanov on 06.11.2023.
 //
 
-import Foundation
+import UIKit
 
 enum TrackerRecordStoreError: Error {
     case convertingError
 }
 
 final class TrackerRecordStore {
+    static let shared = TrackerRecordStore()
     private let context = CoreDataManager.shared.context
+    private let isMockDataMode: Bool
+    private var firstFetch = true
     
-    func allRecords() throws -> [TrackerRecord] {
+    init() {
+        guard let isMockDataMode = (UIApplication.shared.delegate as? AppDelegate)?.mockMode
+        else {
+            self.isMockDataMode = false
+            assertionFailure("Failed to cast UIApplication Delegate to AppDelegate")
+            return
+        }
+        self.isMockDataMode = isMockDataMode
+    }
+    
+    func getAllRecords() throws -> [TrackerRecord] {
+        if isMockDataMode && firstFetch {
+            addMocks()
+        }
+        firstFetch = false
         let request = TrackerRecordCD.fetchRequest()
         guard let result = try? context.fetch(request) else {
             return []
@@ -23,6 +40,31 @@ final class TrackerRecordStore {
         return try result.map {
             try recordViewModel(from: $0)
         }
+    }
+    
+    func getAllRecordsCD() -> [TrackerRecordCD] {
+        let request = TrackerRecordCD.fetchRequest()
+        if let result = try? context.fetch(request) {
+            return result
+        } else {
+            return []
+        }
+    }
+    
+    func recordsFor(trackerID: UUID) -> Int {
+        let allRecords = getAllRecordsCD()
+        let trackerRecords = allRecords.filter {
+            $0.trackerId == trackerID
+        }
+        return trackerRecords.count
+    }
+    
+    func addMocks() {
+        let mockRecords = MockService.shared.getMockRecords()
+        for record in mockRecords {
+            _ = createRecord(record)
+        }
+        saveContext()
     }
     
     func findRecord(_ record: TrackerRecord) -> TrackerRecordCD? {

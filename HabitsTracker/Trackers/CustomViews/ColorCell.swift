@@ -76,7 +76,7 @@ private extension ColorCell {
             colorView.topAnchor.constraint(equalTo: outlineView.topAnchor, constant: padding),
             colorView.leadingAnchor.constraint(equalTo: outlineView.leadingAnchor, constant: padding),
             colorView.bottomAnchor.constraint(equalTo: outlineView.bottomAnchor, constant: -padding),
-            colorView.trailingAnchor.constraint(equalTo: outlineView.trailingAnchor, constant: -padding),
+            colorView.trailingAnchor.constraint(equalTo: outlineView.trailingAnchor, constant: -padding)
         ])
         // MARK: - Views Configuring
     }

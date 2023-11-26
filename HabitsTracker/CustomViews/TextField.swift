@@ -44,4 +44,3 @@ final class TextField: UITextField {
         return bounds.offsetBy(dx: -8, dy: 0)
     }
 }
-

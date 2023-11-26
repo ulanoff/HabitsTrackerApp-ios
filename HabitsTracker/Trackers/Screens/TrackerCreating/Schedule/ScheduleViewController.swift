@@ -19,19 +19,18 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: ScheduleViewControllerDelegate?
     private let weekDaysStrings: [String] = [
-        "Понедельник",
-        "Вторник",
-        "Среда",
-        "Четверг",
-        "Пятница",
-        "Суббота",
-        "Воскресенье",
+        NSLocalizedString("weekDay.monday.full", comment: ""),
+        NSLocalizedString("weekDay.tuesday.full", comment: ""),
+        NSLocalizedString("weekDay.wednesday.full", comment: ""),
+        NSLocalizedString("weekDay.thursday.full", comment: ""),
+        NSLocalizedString("weekDay.friday.full", comment: ""),
+        NSLocalizedString("weekDay.saturday.full", comment: ""),
+        NSLocalizedString("weekDay.sunday.full", comment: "")
     ]
     private var selectedWeekDays: Set<WeekDay> = []
     private var scheduleTableHeight: CGFloat {
         TableSettings.scheduleTableRowHeight * CGFloat(weekDaysStrings.count)
     }
-    
     
     // MARK: - UI Elements
     private lazy var scheduleTableView: UITableView = {
@@ -44,13 +43,15 @@ final class ScheduleViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.tableHeaderView = UIView()
         return tableView
     }()
     
     private lazy var continueButton: Button = {
         let button = Button()
-        button.setTitle("Готово", for: .normal)
+        let title = NSLocalizedString("scheduleScreen.confirmButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapContinueButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -117,7 +118,7 @@ private extension ScheduleViewController {
         // MARK: - Views Configuring
         navigationItem.setHidesBackButton(true, animated: false)
         view.backgroundColor = .ypWhite
-        title = "Расписание"
+        title = NSLocalizedString("scheduleScreen.title", comment: "")
     }
 }
 
@@ -139,6 +140,9 @@ extension ScheduleViewController: UITableViewDataSource {
         switcher.isOn = selectedWeekDays.contains(weekDay)
         switcher.addTarget(self, action: #selector(didChangeValueInSwitch(_:)), for: .valueChanged)
         switcher.onTintColor = .ypBlue
+        switcher.backgroundColor = .ypLightGray
+        switcher.layer.cornerRadius = 16
+        switcher.clipsToBounds = true
         
         cell.textLabel?.text = weekDaysStrings[indexPath.row]
         cell.accessoryView = switcher

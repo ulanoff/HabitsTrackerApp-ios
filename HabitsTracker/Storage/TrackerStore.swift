@@ -17,8 +17,10 @@ protocol TrackerStoreDelegate: AnyObject {
 }
 
 final class TrackerStore: NSObject {
+    static let shared = TrackerStore()
+    private lazy var trackerCategoryStore = TrackerCategoryStore.shared
+    private lazy var trackerRecordStore = TrackerRecordStore.shared
     private let context = CoreDataManager.shared.context
-    private lazy var trackerCategoryStore = TrackerCategoryStore()
     private var fetchedResultsController: NSFetchedResultsController<TrackerCD>!
     
     override init() {
@@ -51,6 +53,15 @@ final class TrackerStore: NSObject {
         CoreDataManager.shared.saveContext()
     }
     
+    func getAllTrackers() throws -> [Tracker] {
+        let request = TrackerCD.fetchRequest()
+        return if let result = try? context.fetch(request) {
+            try result.map { try trackerViewModel(from: $0) }
+        } else {
+            []
+        }
+    }
+    
     func findTracker(_ tracker: Tracker) -> TrackerCD? {
         let request = TrackerCD.fetchRequest()
         request.predicate = NSPredicate(
@@ -69,11 +80,13 @@ final class TrackerStore: NSObject {
     
     func createTracker(_ tracker: Tracker, category: TrackerCategory) -> TrackerCD {
         let trackerCD = TrackerCD(context: context)
+        trackerCD.type = Int64(tracker.type.rawValue)
         trackerCD.name = tracker.name
         trackerCD.color = tracker.color
         trackerCD.emoji = tracker.emoji
         trackerCD.id = tracker.id
         trackerCD.schedule = coreDataSchedule(from: tracker.schedule)
+        trackerCD.isPinned = false
         trackerCD.timestamp = Date()
         
         if let categoryCD = trackerCategoryStore.findCategory(category) {
@@ -90,6 +103,22 @@ final class TrackerStore: NSObject {
     func deleteTracker(_ tracker: Tracker) {
         if let tracker = findTracker(tracker) {
             context.delete(tracker)
+            trackerRecordStore.getAllRecordsCD().filter {
+                $0.trackerId == tracker.id
+            }.forEach {
+                context.delete($0)
+            }
+            saveContext()
+        }
+    }
+    
+    func updateTracker(_ tracker: Tracker, to newTracker: Tracker) {
+        if let tracker = findTracker(tracker) {
+            tracker.color = newTracker.color
+            tracker.emoji = newTracker.emoji
+            tracker.name = newTracker.name
+            tracker.schedule = coreDataSchedule(from: newTracker.schedule)
+            tracker.isPinned = newTracker.isPinned
             saveContext()
         }
     }
@@ -118,16 +147,22 @@ final class TrackerStore: NSObject {
             let emoji = trackerCD.emoji,
             let color = trackerCD.color,
             let cdSchedule = trackerCD.schedule,
-            let schedule = viewModelSchedule(from: cdSchedule)
+            let schedule = viewModelSchedule(from: cdSchedule),
+            let type = TrackerType(rawValue: Int(trackerCD.type))
         else {
             throw TrackerStoreError.convertingError
         }
+        let isPinned = trackerCD.isPinned
         
-        return Tracker(id: id,
-                       name: name,
-                       color: color,
-                       emoji: emoji,
-                       schedule: schedule)
+        return Tracker(
+            id: id,
+            isPinned: isPinned,
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: schedule,
+            type: type
+        )
     }
 }
 

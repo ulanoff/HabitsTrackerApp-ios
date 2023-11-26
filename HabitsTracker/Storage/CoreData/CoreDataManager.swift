@@ -13,7 +13,7 @@ final class CoreDataManager {
     
     var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "HabitsTracker")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -37,6 +37,24 @@ final class CoreDataManager {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        }
+    }
+    
+    func clearData() {
+        let fetchRequests: [NSFetchRequest] = [
+            TrackerCategoryCD.fetchRequest(),
+            TrackerCD.fetchRequest(),
+            TrackerRecordCD.fetchRequest()
+        ]
+        let deleteRequests = fetchRequests.map { NSBatchDeleteRequest(fetchRequest: $0) }
+        
+        do {
+            for request in deleteRequests {
+                try context.execute(request)
+            }
+            saveContext()
+        } catch {
+            assertionFailure("Failed to clear CoreData")
         }
     }
 }

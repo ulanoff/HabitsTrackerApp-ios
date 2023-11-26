@@ -33,6 +33,8 @@ final class TrackerCell: UICollectionViewCell {
     private var indexPath: IndexPath?
     private var trackerState: TrackerState = .notDone
     
+    var contextMenuPreview: UIView { cardView }
+    
     // MARK: - UI Elements
     private lazy var cardView: UIView = {
         let cardView = UIView()
@@ -64,7 +66,7 @@ final class TrackerCell: UICollectionViewCell {
         Text
         Text
         """
-        titleLabel.textColor = .ypWhite
+        titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         titleLabel.numberOfLines = 2
         return titleLabel
@@ -80,7 +82,7 @@ final class TrackerCell: UICollectionViewCell {
     
     private lazy var isPinnedImageView: UIImageView = {
         let isPinnedImageView = UIImageView()
-        isPinnedImageView.tintColor = .ypWhite
+        isPinnedImageView.tintColor = .white
         isPinnedImageView.image = .pinnedIcon
         return isPinnedImageView
     }()
@@ -89,7 +91,7 @@ final class TrackerCell: UICollectionViewCell {
         let trackerButton = UIButton(type: .system)
         trackerButton.setImage(.notDoneButtonIcon, for: .normal)
         trackerButton.backgroundColor = .ypSelection3
-        trackerButton.tintColor = .ypWhite
+        trackerButton.tintColor = .white
         trackerButton.layer.cornerRadius = 17
         trackerButton.addTarget(self, action: #selector(didTapDoneButton(_:)), for: .touchUpInside)
         return trackerButton
@@ -131,23 +133,17 @@ final class TrackerCell: UICollectionViewCell {
         trackerButton.setImage(configuration.isDoneToday ? .doneButtonIcon : .notDoneButtonIcon, for: .normal)
         trackerButton.isUserInteractionEnabled = configuration.isDoneButtonAvailable
         trackerButton.backgroundColor = buttonColor
-        isPinnedImageView.hide()
+        isPinnedImageView.isHidden = !tracker.isPinned
     }
 }
 
 // MARK: - Private Methods
 private extension TrackerCell {
     func pluralizeDay(_ number: Int) -> String {
-        let lastDigit = number % 10
-        let lastTwoDigits = number % 100
-        
-        if lastDigit == 1 && lastTwoDigits != 11 {
-            return "\(number) день"
-        } else if (lastDigit >= 2 && lastDigit <= 4) && (lastTwoDigits < 10 || lastTwoDigits >= 20) {
-            return "\(number) дня"
-        } else {
-            return "\(number) дней"
-        }
+        String.localizedStringWithFormat(
+            NSLocalizedString("days", comment: ""),
+            number
+        )
     }
     
     // MARK: - Setup UI
@@ -198,7 +194,7 @@ private extension TrackerCell {
             trackerButton.topAnchor.constraint(equalTo: quantityManagementView.topAnchor, constant: 8),
             trackerButton.trailingAnchor.constraint(equalTo: quantityManagementView.trailingAnchor, constant: -12),
             trackerButton.heightAnchor.constraint(equalToConstant: 34),
-            trackerButton.widthAnchor.constraint(equalToConstant: 34),
+            trackerButton.widthAnchor.constraint(equalToConstant: 34)
         ])
         
         // MARK: - Views Configuring

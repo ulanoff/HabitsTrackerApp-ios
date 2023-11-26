@@ -22,30 +22,59 @@ final class TabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        switch traitCollection.userInterfaceStyle {
+        case .unspecified:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .light:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .dark:
+            tabBar.layer.borderColor = UIColor.clear.cgColor
+        @unknown default:
+            fatalError()
+        }
+    }
+    
     private func configure() {
         tabBar.barTintColor = .ypGray
         tabBar.tintColor = .ypBlue
         tabBar.backgroundColor = .ypWhite
         
-        tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        switch traitCollection.userInterfaceStyle {
+        case .unspecified:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .light:
+            tabBar.layer.borderColor = UIColor.ypGray.cgColor
+        case .dark:
+            tabBar.layer.borderColor = UIColor.clear.cgColor
+        @unknown default:
+            fatalError()
+        }
+        
         tabBar.layer.borderWidth = 1
         tabBar.layer.masksToBounds = false
         
         let trackersViewModel = TrackersViewModel()
         let trackersViewController = TrackersViewController(viewModel: trackersViewModel)
-        let statsViewController = UIViewController()
+        let statsViewModel = StatisticsViewModel(
+            statisticsService: StatisticsService(
+                trackerStore: TrackerStore.shared,
+                trackerRecordStore: TrackerRecordStore.shared
+            )
+        )
+        let statsViewController = StatisticsViewController(viewModel: statsViewModel)
         
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
         let statsNavigationController = UINavigationController(rootViewController: statsViewController)
         
         trackersNavigationController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: NSLocalizedString("tabBar.trackers", comment: ""),
             image: .trackersIcon,
             tag: Tabs.trackers.rawValue
         )
         
         statsNavigationController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: NSLocalizedString("tabBar.statistics", comment: ""),
             image: .statsIcon,
             tag: Tabs.stats.rawValue
         )

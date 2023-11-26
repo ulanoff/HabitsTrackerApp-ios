@@ -26,7 +26,7 @@ protocol CategoriesViewModelDelegate: AnyObject {
 
 final class CategoriesViewModel {
     weak var delegate: CategoriesViewModelDelegate?
-    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerCategoryStore = TrackerCategoryStore.shared
     @Observable var selectedCategoryIndex: Int?
     @Observable var oldSelectedCategoryIndex: Int?
     @Observable var categories: [String] {

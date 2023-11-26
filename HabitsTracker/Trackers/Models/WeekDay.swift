@@ -47,23 +47,22 @@ enum WeekDay: Int, Comparable, CaseIterable {
     }
     
     var description: String {
-        get {
-            switch self {
-            case .monday:
-                "Пн"
-            case .tuesday:
-                "Вт"
-            case .wednesday:
-                "Ср"
-            case .thursday:
-                "Чт"
-            case .friday:
-                "Пт"
-            case .saturday:
-                "Сб"
-            case .sunday:
-                "Вс"
-            }
+        switch self {
+        case .monday:
+            NSLocalizedString("weekDay.monday.short", comment: "")
+        case .tuesday:
+            NSLocalizedString("weekDay.tuesday.short", comment: "")
+        case .wednesday:
+            NSLocalizedString("weekDay.wednesday.short", comment: "")
+        case .thursday:
+            NSLocalizedString("weekDay.thursday.short", comment: "")
+        case .friday:
+            NSLocalizedString("weekDay.friday.short", comment: "")
+        case .saturday:
+            NSLocalizedString("weekDay.saturday.short", comment: "")
+        case .sunday:
+            NSLocalizedString("weekDay.sunday.short", comment: "")
+            
         }
     }
 }

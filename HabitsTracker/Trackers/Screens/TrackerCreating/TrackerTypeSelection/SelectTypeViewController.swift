@@ -9,7 +9,7 @@ import UIKit
 
 final class SelectTypeViewController: UIViewController {
     // MARK: - Properties
-    weak var newTrackerDelegate: NewTrackerViewControllerDelegate?
+    weak var newTrackerDelegate: TrackerSettingsViewControllerDelegate?
     
     // MARK: - UI Elements
     private lazy var buttonStack: UIStackView = {
@@ -22,14 +22,16 @@ final class SelectTypeViewController: UIViewController {
     
     private lazy var habitButton: Button = {
         let button = Button()
-        button.setTitle("Привычка", for: .normal)
+        let title = NSLocalizedString("trackerTypeScreen.habitButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
         return button
     }()
     
     private lazy var irregularButton: Button = {
         let button = Button()
-        button.setTitle("Нерегулярное событие", for: .normal)
+        let title = NSLocalizedString("trackerTypeScreen.eventButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapIrregularButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -42,13 +44,15 @@ final class SelectTypeViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapHabitButton(_ sender: UIButton) {
-        let newTrackerVC = NewTrackerViewController(trackerType: .habit)
+        AnalyticsService.sendClickEvent(screen: .newTrackerType, item: .habit)
+        let newTrackerVC = TrackerSettingsViewController(trackerType: .habit)
         newTrackerVC.delegate = newTrackerDelegate
         navigationController?.pushViewController(newTrackerVC, animated: true)
     }
     
     @objc private func didTapIrregularButton(_ sender: UIButton) {
-        let newTrackerVC = NewTrackerViewController(trackerType: .irregularEvent)
+        AnalyticsService.sendClickEvent(screen: .newTrackerType, item: .irregularEvent)
+        let newTrackerVC = TrackerSettingsViewController(trackerType: .irregularEvent)
         newTrackerVC.delegate = newTrackerDelegate
         navigationController?.pushViewController(newTrackerVC, animated: true)
     }
@@ -74,11 +78,11 @@ private extension SelectTypeViewController {
             buttonStack.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
             
             habitButton.heightAnchor.constraint(equalToConstant: 60),
-            irregularButton.heightAnchor.constraint(equalToConstant: 60),
+            irregularButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         // MARK: - Views Configuring
         view.backgroundColor = .ypWhite
-        title = "Создание трекера"
+        title = NSLocalizedString("trackerTypeScreen.title", comment: "")
     }
 }

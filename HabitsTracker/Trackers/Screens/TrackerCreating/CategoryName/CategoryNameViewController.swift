@@ -37,8 +37,12 @@ final class CategoryNameViewController: UIViewController {
     // MARK: - UI Elements
     private lazy var textField: TextField = {
         let textField = TextField()
+        let placeholder = NSLocalizedString("newCategoryScreen.nameTextField.placeholder", comment: "")
         textField.delegate = self
-        textField.placeholder = "Введите название категории"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.ypGray]
+        )
         textField.clearButtonMode = .whileEditing
         textField.text = oldCategoryName
         return textField
@@ -46,7 +50,8 @@ final class CategoryNameViewController: UIViewController {
     
     private lazy var continueButton: Button = {
         let button = Button()
-        button.setTitle("Готово", for: .normal)
+        let title = NSLocalizedString("newCategoryScreen.confirmButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         return button
     }()
@@ -108,8 +113,7 @@ private extension CategoryNameViewController {
     }
     
     func updateContinueButtonState(isNameValid: Bool) {
-        if isNameValid
-        {
+        if isNameValid {
             continueButton.isUserInteractionEnabled = true
             continueButton.backgroundColor = .ypBlack
         } else {
@@ -141,7 +145,7 @@ private extension CategoryNameViewController {
             continueButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 20),
             continueButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
             continueButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -16),
-            continueButton.heightAnchor.constraint(equalToConstant: 60),
+            continueButton.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         // MARK: - Views Configuring
@@ -149,9 +153,9 @@ private extension CategoryNameViewController {
         view.backgroundColor = .ypWhite
         switch controllerType {
         case .creating:
-            title = "Новая категория"
+            title = NSLocalizedString("newCategoryScreen.title", comment: "")
         case .editing:
-            title = "Редактирование категории"
+            title = NSLocalizedString("editCategoryScreen.title", comment: "")
         }
     }
 }

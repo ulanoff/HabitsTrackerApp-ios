@@ -1,0 +1,115 @@
+/* 
+  Localizable.strings
+  HabitsTracker
+
+  Created by Andrey Ulanov on 17.11.2023.
+  
+*/
+
+// MARK: Onboarding
+onboarding.firstScreen.text = "Track only what matters to you";
+onboarding.secondScreen.text = "Even if it's not liters of water and yoga";
+onboarding.skipButton = "That's technology for you!";
+
+// MARK: TabBar
+tabBar.trackers = "Trackers";
+tabBar.statistics = "Statistics";
+
+// MARK: Main Screen
+mainScreen.title = "Trackers";
+mainScreen.searchTextField.placeholder = "Search";
+mainScreen.searchTextField.candelButton = "Cancel";
+mainScreen.emptyStateByDate = "What do you want to track?";
+mainScreen.emptyStateBySearch = "Nothing found";
+mainScreen.filterButton = "Filters";
+
+filtersScreen.title = "Filters";
+filter.byWeekday = "All Trackers";
+filter.byToday = "Today";
+filter.byCompleteness = "Completed";
+filter.byNotCompleteness = "Incomplete";
+filter.search = "Search";
+
+// MARK: Tracker Type
+trackerTypeScreen.title = "Create Tracker";
+trackerTypeScreen.habitButton = "Habit";
+trackerTypeScreen.eventButton = "Irregular Event";
+
+// MARK: Tracker Settings
+trackerSettingsScreen.title.habitCreating = "New Habit";
+trackerSettingsScreen.title.eventCreating = "New Irregular Event";
+trackerSettingsScreen.title.habitEditing = "Edit Habit";
+trackerSettingsScreen.title.eventEditing = "Edit Event";
+trackerSettingsScreen.nameTextField.placeholder = "Enter tracker name";
+trackerSettingsScreen.nameTextField.maxLengthError = "Limit is 38 characters";
+trackerSettingsScreen.categoryButton = "Category";
+trackerSettingsScreen.scheduleButton = "Schedule";
+trackerSettingsScreen.emojiTitle = "Emoji";
+trackerSettingsScreen.colorTitle = "Color";
+trackerSettingsScreen.cancelButton = "Cancel";
+trackerSettingsScreen.confirmButton.create = "Create";
+trackerSettingsScreen.confirmButton.save = "Save";
+
+// MARK: Categories Screen
+categoriesScreen.title = "Category";
+categoriesScreen.emptyState = "Habits and events can be \ngrouped by meaning";
+categoriesScreen.createButton = "Create Category";
+categoriesScreen.deleteWarning = "Do you really want to delete this category?";
+categoriesScreen.deleteConfirm = "Delete";
+categoriesScreen.deleteCancel = "Cancel";
+
+// MARK: New Category Screen
+newCategoryScreen.title = "New Category";
+newCategoryScreen.nameTextField.placeholder = "Enter category name";
+newCategoryScreen.confirmButton = "Done";
+
+// MARK: Edit Category Screen
+editCategoryScreen.title = "Edit Category";
+editCategoryScreen.confirmButton = "Done";
+
+// MARK: Schedule Screen
+scheduleScreen.title = "Schedule";
+scheduleScreen.confirmButton = "Done";
+
+// MARK: Statistics Screen
+statisticsScreen.title = "Statistics";
+statisticsScreen.emptyView = "Nothing to analyze yet";
+statisticsScreen.bestStreak = "Best Streak";
+statisticsScreen.perfectDays = "Perfect Days";
+statisticsScreen.trackersCompleted = "Trackers Completed";
+statisticsScreen.averageCompletions = "Average Value";
+
+// MARK: Context Menu
+contextMenu.delete = "Delete";
+contextMenu.edit = "Edit";
+contextMenu.pin = "Pin";
+contextMenu.unpin = "Unpin";
+
+// MARK: Confirmation Action Sheet
+actionSheet.title = "Are you sure you want to delete the tracker?";
+actionSheet.deleteAction.title = "Delete";
+actionSheet.cancelAction.title = "Cancel";
+
+// MARK: Week Days
+weekDay.everyday = "Everyday";
+
+// MARK: Week Days (full)
+weekDay.monday.full = "Monday";
+weekDay.tuesday.full = "Tuesday";
+weekDay.wednesday.full = "Wednesday";
+weekDay.thursday.full = "Thursday";
+weekDay.friday.full = "Friday";
+weekDay.saturday.full = "Saturday";
+weekDay.sunday.full = "Sunday";
+
+// MARK: Week Days (short)
+weekDay.monday.short = "Mon";
+weekDay.tuesday.short = "Tue";
+weekDay.wednesday.short = "Wed";
+weekDay.thursday.short = "Thu";
+weekDay.friday.short = "Fri";
+weekDay.saturday.short = "Sat";
+weekDay.sunday.short = "Sun";
+
+// MARK: Default Categories
+defaultCategory.pinned = "Pinned";

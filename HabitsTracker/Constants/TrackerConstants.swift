@@ -20,6 +20,6 @@ struct TrackerConstants {
         .ypSelection7, .ypSelection8, .ypSelection9,
         .ypSelection10, .ypSelection11, .ypSelection12,
         .ypSelection13, .ypSelection14, .ypSelection15,
-        .ypSelection16, .ypSelection17, .ypSelection18,
+        .ypSelection16, .ypSelection17, .ypSelection18
     ]
 }

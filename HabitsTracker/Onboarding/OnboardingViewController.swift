@@ -11,11 +11,11 @@ final class OnboardingViewController: UIPageViewController {
     // MARK: - Properties
     private lazy var pages: [OnboardingPageViewController] = {
         let page1 = OnboardingPageViewController(
-            text: "Отслеживайте только то, что хотите",
+            text: NSLocalizedString("onboarding.firstScreen.text", comment: ""),
             backgroundImage: .onboarding1
         )
         let page2 = OnboardingPageViewController(
-            text: "Даже если это не литры воды и йога",
+            text: NSLocalizedString("onboarding.secondScreen.text", comment: ""),
             backgroundImage: .onboarding2
         )
         return [page1, page2]
@@ -24,7 +24,8 @@ final class OnboardingViewController: UIPageViewController {
     // MARK: - UI Elements
     private lazy var button: Button = {
         let button = Button()
-        button.setTitle("Вот это технологии!", for: .normal)
+        let title = NSLocalizedString("onboarding.skipButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         return button
     }()
@@ -113,7 +114,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
-        guard 
+        guard
             let currentPage = viewController as? OnboardingPageViewController,
             let currentIndex = pages.firstIndex(of: currentPage)
         else {

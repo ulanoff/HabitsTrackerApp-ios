@@ -7,15 +7,17 @@
 
 import Foundation
 
-enum FilterOperation {
-    case search
-    case byWeekday
-}
-
 enum TrackersState {
     case standart
-    case emptyByDate
+    case filtersEnabled
+    case emptyByDefault
     case emptyBySearch
+    case emptyByFilter
+}
+
+struct TrackerIndex {
+    let categoryIndex: Int
+    let trackerIndex: Int
 }
 
 final class TrackersViewModel {
@@ -26,24 +28,27 @@ final class TrackersViewModel {
     }
     @Observable var state: TrackersState = .standart
     var completedTrackers: [TrackerRecord] = []
-    var selectedDate = Date().onlyDate
+    var selectedFilterOperation: FilterOperation = .byWeekday
     var lastFilterOperation: FilterOperation = .byWeekday
     var isFulfillmentAvailable = true
-    
     private var currentDate = Date().onlyDate
     private var currentWeekDay: WeekDay {
+        WeekDay(numberFromSunday: currentDate.weekday)!
+    }
+    @Observable var selectedDate = Date().onlyDate
+    private var selectedWeekDay: WeekDay {
         WeekDay(numberFromSunday: selectedDate.weekday)!
     }
     private lazy var trackerStore: TrackerStore = {
-        let store = TrackerStore()
+        let store = TrackerStore.shared
         store.delegate = self
         return store
     }()
-    private lazy var trackerCategoryStore = TrackerCategoryStore()
-    private lazy var trackerRecordStore = TrackerRecordStore()
+    private lazy var trackerCategoryStore = TrackerCategoryStore.shared
+    private lazy var trackerRecordStore = TrackerRecordStore.shared
     private var categories: [TrackerCategory] = [] {
         didSet {
-            updateVisibleCategoriesByDate()
+            filterBy(filterOperation: selectedFilterOperation)
         }
     }
     
@@ -53,9 +58,18 @@ final class TrackersViewModel {
     }
     
     func didChangeDate(newDate: Date) {
+        isFulfillmentAvailable = !newDate.isInFuture
+        
+        if selectedFilterOperation == .byCompleteness ||
+           selectedFilterOperation == .byNotCompleteness {
+            selectedDate = newDate
+            filterBy(filterOperation: selectedFilterOperation)
+            return
+        }
+        
         selectedDate = newDate
-        isFulfillmentAvailable = !selectedDate.isInFuture
-        updateVisibleCategoriesByDate()
+        selectedFilterOperation = .byWeekday
+        filterByWeekday()
     }
     
     func didTapDoneButtonOnTracker(trackerState: TrackerState, trackerId: UUID) {
@@ -75,15 +89,31 @@ final class TrackersViewModel {
     
     func didSearchFor(name: String) {
         if name.isEmpty || name.isBlank {
-            updateVisibleCategoriesByDate()
+            filterBy(filterOperation: selectedFilterOperation)
         } else {
-            updateVisibleCategoriesByDate()
-            updateVisibleCategoriesBySearch(text: name)
+            filterBy(filterOperation: selectedFilterOperation)
+            filterBySearch(text: name)
         }
     }
     
+    func didDeleteTrackerAt(index: TrackerIndex) {
+        let tracker = visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
+        trackerStore.deleteTracker(tracker)
+    }
+    
+    func didPinOrUnpinTracker(index: TrackerIndex) {
+        
+        let tracker = visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
+        let pinnedTracker = tracker.pinToggled
+        trackerStore.updateTracker(tracker, to: pinnedTracker)
+    }
+    
+    func trackerForEdit(at index: TrackerIndex) -> Tracker {
+        visibleCategories[index.categoryIndex].trackers[index.trackerIndex]
+    }
+    
     func trackerViewConfiguration(for tracker: Tracker) -> TrackerViewConfiguration {
-        let isDoneButtonAvailable = isFulfillmentAvailable
+        let isDoneButtonAvailable = isFulfillmentAvailable && tracker.schedule.contains(selectedWeekDay)
         let daysStreak = completedTrackers.filter { $0.trackerId == tracker.id }.count
         let isDoneToday = completedTrackers.contains { trackerRecord in
             trackerRecord.date == selectedDate &&
@@ -97,6 +127,10 @@ final class TrackersViewModel {
         )
     }
     
+    func isTrackerPinnedAt(index: TrackerIndex) -> Bool {
+        visibleCategories[index.categoryIndex].trackers[index.trackerIndex].isPinned
+    }
+    
     private func getAllCategories() throws {
         do {
             categories = try trackerCategoryStore.getAllCategories()
@@ -107,7 +141,7 @@ final class TrackersViewModel {
     
     private func getAllRecords() throws {
         do {
-            completedTrackers = try trackerRecordStore.allRecords()
+            completedTrackers = try trackerRecordStore.getAllRecords()
         } catch {
             throw error
         }
@@ -115,22 +149,66 @@ final class TrackersViewModel {
     
     func updateState() {
         guard visibleCategories.isEmpty else {
-            state = .standart
+            if selectedFilterOperation == .byCompleteness ||
+               selectedFilterOperation == .byNotCompleteness {
+                state = .filtersEnabled
+            } else {
+                state = .standart
+            }
             return
         }
+        
         switch lastFilterOperation {
         case .search:
             state = .emptyBySearch
         case .byWeekday:
-            state = .emptyByDate
+            state = .emptyByDefault
+        case .byToday:
+            state = .emptyByDefault
+        case .byCompleteness:
+            state = .emptyByFilter
+        case .byNotCompleteness:
+            state = .emptyByFilter
         }
     }
     
-    private func updateVisibleCategoriesByDate() {
+    private func filterBy(filterOperation: FilterOperation) {
+        filterByWeekday()
+        switch filterOperation {
+        case .byToday:
+            filterByToday()
+        case .byWeekday:
+            filterByWeekday()
+        case .byCompleteness:
+            filterByCompleteness()
+        case .byNotCompleteness:
+            filterByNotCompleteness()
+        case .search:
+            return
+        }
+    }
+    
+    private func filterByWeekday() {
         lastFilterOperation = .byWeekday
         visibleCategories = categories.filter { category in
-            for tracker in category.trackers {
-                if tracker.schedule.contains(currentWeekDay) { return true }
+            for tracker in category.trackers where tracker.schedule.contains(selectedWeekDay) {
+                return true
+            }
+            return false
+        }.map { catetegory in
+            let name = catetegory.name
+            let trackers = catetegory.trackers.filter { $0.schedule.contains(selectedWeekDay) }
+            return TrackerCategory(name: name, trackers: trackers)
+        }
+        
+    }
+    
+    private func filterByToday() {
+        lastFilterOperation = .byToday
+        selectedDate = currentDate
+        visibleCategories = categories.filter { category in
+            for tracker in category.trackers where tracker.schedule.contains(currentWeekDay) {
+                return true
             }
             return false
         }.map { catetegory in
@@ -138,13 +216,48 @@ final class TrackersViewModel {
             let trackers = catetegory.trackers.filter { $0.schedule.contains(currentWeekDay) }
             return TrackerCategory(name: name, trackers: trackers)
         }
-        
     }
     
-    private func updateVisibleCategoriesBySearch(text: String) {
+    private func filterBySearch(text: String) {
         lastFilterOperation = .search
         visibleCategories = visibleCategories.map { category in
             let foundTrackers = category.trackers.filter { $0.name.lowercased().contains(text.lowercased()) }
+            return TrackerCategory(name: category.name, trackers: foundTrackers)
+        }.filter { !$0.trackers.isEmpty }
+    }
+    
+    private func filterByCompleteness() {
+        lastFilterOperation = .byCompleteness
+        visibleCategories = visibleCategories.map { category in
+            let foundTrackers = category.trackers.filter { tracker in
+                var isCompleted = false
+                completedTrackers.forEach {
+                    if tracker.id == $0.trackerId &&
+                       $0.date == selectedDate {
+                        isCompleted = true
+                        return
+                    }
+                }
+                return isCompleted
+            }
+            return TrackerCategory(name: category.name, trackers: foundTrackers)
+        }.filter { !$0.trackers.isEmpty }
+    }
+    
+    private func filterByNotCompleteness() {
+        lastFilterOperation = .byNotCompleteness
+        visibleCategories = visibleCategories.map { category in
+            let foundTrackers = category.trackers.filter { tracker in
+                var isCompleted = true
+                completedTrackers.forEach {
+                    if tracker.id == $0.trackerId &&
+                       $0.date == selectedDate {
+                        isCompleted = false
+                        return
+                    }
+                }
+                return isCompleted
+            }
             return TrackerCategory(name: category.name, trackers: foundTrackers)
         }.filter { !$0.trackers.isEmpty }
     }
@@ -161,9 +274,21 @@ final class TrackersViewModel {
             return
         }
                 
-        let tracker = Tracker(id: settings.id, name: name, color: color, emoji: emoji, schedule: schedule)
+        let tracker = Tracker(
+            id: settings.id,
+            isPinned: false,
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: schedule,
+            type: settings.trackerType
+        )
         let category = TrackerCategory(name: settingsCategoryName, trackers: [])
         _ = trackerStore.createTracker(tracker, category: category)
+    }
+    
+    private func updateTracker(old: Tracker, new: Tracker) {
+        trackerStore.updateTracker(old, to: new)
     }
 }
 
@@ -173,8 +298,19 @@ extension TrackersViewModel: TrackerStoreDelegate {
     }
 }
 
-extension TrackersViewModel: NewTrackerViewControllerDelegate {
-    func newTrackerViewController(_ newTrackerViewController: NewTrackerViewController, didBuildTrackerWith settings: TrackerSettings) {
+extension TrackersViewModel: TrackerSettingsViewControllerDelegate {
+    func trackerSettingsViewController(_ trackerSettingsViewController: TrackerSettingsViewController, didEditTracker tracker: Tracker, to newTracker: Tracker) {
+        updateTracker(old: tracker, new: newTracker)
+    }
+    
+    func trackerSettingsViewController(_ trackerSettingsViewController: TrackerSettingsViewController, didCreateTrackerWith settings: TrackerSettings) {
         createTracker(settings: settings)
+    }
+}
+
+extension TrackersViewModel: FiltersViewModelDelegate {
+    func filtersViewModel(_ viewModel: FiltersViewModel, didSelectFilter filter: FilterOperation) {
+        selectedFilterOperation = filter
+        filterBy(filterOperation: filter)
     }
 }

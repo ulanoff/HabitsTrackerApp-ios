@@ -1,0 +1,117 @@
+/* 
+  Localizable.strings
+  HabitsTracker
+
+  Created by Andrey Ulanov on 17.11.2023.
+  
+*/
+
+// MARK: Onboarding
+onboarding.firstScreen.text = "Отслеживайте только то, что хотите";
+onboarding.secondScreen.text = "Даже если это не литры воды и йога";
+onboarding.skipButton = "Вот это технологии!";
+
+// MARK: TabBar
+tabBar.trackers = "Трекеры";
+tabBar.statistics = "Статистика";
+
+// MARK: Main Screen
+mainScreen.title = "Трекеры";
+mainScreen.searchTextField.placeholder = "Поиск";
+mainScreen.searchTextField.candelButton = "Отменить";
+mainScreen.emptyStateByDate = "Что будем отслеживать?";
+mainScreen.emptyStateBySearch = "Ничего не найдено";
+mainScreen.filterButton = "Фильтры";
+
+// MARK: Filters Screen
+filtersScreen.title = "Фильтры";
+filter.byWeekday = "Все трекеры";
+filter.byToday = "Трекеры на сегодня";
+filter.byCompleteness = "Завершенные";
+filter.byNotCompleteness = "Не завершенные";
+filter.search = "Поиск";
+
+// MARK: Tracker Type
+trackerTypeScreen.title = "Создание трекера";
+trackerTypeScreen.habitButton = "Привычка";
+trackerTypeScreen.eventButton = "Нерегулярное событие";
+
+// MARK: Tracker Settings
+trackerSettingsScreen.title.habitCreating = "Новая привычка";
+trackerSettingsScreen.title.eventCreating = "Новое нерегулярное событие";
+trackerSettingsScreen.title.habitEditing = "Редактирование привычки";
+trackerSettingsScreen.title.eventEditing = "Редактирование события";
+trackerSettingsScreen.nameTextField.placeholder = "Введите название трекера";
+trackerSettingsScreen.nameTextField.maxLengthError = "Ограничение 38 символов";
+trackerSettingsScreen.categoryButton = "Категория";
+trackerSettingsScreen.scheduleButton = "Расписание";
+trackerSettingsScreen.emojiTitle = "Emoji";
+trackerSettingsScreen.colorTitle = "Цвет";
+trackerSettingsScreen.cancelButton = "Отменить";
+trackerSettingsScreen.confirmButton.create = "Создать";
+trackerSettingsScreen.confirmButton.save = "Сохранить";
+
+// MARK: Categories Screen
+categoriesScreen.title = "Категория";
+categoriesScreen.emptyState = "Привычки и события можно \nобъединить по смыслу";
+categoriesScreen.createButton = "Добавить категорию";
+categoriesScreen.deleteWarning = "Эта категория точно не нужна?";
+categoriesScreen.deleteConfirm = "Удалить";
+categoriesScreen.deleteCancel = "Удалить";
+
+// MARK: New Category Screen
+newCategoryScreen.title = "Новая категория";
+newCategoryScreen.nameTextField.placeholder = "Введите название категории";
+newCategoryScreen.confirmButton = "Готово";
+
+// MARK: Edit Category Screen
+editCategoryScreen.title = "Редактирование категории";
+editCategoryScreen.confirmButton = "Готово";
+
+// MARK: Schedule Screen
+scheduleScreen.title = "Расписание";
+scheduleScreen.confirmButton = "Готово";
+
+// MARK: Statistics Screen
+statisticsScreen.title = "Статистика";
+statisticsScreen.emptyView = "Анализировать пока нечего";
+statisticsScreen.bestStreak = "Лучший период";
+statisticsScreen.perfectDays = "Идеальные дни";
+statisticsScreen.trackersCompleted = "Трекеров завершено";
+statisticsScreen.averageCompletions = "Среднее значение";
+
+// MARK: Context Menu
+contextMenu.delete = "Удалить";
+contextMenu.edit = "Редактировать";
+contextMenu.pin = "Закрепить";
+contextMenu.unpin = "Открепить";
+
+// MARK: Confirmation Action Sheet
+actionSheet.title = "Уверены что хотите удалить трекер";
+actionSheet.deleteAction.title = "Удалить";
+actionSheet.cancelAction.title = "Отменить";
+
+// MARK: Week Days
+weekDay.everyday = "Каждый день";
+
+// MARK: Week Days (full)
+weekDay.monday.full = "Понедельник";
+weekDay.tuesday.full = "Вторник";
+weekDay.wednesday.full = "Среда";
+weekDay.thursday.full = "Четверг";
+weekDay.friday.full = "Пятница";
+weekDay.saturday.full = "Суббота";
+weekDay.sunday.full = "Воскресенье";
+
+// MARK: Week Days (short)
+weekDay.monday.short = "Пн";
+weekDay.tuesday.short = "Вт";
+weekDay.wednesday.short = "Ср";
+weekDay.thursday.short = "Чт";
+weekDay.friday.short = "Пт";
+weekDay.saturday.short = "Сб";
+weekDay.sunday.short = "Вс";
+
+// MARK: Default Categories
+defaultCategory.pinned = "Закрепленные";
+

@@ -7,7 +7,7 @@
 
 import UIKit
 
-fileprivate struct TableSettings {
+private struct TableSettings {
     static let tableRowHeight: CGFloat = 75
 }
 
@@ -25,20 +25,23 @@ final class CategoriesViewController: UIViewController {
         tableView.allowsSelection = true
         tableView.allowsMultipleSelection = false
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.tableHeaderView = UIView()
         return tableView
     }()
     
     private lazy var createButton: Button = {
         let button = Button()
-        button.setTitle("Добавить категорию", for: .normal)
+        let title = NSLocalizedString("categoriesScreen.createButton", comment: "")
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         return button
     }()
     
     private lazy var noCategoriesView: EmptyView = {
         let view = EmptyView()
-        view.configure(image: .noTrackers, text: "Привычки и события можно \nобъединить по смыслу")
+        let text = NSLocalizedString("categoriesScreen.emptyState", comment: "")
+        view.configure(image: .noTrackers, text: text)
         view.hide()
         return view
     }()
@@ -62,6 +65,7 @@ final class CategoriesViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapCreateButton() {
+        AnalyticsService.sendClickEvent(screen: .categories, item: .addCategory)
         let viewModel = CategoryNameViewModel()
         let controller = CategoryNameViewController(type: .creating, categoryName: nil, viewModel: viewModel)
         controller.delegate = self
@@ -137,13 +141,13 @@ private extension CategoriesViewController {
             createButton.heightAnchor.constraint(equalToConstant: 60),
             
             noCategoriesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noCategoriesView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noCategoriesView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
         // MARK: - Views Configuring
         navigationItem.setHidesBackButton(true, animated: false)
         view.backgroundColor = .ypWhite
-        title = "Категория"
+        title = NSLocalizedString("categoriesScreen.title", comment: "")
     }
 }
 
@@ -192,10 +196,13 @@ extension CategoriesViewController: UITableViewDelegate {
         _ tableView: UITableView,
         contextMenuConfigurationForRowAt indexPath: IndexPath,
         point: CGPoint) -> UIContextMenuConfiguration? {
-            let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] suggestedActions in
+            let configuration = UIContextMenuConfiguration(actionProvider: { [weak self] _ in
                 guard let self else { return UIMenu() }
+                let editButtonTitle = NSLocalizedString("contextMenu.edit", comment: "")
+                let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
                 return UIMenu(children: [
-                    UIAction(title: "Редактировать") { [weak self] action in
+                    UIAction(title: editButtonTitle) { [weak self] _ in
+                        AnalyticsService.sendClickEvent(screen: .categories, item: .edit)
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let viewModel = CategoryNameViewModel()
@@ -203,12 +210,14 @@ extension CategoriesViewController: UITableViewDelegate {
                         controller.delegate = self
                         navigationController?.pushViewController(controller, animated: true)
                     },
-                    UIAction(title: "Удалить", attributes: .destructive) { action in
+                    UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] _ in
+                        AnalyticsService.sendClickEvent(screen: .categories, item: .delete)
+                        guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])
                         self.viewModel.didDeleteCategory(category)
                         self.tableView.reloadData()
-                    },
+                    }
                 ])
             })
             return configuration
