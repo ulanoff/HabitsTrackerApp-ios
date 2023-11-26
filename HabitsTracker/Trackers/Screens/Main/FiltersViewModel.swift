@@ -43,13 +43,13 @@ final class FiltersViewModel {
     func sendAnalyticsEvent(filter: FilterOperation) {
         switch filter {
         case .byWeekday:
-            AnalyticsService.sendClickEvent(screen: .filters, item: "All Trackers Button")
+            AnalyticsService.sendClickEvent(screen: .filters, item: "all_trackers")
         case .byToday:
-            AnalyticsService.sendClickEvent(screen: .filters, item: "Today Button")
+            AnalyticsService.sendClickEvent(screen: .filters, item: "today")
         case .byCompleteness:
-            AnalyticsService.sendClickEvent(screen: .filters, item: "Completed")
+            AnalyticsService.sendClickEvent(screen: .filters, item: "completed")
         case .byNotCompleteness:
-            AnalyticsService.sendClickEvent(screen: .filters, item: "Incomplete")
+            AnalyticsService.sendClickEvent(screen: .filters, item: "incomplete")
         case .search:
             break
         }
