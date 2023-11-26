@@ -1,5 +1,7 @@
 disabled_rules:
 - trailing_whitespace
+- private_over_fileprivate
+- superfluous_disable_command
 opt_in_rules:
 - empty_count
 - empty_string
@@ -29,4 +31,6 @@ file_length:
 cyclomatic_complexity:
     warning: 15
     error: 25
+opening_brace:
+    allow_multiline_func: true
 reporter: "xcode"
