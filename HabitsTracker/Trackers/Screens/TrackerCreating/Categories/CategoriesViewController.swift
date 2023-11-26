@@ -65,7 +65,7 @@ final class CategoriesViewController: UIViewController {
     
     // MARK: - Event Handlers
     @objc private func didTapCreateButton() {
-        AnalyticsService.sendClickEvent(screen: .categories, item: "add_category")
+        AnalyticsService.sendClickEvent(screen: .categories, item: .addCategory)
         let viewModel = CategoryNameViewModel()
         let controller = CategoryNameViewController(type: .creating, categoryName: nil, viewModel: viewModel)
         controller.delegate = self
@@ -202,7 +202,7 @@ extension CategoriesViewController: UITableViewDelegate {
                 let deleteButtonTitle = NSLocalizedString("contextMenu.delete", comment: "")
                 return UIMenu(children: [
                     UIAction(title: editButtonTitle) { [weak self] action in
-                        AnalyticsService.sendClickEvent(screen: .categories, item: "edit")
+                        AnalyticsService.sendClickEvent(screen: .categories, item: .edit)
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let viewModel = CategoryNameViewModel()
@@ -211,7 +211,7 @@ extension CategoriesViewController: UITableViewDelegate {
                         navigationController?.pushViewController(controller, animated: true)
                     },
                     UIAction(title: deleteButtonTitle, attributes: .destructive) { [weak self] action in
-                        AnalyticsService.sendClickEvent(screen: .categories, item: "delete")
+                        AnalyticsService.sendClickEvent(screen: .categories, item: .delete)
                         guard let self else { return }
                         let categoryName = self.viewModel.categories[indexPath.row]
                         let category = TrackerCategory(name: categoryName, trackers: [])

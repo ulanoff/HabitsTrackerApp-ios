@@ -26,12 +26,29 @@ struct DefaultAnalyticsEventParams {
         case statistics = "Statistics"
     }
     
+    enum ClickItem: String {
+        case track, filter, edit, delete, today, completed, incomplete, habit
+        case addTrack = "add_track"
+        case allTrackers = "all_trackers"
+        case addCategory = "add_category"
+        case irregularEvent = "irregular_event"
+    }
+    
     let event: Event
     let screen: Screen
-    let item: String?
+    let item: ClickItem?
 }
 
 final class AnalyticsService {
+    static func activate() {
+        guard let configuration = YMMYandexMetricaConfiguration(apiKey: APIKeys.appMetricaAPIKey)
+        else {
+            assertionFailure("Failed to configure AppMetrica SDK with API key: \(APIKeys.appMetricaAPIKey)")
+            return
+        }
+        YMMYandexMetrica.activate(with: configuration)
+    }
+    
     static func sendCustomEvent(event: DefaultAnalyticsEventParams.Event, with params: AnalyticsEventParams) {
         YMMYandexMetrica.reportEvent(event.rawValue, parameters: params, onFailure: { error in
             print("APPMETRICA REPORT ERROR: \(error.localizedDescription)")
@@ -47,7 +64,7 @@ final class AnalyticsService {
         sendCustomEvent(event: params.event, with: [
             "event": params.event.rawValue,
             "screen": params.screen.rawValue,
-            "item": params.item ?? "null"
+            "item": params.item?.rawValue ?? "null"
         ])
     }
     
@@ -71,7 +88,7 @@ final class AnalyticsService {
         )
     }
     
-    static func sendClickEvent(screen: DefaultAnalyticsEventParams.Screen, item: String) {
+    static func sendClickEvent(screen: DefaultAnalyticsEventParams.Screen, item: DefaultAnalyticsEventParams.ClickItem) {
         sendDefaultEvent(
             with: DefaultAnalyticsEventParams(
                 event: .click,
