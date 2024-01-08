@@ -2,6 +2,10 @@
 
 [Design in Figma](https://www.figma.com/file/owAO4CAPTJdpM1BZU5JHv7/Tracker-(YP)?t=SZDLmkWeOPX4y6mp-0)
 
+# Screencast
+
+https://github.com/ulanoff/HabitsTrackerApp-ios/assets/94757687/f3360aa8-da00-4f43-8015-143d93ab7c07
+
 # Purpose and Goals
 
 The application helps users form useful habits and monitor their execution.
